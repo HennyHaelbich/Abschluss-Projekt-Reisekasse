@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import EventContext from '../contexts/EventContext';
 
-export default function ListUser({}) {
+export default function ListUser() {
   const { members } = useContext(EventContext);
 
   return (
