@@ -7,23 +7,23 @@ export default function EventContextProvider({ children }) {
   const [members, setMembers] = useState([]);
   const [events, setEvents] = useState([]);
 
-  const createEvent = (title, users) =>
+  const createEvent = (title, members) =>
     axios
-      .post('/api/event', { title, users })
+      .post('/api/events', { title, members })
       .then((response) => response.data)
       .then((newEvent) => setEvents([...events, newEvent]))
       .catch(console.log);
 
-  const setMember = (user) =>
+  const setMember = (member) =>
     axios
-      .get('/api/user/' + user)
+      .get('/api/users/' + member)
       .then((response) => response.data)
       .then((newMember) => setMembers([...members, newMember]))
       .catch(console.log);
 
   return (
     <EventContext.Provider
-      value={{ setTitle, members, setMember, createEvent }}
+      value={{ title, setTitle, members, setMember, createEvent }}
     >
       {children}
     </EventContext.Provider>

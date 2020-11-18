@@ -4,8 +4,6 @@ import EventContext from '../contexts/EventContext';
 export default function ListUser({}) {
   const { members } = useContext(EventContext);
 
-  console.log('ListMembers', members);
-
   return (
     <ul>
       {members.map((user) => (

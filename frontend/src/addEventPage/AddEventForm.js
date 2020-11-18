@@ -4,7 +4,9 @@ import styled from 'styled-components/macro';
 import EventContext from '../contexts/EventContext';
 
 export default function AddEventForm() {
-  const { setTitle, setMember } = useContext(EventContext);
+  const { title, setTitle, members, setMember, createEvent } = useContext(
+    EventContext
+  );
   const [newMember, setNewMember] = useState('');
 
   return (
@@ -28,6 +30,10 @@ export default function AddEventForm() {
       </ButtonStyled>
 
       <ListUser />
+
+      <ButtonStyled type="button" onClick={() => createEvent(title, members)}>
+        Event speichern
+      </ButtonStyled>
     </FormStyled>
   );
 
@@ -59,8 +65,7 @@ const InputStyled = styled.input`
 `;
 
 const ButtonStyled = styled.button`
-  font-size: 1em;
-  padding: var(--size-m);
+  padding: var(--size-s);
   border-radius: var(--size-s);
   border: 2px solid var(--secundary-main);
   font-weight: 600;
