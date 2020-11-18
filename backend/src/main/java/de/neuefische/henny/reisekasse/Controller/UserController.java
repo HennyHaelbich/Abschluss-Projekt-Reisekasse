@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,11 +24,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    /*@GetMapping
-    public List<UserDto> getUser(){
-        return userService.getUsers();
-    }
-*/
     @GetMapping("{username}")
     public UserDto getUserById(@PathVariable @NonNull String username){
         Optional<User> optionalUser = userService.getUserById(username);

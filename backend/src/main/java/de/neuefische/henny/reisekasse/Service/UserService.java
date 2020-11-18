@@ -19,11 +19,6 @@ public class UserService {
         this.userDb = userDb;
     }
 
-    public List<UserDto> getUsers(){
-        List<User> users = userDb.findAll();
-        return users.stream().map(user -> new UserDto(user.getUsername())).collect(Collectors.toList());
-    }
-
     public Optional<User> getUserById(String username){
         return userDb.findById(username);
     }

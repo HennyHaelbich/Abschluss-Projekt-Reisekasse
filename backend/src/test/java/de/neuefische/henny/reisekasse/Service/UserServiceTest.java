@@ -1,13 +1,9 @@
 package de.neuefische.henny.reisekasse.Service;
 
 import de.neuefische.henny.reisekasse.Db.UserDb;
-import de.neuefische.henny.reisekasse.Model.Dto.UserDto;
 import de.neuefische.henny.reisekasse.Model.User;
-import de.neuefische.henny.reisekasse.seeder.UserSeeder;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,25 +40,6 @@ class UserServiceTest {
 
         // Then
         assertThat(resultUser, is(Optional.empty()));
-    }
-
-    @Test
-    void getUsersReturnsListOfUserDtos(){
-        // Given
-        List<UserDto> expectedUsers = new ArrayList<>(List.of(
-                UserDto.builder().username("Malte").build(),
-                UserDto.builder().username("Sven").build(),
-                UserDto.builder().username("Dennis").build(),
-                UserDto.builder().username("Nil").build()
-        ));
-
-        when(userDb.findAll()).thenReturn(UserSeeder.getStockUser());
-
-        // When
-        List<UserDto> allUsers = userService.getUsers();
-
-        // Then
-        assertThat(allUsers, containsInAnyOrder((expectedUsers).toArray()));
     }
 
 }
