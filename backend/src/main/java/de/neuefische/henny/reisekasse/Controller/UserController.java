@@ -25,11 +25,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    /*@GetMapping
     public List<UserDto> getUser(){
         return userService.getUsers();
     }
-
+*/
     @GetMapping("{username}")
     public UserDto getUserById(@PathVariable @NonNull String username){
         Optional<User> optionalUser = userService.getUserById(username);
