@@ -1,54 +1,61 @@
 import React, { useContext, useState } from 'react';
 import ListUser from './ListUser';
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 import EventContext from '../contexts/EventContext';
+import { useHistory } from 'react-router-dom';
 
 export default function AddEventForm() {
   const { title, setTitle, members, setMember, createEvent } = useContext(
     EventContext
   );
   const [newMember, setNewMember] = useState('');
+  const history = useHistory();
 
   return (
     <FormStyled>
       <label>
         Titel
-        <InputStyled name="title" onChange={handleChangeTitle} type="text" />
+        <InputStyled
+          name="title"
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+          type="text"
+        />
       </label>
-
       <label>
         Teilnehmer
         <InputStyled
           name="newMember"
-          onChange={handleChangeNewMember}
+          value={newMember}
+          onChange={(event) => setNewMember(event.target.value)}
           type="text"
         />
       </label>
-
       <ButtonStyled type="button" onClick={findUser}>
         Gruppenmitglied hinzufügen
       </ButtonStyled>
-
       <ListUser />
 
-      <ButtonStyled type="button" onClick={() => createEvent(title, members)}>
+      <ButtonStyled
+        disabled={members.length === 0 || title.length === 0}
+        type="button"
+        onClick={saveEvent}
+      >
         Event speichern
       </ButtonStyled>
     </FormStyled>
   );
 
-  function handleChangeNewMember(event) {
-    setNewMember(event.target.value);
-  }
-
-  function handleChangeTitle(event) {
-    setTitle(event.target.value);
-  }
-
   function findUser(event) {
     event.preventDefault();
-    console.log('newMember', newMember);
     setMember(newMember);
+    setNewMember('');
+  }
+
+  function saveEvent(event) {
+    event.preventDefault();
+    createEvent(title, members);
+    history.push('/events');
   }
 }
 
@@ -69,4 +76,11 @@ const ButtonStyled = styled.button`
   border-radius: var(--size-s);
   border: 2px solid var(--secundary-main);
   font-weight: 600;
+
+  ${(props) =>
+    props.disabled &&
+    css`
+      color: grey;
+      border: 2px solid grey;
+    `}
 `;
