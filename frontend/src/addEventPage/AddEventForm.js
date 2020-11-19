@@ -1,49 +1,60 @@
 import React, { useContext, useState } from 'react';
 import ListUser from './ListUser';
-import styled, { css } from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import EventContext from '../contexts/EventContext';
 import { useHistory } from 'react-router-dom';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Header from '../commons/Header';
 
 export default function AddEventForm() {
-  const { title, setTitle, members, setMember, createEvent } = useContext(
-    EventContext
-  );
+  const {
+    title,
+    setTitle,
+    members,
+    setMember,
+    createEvent,
+    error,
+  } = useContext(EventContext);
   const [newMember, setNewMember] = useState('');
   const history = useHistory();
 
   return (
-    <FormStyled>
-      <label>
-        Titel
-        <InputStyled
+    <>
+      <Header title={'Event anlegen'} />
+      <FormStyled>
+        <TextField
+          label="Event Name"
           name="title"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
-          type="text"
+          variant="outlined"
         />
-      </label>
-      <label>
-        Teilnehmer
-        <InputStyled
-          name="newMember"
-          value={newMember}
-          onChange={(event) => setNewMember(event.target.value)}
-          type="text"
-        />
-      </label>
-      <ButtonStyled type="button" onClick={findUser}>
-        Gruppenmitglied hinzufügen
-      </ButtonStyled>
-      <ListUser />
 
-      <ButtonStyled
-        disabled={members.length === 0 || title.length === 0}
-        type="button"
-        onClick={saveEvent}
-      >
-        Event speichern
-      </ButtonStyled>
-    </FormStyled>
+        <TextField
+          error={error.status}
+          label="Teilnehmer"
+          value={newMember}
+          helperText={error.message}
+          onChange={(event) => setNewMember(event.target.value)}
+          variant="outlined"
+        />
+
+        <Button variant="outlined" onClick={findUser}>
+          Gruppenmitglied hinzufügen
+        </Button>
+
+        <ListUser />
+
+        <Button
+          variant="outlined"
+          disabled={members.length === 0 || title.length === 0}
+          onClick={saveEvent}
+        >
+          Event speichern
+        </Button>
+      </FormStyled>
+    </>
   );
 
   function findUser(event) {
@@ -64,23 +75,4 @@ const FormStyled = styled.form`
   gap: var(--size-m);
   grid-auto-rows: min-content;
   padding: var(--size-l);
-`;
-
-const InputStyled = styled.input`
-  display: block;
-  width: 100%;
-`;
-
-const ButtonStyled = styled.button`
-  padding: var(--size-s);
-  border-radius: var(--size-s);
-  border: 2px solid var(--secundary-main);
-  font-weight: 600;
-
-  ${(props) =>
-    props.disabled &&
-    css`
-      color: grey;
-      border: 2px solid grey;
-    `}
 `;
