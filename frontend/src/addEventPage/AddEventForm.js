@@ -27,7 +27,6 @@ export default function AddEventForm() {
           label="Event Name"
           name="title"
           value={title}
-          // helperText="Incorrect entry."
           onChange={(event) => setTitle(event.target.value)}
           variant="outlined"
         />
@@ -62,7 +61,6 @@ export default function AddEventForm() {
     event.preventDefault();
     setMember(newMember);
     setNewMember('');
-    console.log(newMember);
   }
 
   function saveEvent(event) {
