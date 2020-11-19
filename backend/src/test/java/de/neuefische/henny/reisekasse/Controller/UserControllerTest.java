@@ -55,7 +55,7 @@ class UserControllerTest {
         ResponseEntity<UserDto> response = restTemplate.getForEntity(getUserUrl() + "/" + username, UserDto.class);
 
         // Then
-        assertThat(response.getStatusCode(),is(HttpStatus.OK));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(new UserDto(username)));
 
     }
