@@ -26,7 +26,15 @@ export default function EventContextProvider({ children }) {
 
   return (
     <EventContext.Provider
-      value={{ title, setTitle, members, setMember, createEvent, error }}
+      value={{
+        title,
+        setTitle,
+        members,
+        setMember,
+        createEvent,
+        error,
+        setError,
+      }}
     >
       {children}
     </EventContext.Provider>
