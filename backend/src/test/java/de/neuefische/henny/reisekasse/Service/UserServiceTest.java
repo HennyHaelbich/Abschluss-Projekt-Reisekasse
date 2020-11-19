@@ -15,7 +15,7 @@ class UserServiceTest {
 
 
     @Test
-    void findUserByIdTestWithExistingId(){
+    void findUserByIdTestWithExistingUserIdIdShouldGiveBackOptionOfUser(){
         // Given
         String userId = "Sven";
         User user = User.builder().username("Sven").password("SvensPassword").build();
@@ -30,7 +30,7 @@ class UserServiceTest {
     }
 
     @Test
-    void findUserByIdTestWithNotExistingId(){
+    void findUserByIdTestWithNotExistingUserIdShouldGiveBackEmptyOption(){
         // Given
         String userId = "NotExistingUserId";
         when(userDb.findById("NotExistingUserId")).thenReturn(Optional.empty());
