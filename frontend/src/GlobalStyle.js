@@ -19,11 +19,13 @@ export default createGlobalStyle`
    --size-xl: 24px;
    --size-xxl: 32px;
    
+   
     }
 
   html, body {
     margin: 0;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Roboto', sans-serif;
+
   }
   
 `;

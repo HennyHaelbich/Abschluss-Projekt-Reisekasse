@@ -6,6 +6,7 @@ export default function EventContextProvider({ children }) {
   const [title, setTitle] = useState('');
   const [members, setMembers] = useState([]);
   const [events, setEvents] = useState([]);
+  const [error, setError] = useState({ status: false, message: '' });
 
   const createEvent = (title, members) =>
     axios
@@ -19,11 +20,13 @@ export default function EventContextProvider({ children }) {
       .get('/api/users/' + member)
       .then((response) => response.data)
       .then((newMember) => setMembers([...members, newMember]))
-      .catch(console.log);
+      .catch((err) => {
+        setError({ status: true, message: 'Dieser Benutzer existiert nicht' });
+      });
 
   return (
     <EventContext.Provider
-      value={{ title, setTitle, members, setMember, createEvent }}
+      value={{ title, setTitle, members, setMember, createEvent, error }}
     >
       {children}
     </EventContext.Provider>
