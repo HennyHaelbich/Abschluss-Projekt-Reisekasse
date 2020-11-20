@@ -15,12 +15,12 @@ export default function EventContextProvider({ children }) {
       .then((newEvent) => setEvents([...events, newEvent]))
       .catch(console.log);
 
-  const setMember = (member) =>
+  const addMember = (member) =>
     axios
       .get('/api/users/' + member)
       .then((response) => response.data)
       .then((newMember) => setMembers([...members, newMember]))
-      .catch((err) => {
+      .catch(() => {
         setError({ status: true, message: 'Dieser Benutzer existiert nicht' });
       });
 
@@ -30,7 +30,7 @@ export default function EventContextProvider({ children }) {
         title,
         setTitle,
         members,
-        setMember,
+        addMember,
         createEvent,
         error,
         setError,
