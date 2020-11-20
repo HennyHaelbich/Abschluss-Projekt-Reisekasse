@@ -12,7 +12,7 @@ export default function AddEventForm() {
     title,
     setTitle,
     members,
-    setMember,
+    addMember,
     createEvent,
     error,
     setError,
@@ -65,23 +65,15 @@ export default function AddEventForm() {
 
   function findUser(event) {
     event.preventDefault();
-    let found = false;
-    for (let i = 0; i < members.length; i++) {
-      if (members[i].username === newMember) {
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      setMember(newMember);
-    } else {
+    if (members.find((member) => member.username === newMember)) {
       setError({
         status: true,
         message: 'Dieser Benutzer ist bereits Teil der Gruppe',
       });
+    } else {
+      addMember(newMember);
     }
     setNewMember('');
-    console.log(members);
   }
 
   function saveEvent(event) {
