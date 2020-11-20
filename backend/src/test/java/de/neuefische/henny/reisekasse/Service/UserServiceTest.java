@@ -26,7 +26,7 @@ class UserServiceTest {
         Optional<User> resultUser = userService.getUserById(userId);
 
         // Then
-        assertThat(resultUser, is(expectedUser));
+        assertThat(resultUser, is(optionalExpectedUser));
     }
 
     @Test
