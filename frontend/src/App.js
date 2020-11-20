@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import AddEventForm from './addEventPage/AddEventForm';
 import EventContextProvider from './contexts/EventContextProvider';
-import ShowEvents from './EventsOverviewPage/ShowEvents';
+import ShowEvents from './eventPage/ShowEvents';
 
 function App() {
   return (
