@@ -15,12 +15,12 @@ class UserServiceTest {
 
 
     @Test
-    void findUserByIdTestWithExistingUserIdIdShouldGiveBackOptionOfUser(){
+    void findUserByIdTestWithExistingUserIdShouldGiveBackOptionOfUser(){
         // Given
         String userId = "Sven";
-        User user = User.builder().username("Sven").password("SvensPassword").build();
-        Optional<User> expectedUser = Optional.of(user);
-        when(userDb.findById("Sven")).thenReturn(expectedUser);
+        User expectedUser = User.builder().username(userId).password("SvensPassword").build();
+        Optional<User> optionalExpectedUser = Optional.of(expectedUser);
+        when(userDb.findById(userId)).thenReturn(optionalExpectedUser);
 
         // When
         Optional<User> resultUser = userService.getUserById(userId);

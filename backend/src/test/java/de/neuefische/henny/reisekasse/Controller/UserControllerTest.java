@@ -47,7 +47,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void testGetUserWithExistingUsernameShouldUsername() {
+    public void testGetUserWithExistingUsernameShouldReturnUsername() {
         // Given
         String username = "Malte";
 
