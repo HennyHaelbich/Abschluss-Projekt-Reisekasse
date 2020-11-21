@@ -21,4 +21,5 @@ public class Event {
     private String title;
     private List<EventMember> members;
     private List<Expenditures> expenditures;
+
 }

@@ -2,7 +2,8 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import AddEventForm from './addEventPage/AddEventForm';
 import EventContextProvider from './contexts/EventContextProvider';
-import ShowEvents from './eventPage/ShowEvents';
+import ShowEvent from './eventPage/ShowEvent';
+import EventsPage from './eventsListPage/EventsPage';
 
 function App() {
   return (
@@ -12,7 +13,10 @@ function App() {
           <AddEventForm />
         </Route>
         <Route path={'/events'}>
-          <ShowEvents />
+          <EventsPage />
+        </Route>
+        <Route path={'/event/:id'}>
+          <ShowEvent />
         </Route>
         <Route path="/">
           <Redirect to="/new" />

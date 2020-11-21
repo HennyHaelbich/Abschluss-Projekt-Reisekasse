@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import ListUsers from '../commons/ListUsers';
+import ListUsers from './ListUsers';
 import styled from 'styled-components/macro';
 import EventContext from '../contexts/EventContext';
 import { useHistory } from 'react-router-dom';
@@ -8,16 +8,11 @@ import Button from '@material-ui/core/Button';
 import Header from '../commons/Header';
 
 export default function AddEventForm() {
-  const {
-    title,
-    setTitle,
-    members,
-    addMember,
-    createEvent,
-    error,
-    setError,
-  } = useContext(EventContext);
+  const { members, addMember, createEvent, error, setError } = useContext(
+    EventContext
+  );
   const [newMember, setNewMember] = useState('');
+  const [title, setTitle] = useState('');
   const history = useHistory();
 
   return (

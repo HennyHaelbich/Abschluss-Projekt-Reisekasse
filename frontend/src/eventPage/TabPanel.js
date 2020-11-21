@@ -2,8 +2,8 @@ import React from 'react';
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Overview from '../eventPage/Overview';
-import Expenditures from '../eventPage/Expenditures';
+import Overview from './Overview';
+import Expenditures from './Expenditures';
 
 export default function TabPanel() {
   const [selectedTag, setSelectedTag] = React.useState(0);

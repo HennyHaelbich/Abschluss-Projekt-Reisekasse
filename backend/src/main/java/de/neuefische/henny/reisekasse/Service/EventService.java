@@ -38,4 +38,8 @@ public class EventService {
 
         return eventDb.save(newEvent);
     }
+
+    public List<Event> listEvents(){
+        return eventDb.findAll();
+    }
 }
