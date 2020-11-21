@@ -19,6 +19,6 @@ public class Event {
     @Id
     private String id;
     private String title;
-    private List<UserDto> members;
+    private List<EventMember> members;
     private List<Expenditures> expenditures;
 }

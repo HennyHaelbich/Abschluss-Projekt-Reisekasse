@@ -4,7 +4,7 @@ import de.neuefische.henny.reisekasse.Db.EventDb;
 import de.neuefische.henny.reisekasse.Model.Dto.AddEventDto;
 import de.neuefische.henny.reisekasse.Model.Dto.UserDto;
 import de.neuefische.henny.reisekasse.Model.Event;
-import de.neuefische.henny.reisekasse.Model.Expenditures;
+import de.neuefische.henny.reisekasse.Model.EventMember;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,9 +60,9 @@ class EventControllerTest {
         Event expectedEvent = Event.builder()
                 .id("id")
                 .title("Norwegen 2020")
-                .members(List.of(new UserDto("Julius"),
-                        new UserDto("Henny")))
-                .expenditures(new ArrayList<Expenditures>())
+                .members(List.of(new EventMember("Julius", 0.0),
+                        new EventMember("Henny", 0.0)))
+                .expenditures(new ArrayList<>())
                 .build();
 
         // When
