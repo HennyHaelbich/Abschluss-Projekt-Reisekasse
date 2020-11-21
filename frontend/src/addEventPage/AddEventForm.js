@@ -12,9 +12,10 @@ export default function AddEventForm() {
     title,
     setTitle,
     members,
-    setMember,
+    addMember,
     createEvent,
     error,
+    setError,
   } = useContext(EventContext);
   const [newMember, setNewMember] = useState('');
   const history = useHistory();
@@ -36,11 +37,16 @@ export default function AddEventForm() {
           label="Teilnehmer"
           value={newMember}
           helperText={error.message}
+          onClick={() => setError({ status: false, message: '' })}
           onChange={(event) => setNewMember(event.target.value)}
           variant="outlined"
         />
 
-        <Button variant="outlined" onClick={findUser}>
+        <Button
+          variant="outlined"
+          onClick={findUser}
+          disabled={newMember.length === 0}
+        >
           Gruppenmitglied hinzufügen
         </Button>
 
@@ -59,7 +65,14 @@ export default function AddEventForm() {
 
   function findUser(event) {
     event.preventDefault();
-    setMember(newMember);
+    if (members.find((member) => member.username === newMember)) {
+      setError({
+        status: true,
+        message: 'Dieser Benutzer ist bereits Teil der Gruppe',
+      });
+    } else {
+      addMember(newMember);
+    }
     setNewMember('');
   }
 

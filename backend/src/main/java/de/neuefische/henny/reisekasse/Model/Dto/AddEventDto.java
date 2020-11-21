@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class AddEventDto {
-    private String Title;
+    private String title;
     private List<UserDto> members;
     private List<Expenditures> expenditures;
 }
