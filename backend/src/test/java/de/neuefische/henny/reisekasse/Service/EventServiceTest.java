@@ -1,23 +1,30 @@
 package de.neuefische.henny.reisekasse.Service;
 
 import de.neuefische.henny.reisekasse.Db.EventDb;
+import de.neuefische.henny.reisekasse.Model.Dto.AddExpenditureDto;
+import de.neuefische.henny.reisekasse.Model.Dto.UserDto;
 import de.neuefische.henny.reisekasse.Model.Event;
 import de.neuefische.henny.reisekasse.Model.EventMember;
+import de.neuefische.henny.reisekasse.Model.User;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
+import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class EventServiceTest {
     final EventDb mockEventDb = mock(EventDb.class);
     final IdUtils mockIdUtils = mock(IdUtils.class);
-    final EventService eventService = new EventService(mockEventDb, mockIdUtils);
+    final TimestampUtils mockTimestampUtils = mock(TimestampUtils.class);
+    final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockTimestampUtils);
 
     @Test
     void listEventsShouldGiveBackAllEventsInEventDb() {
@@ -38,4 +45,74 @@ class EventServiceTest {
         // Then
         assertThat(allEvents, is(eventList));
     }
+
+    @Test
+    void testGetEventByIdShouldReturnTheSpecifiedEvent(){
+        // Given
+        String eventId = "uniqueId";
+        Event expectedEvent = Event.builder().id("id_1").title("Schwedenreise")
+                .members(List.of(new EventMember("Janice", 0.0), new EventMember("Manu", 0)))
+                .expenditures(List.of()).build();
+        when(mockEventDb.findById(eventId)).thenReturn(Optional.of(expectedEvent));
+
+        // When
+        Event result = eventService.getEventById(eventId);
+
+        // Then
+        assertThat(result, is(expectedEvent));
+    }
+
+    @Test
+    void testGetEventByIdShouldThrowExceptionWhenIdNotFound(){
+        // Given
+        String eventId = "uniqueId";
+        when(mockEventDb.findById(eventId)).thenReturn(Optional.empty());
+
+        // When - Then
+        try {
+            eventService.getEventById(eventId);
+            fail();
+        } catch (ResponseStatusException exception){
+            assertThat(exception.getStatus(), is(HttpStatus.NOT_FOUND));
+        }
+    }
+
+    @Test
+    void testSetNewBalanceShouldGiveBackMemberListWithUpdatedBalance(){
+        // Given
+        List<EventMember> givenMemberList = List.of(new EventMember("Janice", 2.0),
+                new EventMember("Manu", 0.0),
+                new EventMember("Janice", -5.0));
+        String payerId = "Manu";
+        double amount = 15;
+
+        List<EventMember> expectedMemberList = List.of(new EventMember("Janice", -3.0),
+                new EventMember("Manu", 10.0),
+                new EventMember("Janice", -10.0));
+
+        // When
+        List<EventMember> result = eventService.setNewSaldo(givenMemberList, payerId, amount);
+
+        // Then
+        assertThat(result, is(expectedMemberList));
+    }
+
+    @Test
+    void testAddExpenditureShouldReturnEventWithAddedExpenditure(){
+        // Given
+        AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
+                .eventId("Id")
+                .members(List.of(new EventMember("Janice", 2.0),
+                        new EventMember("Manu", 0.0),
+                        new EventMember("Janice", -5.0)))
+                .payer(new UserDto("Manu"))
+                .amount(15)
+                .build();
+
+        // When
+
+        // Then
+
+    }
+
 }
