@@ -1,6 +1,6 @@
-package de.neuefische.henny.reisekasse.Model.Dto;
+package de.neuefische.henny.reisekasse.model.dto;
 
-import de.neuefische.henny.reisekasse.Model.EventMember;
+import de.neuefische.henny.reisekasse.model.EventMember;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,6 +1,6 @@
-package de.neuefische.henny.reisekasse.Db;
+package de.neuefische.henny.reisekasse.db;
 
-import de.neuefische.henny.reisekasse.Model.Event;
+import de.neuefische.henny.reisekasse.model.Event;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;

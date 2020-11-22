@@ -1,4 +1,4 @@
-package de.neuefische.henny.reisekasse.Model;
+package de.neuefische.henny.reisekasse.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,13 +7,18 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(collection = "user")
-public class User {
+@Document(collection = "event")
+public class Event {
     @Id
-    private String username;
-    private String password;
+    private String id;
+    private String title;
+    private List<EventMember> members;
+    private List<Expenditure> expenditures;
+
 }

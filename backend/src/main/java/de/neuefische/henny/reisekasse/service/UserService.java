@@ -1,7 +1,7 @@
-package de.neuefische.henny.reisekasse.Service;
+package de.neuefische.henny.reisekasse.service;
 
-import de.neuefische.henny.reisekasse.Db.UserDb;
-import de.neuefische.henny.reisekasse.Model.User;
+import de.neuefische.henny.reisekasse.db.UserDb;
+import de.neuefische.henny.reisekasse.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

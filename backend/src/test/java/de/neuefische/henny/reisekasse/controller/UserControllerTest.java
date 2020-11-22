@@ -1,8 +1,8 @@
-package de.neuefische.henny.reisekasse.Controller;
+package de.neuefische.henny.reisekasse.controller;
 
-import de.neuefische.henny.reisekasse.Db.UserDb;
-import de.neuefische.henny.reisekasse.Model.Dto.UserDto;
-import de.neuefische.henny.reisekasse.Model.User;
+import de.neuefische.henny.reisekasse.db.UserDb;
+import de.neuefische.henny.reisekasse.model.User;
+import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

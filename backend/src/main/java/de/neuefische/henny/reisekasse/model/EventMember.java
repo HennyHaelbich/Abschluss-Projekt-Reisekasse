@@ -1,4 +1,4 @@
-package de.neuefische.henny.reisekasse.Model.Dto;
+package de.neuefische.henny.reisekasse.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,9 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class UserDto {
+public class EventMember {
+
     private String username;
+    private double balance;
+
 }
