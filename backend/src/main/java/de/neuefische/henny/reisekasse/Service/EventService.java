@@ -9,7 +9,6 @@ import de.neuefische.henny.reisekasse.Model.EventMember;
 import de.neuefische.henny.reisekasse.Model.Expenditure;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class EventService {
         this.timestampUtils = timestampUtils;
     }
 
-    public Event addEvent(AddEventDto addEventDto){
+    public Event addEvent(AddEventDto addEventDto) {
 
         List<EventMember> eventMembers = addEventDto.getMembers().stream()
                 .map(member -> new EventMember(member.getUsername(), 0.0))
@@ -48,7 +47,7 @@ public class EventService {
         return eventDb.save(newEvent);
     }
 
-    public List<Event> listEvents(){
+    public List<Event> listEvents() {
         return eventDb.findAll();
     }
 
@@ -76,17 +75,17 @@ public class EventService {
 
     }
 
-    public Event getEventById(String eventId){
+    public Event getEventById(String eventId) {
         return eventDb.findById(eventId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public List<EventMember> setNewSaldo(List<EventMember> eventMembers, String payerId, double amount){
-        double amountPerPerson = amount/eventMembers.size();
+    public List<EventMember> setNewSaldo(List<EventMember> eventMembers, String payerId, double amount) {
+        double amountPerPerson = amount / eventMembers.size();
 
-        for (EventMember eventMember: eventMembers){
-            eventMember.setBalance(eventMember.getBalance()-amountPerPerson);
-            if (eventMember.getUsername().equals(payerId)){
-                eventMember.setBalance(eventMember.getBalance()+amount);
+        for (EventMember eventMember : eventMembers) {
+            eventMember.setBalance(eventMember.getBalance() - amountPerPerson);
+            if (eventMember.getUsername().equals(payerId)) {
+                eventMember.setBalance(eventMember.getBalance() + amount);
             }
         }
         return eventMembers;

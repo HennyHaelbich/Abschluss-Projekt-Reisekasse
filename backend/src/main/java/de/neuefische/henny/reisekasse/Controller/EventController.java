@@ -22,18 +22,18 @@ public class EventController {
     }
 
     @PostMapping
-    public Event addEvent(@RequestBody AddEventDto addEventDto){
+    public Event addEvent(@RequestBody AddEventDto addEventDto) {
         return eventService.addEvent(addEventDto);
     }
 
     @GetMapping
-    public List<Event> getEvents(){
+    public List<Event> getEvents() {
         return eventService.listEvents();
     }
 
     @PostMapping("{eventId}")
     public Event addExpenditure(@PathVariable String eventId, @RequestBody AddExpenditureDto addExpenditureDto) {
-        if(!eventId.equals(addExpenditureDto.getEventId())){
+        if (!eventId.equals(addExpenditureDto.getEventId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         return eventService.addExpenditure(addExpenditureDto);

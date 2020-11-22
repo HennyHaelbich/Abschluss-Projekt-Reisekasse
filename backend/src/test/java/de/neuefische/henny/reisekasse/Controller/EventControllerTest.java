@@ -18,10 +18,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.mockito.Mockito.when;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EventControllerTest {
@@ -39,7 +39,7 @@ class EventControllerTest {
     private EventDb eventDb;
 
     @BeforeEach
-    public void setupDb(){
+    public void setupDb() {
         eventDb.deleteAll();
         eventDb.saveAll(List.of(
                 Event.builder().id("id_1").title("Schwedenreise")
@@ -87,7 +87,7 @@ class EventControllerTest {
     }
 
     @Test
-    void testGetMapping(){
+    void testGetMapping() {
         // Given
         List<Event> eventList = List.of(
                 Event.builder().id("id_1").title("Schwedenreise")

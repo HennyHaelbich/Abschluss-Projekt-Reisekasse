@@ -3,21 +3,19 @@ package de.neuefische.henny.reisekasse.Controller;
 import de.neuefische.henny.reisekasse.Db.UserDb;
 import de.neuefische.henny.reisekasse.Model.Dto.UserDto;
 import de.neuefische.henny.reisekasse.Model.User;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-
-
-import java.util.List;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,7 +31,7 @@ class UserControllerTest {
     private UserDb userDb;
 
     @BeforeEach
-    public void setupDb(){
+    public void setupDb() {
         userDb.deleteAll();
         userDb.saveAll(List.of(
                 User.builder().username("Malte").build(),
@@ -69,7 +67,7 @@ class UserControllerTest {
         ResponseEntity<UserDto> response = restTemplate.getForEntity(getUserUrl() + "/" + username, UserDto.class);
 
         // Then
-        assertThat(response.getStatusCode(),is(HttpStatus.NOT_FOUND));
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
 
     }
 }

@@ -5,7 +5,6 @@ import de.neuefische.henny.reisekasse.Model.Dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.Model.Dto.UserDto;
 import de.neuefische.henny.reisekasse.Model.Event;
 import de.neuefische.henny.reisekasse.Model.EventMember;
-import de.neuefische.henny.reisekasse.Model.User;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.junit.jupiter.api.Test;
@@ -15,10 +14,11 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class EventServiceTest {
     final EventDb mockEventDb = mock(EventDb.class);
@@ -32,7 +32,7 @@ class EventServiceTest {
         List<Event> eventList = List.of(
                 Event.builder().id("id_1").title("Schwedenreise")
                         .members(List.of(new EventMember("Janice", 0.0), new EventMember("Manu", 0)))
-                .expenditures(List.of()).build(),
+                        .expenditures(List.of()).build(),
                 Event.builder().id("id_2").title("Norwegen 2020")
                         .members(List.of(new EventMember("Julius", 0.0), new EventMember("Henny", 0)))
                         .expenditures(List.of()).build()
@@ -47,7 +47,7 @@ class EventServiceTest {
     }
 
     @Test
-    void testGetEventByIdShouldReturnTheSpecifiedEvent(){
+    void testGetEventByIdShouldReturnTheSpecifiedEvent() {
         // Given
         String eventId = "uniqueId";
         Event expectedEvent = Event.builder().id("id_1").title("Schwedenreise")
@@ -63,7 +63,7 @@ class EventServiceTest {
     }
 
     @Test
-    void testGetEventByIdShouldThrowExceptionWhenIdNotFound(){
+    void testGetEventByIdShouldThrowExceptionWhenIdNotFound() {
         // Given
         String eventId = "uniqueId";
         when(mockEventDb.findById(eventId)).thenReturn(Optional.empty());
@@ -72,13 +72,13 @@ class EventServiceTest {
         try {
             eventService.getEventById(eventId);
             fail();
-        } catch (ResponseStatusException exception){
+        } catch (ResponseStatusException exception) {
             assertThat(exception.getStatus(), is(HttpStatus.NOT_FOUND));
         }
     }
 
     @Test
-    void testSetNewBalanceShouldGiveBackMemberListWithUpdatedBalance(){
+    void testSetNewBalanceShouldGiveBackMemberListWithUpdatedBalance() {
         // Given
         List<EventMember> givenMemberList = List.of(new EventMember("Janice", 2.0),
                 new EventMember("Manu", 0.0),
@@ -98,7 +98,7 @@ class EventServiceTest {
     }
 
     @Test
-    void testAddExpenditureShouldReturnEventWithAddedExpenditure(){
+    void testAddExpenditureShouldReturnEventWithAddedExpenditure() {
         // Given
         AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
                 .eventId("Id")
