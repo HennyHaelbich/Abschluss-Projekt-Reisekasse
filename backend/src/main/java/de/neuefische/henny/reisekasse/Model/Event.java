@@ -1,6 +1,5 @@
 package de.neuefische.henny.reisekasse.Model;
 
-import de.neuefische.henny.reisekasse.Model.Dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +19,6 @@ public class Event {
     private String id;
     private String title;
     private List<EventMember> members;
-    private List<Expenditures> expenditures;
+    private List<Expenditure> expenditures;
 
 }

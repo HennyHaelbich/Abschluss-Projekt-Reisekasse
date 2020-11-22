@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Document(collection = "expenditures")
-public class Expenditures {
+public class Expenditure {
     @Id
     private String id;
     private List<UserDto> members;
