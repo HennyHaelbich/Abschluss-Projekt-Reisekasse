@@ -66,13 +66,18 @@ public class EventService {
                 .build();
 
         Event event = getEventById(addExpenditureDto.getEventId());
-        event.getExpenditures().add(newExpenditure);
+        ArrayList newExpenditures = new ArrayList(event.getExpenditures());
+        newExpenditures.add(newExpenditure);
 
         List<EventMember> updatedEventMembers = setNewSaldo(addExpenditureDto.getMembers(), addExpenditureDto.getPayer(), addExpenditureDto.getAmount());
-        event.setMembers(updatedEventMembers);
+         Event updatedEvent = Event.builder()
+                 .id(event.getId())
+                 .title(event.getTitle())
+                 .expenditures(newExpenditures)
+                 .members(updatedEventMembers)
+                 .build();
 
-        return eventDb.save(event);
-
+        return eventDb.save(updatedEvent);
     }
 
     public Event getEventById(String eventId) {
@@ -85,7 +90,7 @@ public class EventService {
         for (EventMember eventMember : eventMembers) {
             eventMember.setBalance(eventMember.getBalance() - amountPerPerson);
 
-            if (eventMember.getUsername().equals(payerId)) {
+            if (eventMember.getUsername().equals(payerId.getUsername())) {
                 eventMember.setBalance(eventMember.getBalance() + amount);
             }
         }
