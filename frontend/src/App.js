@@ -9,15 +9,9 @@ function App() {
   return (
     <EventContextProvider>
       <Switch>
-        <Route path={'/new'}>
-          <AddEventForm />
-        </Route>
-        <Route path={'/events'}>
-          <EventsPage />
-        </Route>
-        <Route path={'/event/:id'}>
-          <ShowEvent />
-        </Route>
+        <Route path={'/new'} component={AddEventForm} />
+        <Route path={'/events'} component={EventsPage} />
+        <Route path={'/event/:id'} component={ShowEvent} />
         <Route path="/">
           <Redirect to="/new" />
         </Route>
