@@ -4,6 +4,7 @@ import AddEventForm from './addEventPage/AddEventForm';
 import EventContextProvider from './contexts/EventContextProvider';
 import ShowEvent from './eventPage/ShowEvent';
 import EventsPage from './eventsListPage/EventsPage';
+import AddExpenditureForm from './addExpenditurePage/AddExpenditureForm';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path={'/new'} component={AddEventForm} />
         <Route path={'/events'} component={EventsPage} />
         <Route path={'/event/:id'} component={ShowEvent} />
+        <Route path={'/event/:id/new-expnd'} component={AddExpenditureForm} />
         <Route path="/">
           <Redirect to="/new" />
         </Route>
