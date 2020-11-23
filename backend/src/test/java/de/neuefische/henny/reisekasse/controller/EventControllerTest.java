@@ -1,4 +1,3 @@
-/*
 package de.neuefische.henny.reisekasse.controller;
 
 import de.neuefische.henny.reisekasse.db.EventDb;
@@ -117,4 +116,4 @@ class EventControllerTest {
 
 
     }
-}*/
+}
