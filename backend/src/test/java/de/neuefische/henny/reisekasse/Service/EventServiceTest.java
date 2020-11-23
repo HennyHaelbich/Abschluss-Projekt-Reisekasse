@@ -1,14 +1,12 @@
-package de.neuefische.henny.reisekasse.Service;
+package de.neuefische.henny.reisekasse.service;
 
-import de.neuefische.henny.reisekasse.Db.EventDb;
-import de.neuefische.henny.reisekasse.Model.Event;
-import de.neuefische.henny.reisekasse.Model.EventMember;
+import de.neuefische.henny.reisekasse.db.EventDb;
+import de.neuefische.henny.reisekasse.model.Event;
+import de.neuefische.henny.reisekasse.model.EventMember;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.assertThat;

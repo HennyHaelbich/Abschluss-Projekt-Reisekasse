@@ -1,8 +1,8 @@
-package de.neuefische.henny.reisekasse.Controller;
+package de.neuefische.henny.reisekasse.controller;
 
-import de.neuefische.henny.reisekasse.Model.Dto.UserDto;
-import de.neuefische.henny.reisekasse.Model.User;
-import de.neuefische.henny.reisekasse.Service.UserService;
+import de.neuefische.henny.reisekasse.model.dto.UserDto;
+import de.neuefische.henny.reisekasse.model.User;
+import de.neuefische.henny.reisekasse.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
