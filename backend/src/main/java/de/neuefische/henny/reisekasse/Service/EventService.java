@@ -1,10 +1,10 @@
-package de.neuefische.henny.reisekasse.Service;
+package de.neuefische.henny.reisekasse.service;
 
-import de.neuefische.henny.reisekasse.Db.EventDb;
-import de.neuefische.henny.reisekasse.Model.Dto.AddEventDto;
-import de.neuefische.henny.reisekasse.Model.Event;
-import de.neuefische.henny.reisekasse.Model.EventMember;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
+import de.neuefische.henny.reisekasse.db.EventDb;
+import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
+import de.neuefische.henny.reisekasse.model.Event;
+import de.neuefische.henny.reisekasse.model.EventMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
