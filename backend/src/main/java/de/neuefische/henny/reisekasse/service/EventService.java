@@ -68,7 +68,7 @@ public class EventService {
         Event event = getEventById(addExpenditureDto.getEventId());
         event.getExpenditures().add(newExpenditure);
 
-        List<EventMember> updatedEventMembers = setNewSaldo(addExpenditureDto.getMembers(), addExpenditureDto.getPayer().toString(), addExpenditureDto.getAmount());
+        List<EventMember> updatedEventMembers = setNewSaldo(addExpenditureDto.getMembers(), addExpenditureDto.getPayer(), addExpenditureDto.getAmount());
         event.setMembers(updatedEventMembers);
 
         return eventDb.save(event);
@@ -79,11 +79,12 @@ public class EventService {
         return eventDb.findById(eventId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public List<EventMember> setNewSaldo(List<EventMember> eventMembers, String payerId, double amount) {
+    public List<EventMember> setNewSaldo(List<EventMember> eventMembers, UserDto payerId, double amount) {
         double amountPerPerson = amount / eventMembers.size();
 
         for (EventMember eventMember : eventMembers) {
             eventMember.setBalance(eventMember.getBalance() - amountPerPerson);
+
             if (eventMember.getUsername().equals(payerId)) {
                 eventMember.setBalance(eventMember.getBalance() + amount);
             }

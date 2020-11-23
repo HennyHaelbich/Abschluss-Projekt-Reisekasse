@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface EventDb extends PagingAndSortingRepository<Event, String> {
     List<Event> findAll();
+
+    Event findById();
 }
