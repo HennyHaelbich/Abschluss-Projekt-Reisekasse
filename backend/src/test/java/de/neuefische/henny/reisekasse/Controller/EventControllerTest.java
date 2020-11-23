@@ -1,10 +1,10 @@
-package de.neuefische.henny.reisekasse.Controller;
+package de.neuefische.henny.reisekasse.controller;
 
-import de.neuefische.henny.reisekasse.Db.EventDb;
-import de.neuefische.henny.reisekasse.Model.Dto.AddEventDto;
-import de.neuefische.henny.reisekasse.Model.Dto.UserDto;
-import de.neuefische.henny.reisekasse.Model.Event;
-import de.neuefische.henny.reisekasse.Model.Expenditures;
+import de.neuefische.henny.reisekasse.db.EventDb;
+import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
+import de.neuefische.henny.reisekasse.model.dto.UserDto;
+import de.neuefische.henny.reisekasse.model.Event;
+import de.neuefische.henny.reisekasse.model.EventMember;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +41,19 @@ class EventControllerTest {
     @BeforeEach
     public void setupDb(){
         eventDb.deleteAll();
+        eventDb.saveAll(List.of(
+                Event.builder().id("id_1").title("Schwedenreise")
+                        .members(List.of(
+                                new EventMember("Janice", 0.0),
+                                new EventMember("Manu", 0)))
+                        .expenditures(List.of()).build(),
+                Event.builder().id("id_2").title("Norwegen 2020")
+                        .members(List.of(
+                                new EventMember("Julius", 0.0),
+                                new EventMember("Henny", 0),
+                                new EventMember("Manu", 0)))
+                        .expenditures(List.of()).build()
+        ));
     }
 
     private String getEventUrl() {
@@ -48,7 +61,7 @@ class EventControllerTest {
     }
 
     @Test
-    void testPostEventShouldSaveAndReturnTheEvent() {
+    void testPostMapping() {
         // Given
         AddEventDto eventToBeAdded = AddEventDto.builder()
                 .title("Norwegen 2020")
@@ -60,9 +73,9 @@ class EventControllerTest {
         Event expectedEvent = Event.builder()
                 .id("id")
                 .title("Norwegen 2020")
-                .members(List.of(new UserDto("Julius"),
-                        new UserDto("Henny")))
-                .expenditures(new ArrayList<Expenditures>())
+                .members(List.of(new EventMember("Julius", 0.0),
+                        new EventMember("Henny", 0.0)))
+                .expenditures(new ArrayList<>())
                 .build();
 
         // When
@@ -71,6 +84,30 @@ class EventControllerTest {
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(expectedEvent));
+    }
+
+    @Test
+    void testGetMapping(){
+        // Given
+        List<Event> eventList = List.of(
+                Event.builder().id("id_1").title("Schwedenreise")
+                        .members(List.of(
+                                new EventMember("Janice", 0.0),
+                                new EventMember("Manu", 0)))
+                        .expenditures(List.of()).build(),
+                Event.builder().id("id_2").title("Norwegen 2020")
+                        .members(List.of(
+                                new EventMember("Julius", 0.0),
+                                new EventMember("Henny", 0),
+                                new EventMember("Manu", 0)))
+                        .expenditures(List.of()).build());
+
+        // When
+        ResponseEntity<Event[]> response = restTemplate.getForEntity(getEventUrl(), Event[].class);
+
+        // Then
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(eventList.toArray()));
 
     }
 }

@@ -2,15 +2,15 @@ import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
   :root {
-   --primary-main: #193251;
-   --primary-75: #7589A2;
-   --primary-50: #E0E4E8;
-   --primary-25: #F8F8F8;
-
-   --secundary-main: #FF5A36;
-   --secundary-75: #FF9C86;
-   --secundary-50: #FFBDAF;
-   --secundary-25: #FFDED7;
+   --primary: #3F51B5;
+   --primary-dark: #303F6F;
+   --primary-light: #E0E4E8;
+   
+   --text-icons: #FFFFFF;
+   --accent-color: #448AFF;
+   --primary-text: #212121;
+   --secundary-text: #757575;
+   --divider-color: #BDBDBD;
   
    --size-xs: 4px;
    --size-s: 8px;
@@ -18,7 +18,6 @@ export default createGlobalStyle`
    --size-l: 16px;
    --size-xl: 24px;
    --size-xxl: 32px;
-   
    
     }
 

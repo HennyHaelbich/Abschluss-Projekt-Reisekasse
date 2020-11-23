@@ -1,14 +1,16 @@
-package de.neuefische.henny.reisekasse.Service;
+package de.neuefische.henny.reisekasse.service;
 
-import de.neuefische.henny.reisekasse.Db.EventDb;
-import de.neuefische.henny.reisekasse.Model.Dto.AddEventDto;
-import de.neuefische.henny.reisekasse.Model.Event;
-import de.neuefische.henny.reisekasse.Model.Expenditures;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
+import de.neuefische.henny.reisekasse.db.EventDb;
+import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
+import de.neuefische.henny.reisekasse.model.Event;
+import de.neuefische.henny.reisekasse.model.EventMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -22,13 +24,22 @@ public class EventService {
     }
 
     public Event addEvent(AddEventDto addEventDto){
+
+        List<EventMember> eventMembers = addEventDto.getMembers().stream()
+                .map(member -> new EventMember(member.getUsername(), 0.0))
+                .collect(Collectors.toList());
+
         Event newEvent = Event.builder()
                 .id(idUtils.generateId())
                 .title(addEventDto.getTitle())
-                .members(addEventDto.getMembers())
-                .expenditures(new ArrayList<Expenditures>())
+                .members(eventMembers)
+                .expenditures(new ArrayList<>())
                 .build();
 
         return eventDb.save(newEvent);
+    }
+
+    public List<Event> listEvents(){
+        return eventDb.findAll();
     }
 }

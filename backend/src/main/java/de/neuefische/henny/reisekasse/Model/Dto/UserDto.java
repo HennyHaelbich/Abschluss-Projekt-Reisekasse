@@ -1,4 +1,4 @@
-package de.neuefische.henny.reisekasse.Model.Dto;
+package de.neuefische.henny.reisekasse.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
