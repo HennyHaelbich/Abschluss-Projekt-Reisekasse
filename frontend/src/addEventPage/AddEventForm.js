@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import ListUsers from './ListUsers';
+import React, { useContext, useState } from 'react';
+import MembersList from './MembersList';
 import styled from 'styled-components/macro';
 import EventContext from '../contexts/EventContext';
 import {useHistory} from 'react-router-dom';
@@ -45,7 +45,7 @@ export default function AddEventForm() {
           Gruppenmitglied hinzufügen
         </Button>
 
-        <ListUsers />
+        <MembersList />
 
         <Button
           variant="outlined"
