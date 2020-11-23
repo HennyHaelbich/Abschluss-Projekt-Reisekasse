@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 import ListUsers from './ListUsers';
 import styled from 'styled-components/macro';
 import EventContext from '../contexts/EventContext';
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Header from '../commons/Header';
@@ -17,16 +17,16 @@ export default function AddEventForm() {
 
   return (
     <>
-      <Header title={'Event anlegen'} />
+      <Header title={'Reise hinzufügen'}/>
       <FormStyled>
         <TextField
-          label="Event Name"
+          label="Name der Reise"
           name="title"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           variant="outlined"
         />
-
+    
         <TextField
           error={error.status}
           label="Teilnehmer"
@@ -46,13 +46,13 @@ export default function AddEventForm() {
         </Button>
 
         <ListUsers />
-
+    
         <Button
           variant="outlined"
           disabled={members.length === 0 || title.length === 0}
           onClick={saveEvent}
         >
-          Event speichern
+          Reise speichern
         </Button>
       </FormStyled>
     </>
