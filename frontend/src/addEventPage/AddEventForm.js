@@ -17,7 +17,7 @@ export default function AddEventForm() {
 
   return (
     <>
-      <Header title={'Reise hinzufügen'}/>
+      <Header title={'Reise hinzufügen'} />
       <FormStyled>
         <TextField
           label="Name der Reise"
@@ -26,7 +26,7 @@ export default function AddEventForm() {
           onChange={(event) => setTitle(event.target.value)}
           variant="outlined"
         />
-    
+
         <TextField
           error={error.status}
           label="Teilnehmer"
@@ -46,7 +46,7 @@ export default function AddEventForm() {
         </Button>
 
         <ListUsers />
-    
+
         <Button
           variant="outlined"
           disabled={members.length === 0 || title.length === 0}
