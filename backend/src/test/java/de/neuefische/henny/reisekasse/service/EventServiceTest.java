@@ -93,7 +93,7 @@ class EventServiceTest {
                 new EventMember("Manu", 10.0),
                 new EventMember("Henny", -10.0));
         // When
-        List<EventMember> result = eventService.setNewSaldo(givenMemberList, payer, amount);
+        List<EventMember> result = eventService.setNewBalance(givenMemberList, payer, amount);
         // Then
         assertThat(result, is(expectedMemberList));
     }
@@ -115,7 +115,7 @@ class EventServiceTest {
                 .build();
 
         AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
-                .eventId(eventId)
+                .description("Bahnfahrkarten")
                 .members(List.of(new EventMember("Janice", 0.0),
                         new EventMember("Manu", 0.0),
                         new EventMember("Henny", 0.0)))
@@ -125,6 +125,7 @@ class EventServiceTest {
 
         Expenditure newExpenditure = Expenditure.builder()
                 .id(expenditureId)
+                .description("Bahnfahrkarten")
                 .members(List.of(new UserDto("Janice"), new UserDto("Manu"), new UserDto("Henny")))
                 .payer(new UserDto("Manu"))
                 .amount(15.0)
@@ -148,7 +149,7 @@ class EventServiceTest {
         when(mockEventDb.save(eventExpected)).thenReturn(eventExpected);
 
         // When
-        Event result = eventService.addExpenditure(expenditureToBeAdded);
+        Event result = eventService.addExpenditure(eventId, expenditureToBeAdded);
 
         // Then
         assertThat(result, is(eventExpected));

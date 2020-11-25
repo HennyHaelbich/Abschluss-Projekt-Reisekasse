@@ -51,7 +51,7 @@ public class EventService {
         return eventDb.findAll();
     }
 
-    public Event addExpenditure(AddExpenditureDto addExpenditureDto) {
+    public Event addExpenditure(String eventId, AddExpenditureDto addExpenditureDto) {
 
         List<UserDto> memberDtos = addExpenditureDto.getMembers().stream()
                 .map(member -> new UserDto(member.getUsername()))
@@ -59,16 +59,17 @@ public class EventService {
 
         Expenditure newExpenditure = Expenditure.builder()
                 .id(idUtils.generateId())
+                .description(addExpenditureDto.getDescription())
                 .timestamp(timestampUtils.generateTimestampEpochSeconds())
                 .members(memberDtos)
                 .payer(addExpenditureDto.getPayer())
                 .amount(addExpenditureDto.getAmount())
                 .build();
 
-        Event event = getEventById(addExpenditureDto.getEventId());
+        Event event = getEventById(eventId);
         event.getExpenditures().add(newExpenditure);
 
-        List<EventMember> updatedEventMembers = setNewSaldo(addExpenditureDto.getMembers(), addExpenditureDto.getPayer(), addExpenditureDto.getAmount());
+        List<EventMember> updatedEventMembers = setNewBalance(addExpenditureDto.getMembers(), addExpenditureDto.getPayer(), addExpenditureDto.getAmount());
         event.setMembers(updatedEventMembers);
 
         return eventDb.save(event);
@@ -79,7 +80,7 @@ public class EventService {
         return eventDb.findById(eventId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public List<EventMember> setNewSaldo(List<EventMember> eventMembers, UserDto payer, double amount) {
+    public List<EventMember> setNewBalance(List<EventMember> eventMembers, UserDto payer, double amount) {
         double amountPerPerson = amount / eventMembers.size();
 
         for (EventMember eventMember : eventMembers) {

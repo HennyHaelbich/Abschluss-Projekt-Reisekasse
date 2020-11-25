@@ -15,6 +15,7 @@ import java.util.List;
 @Builder
 @Document(collection = "event")
 public class Event {
+
     @Id
     private String id;
     private String title;

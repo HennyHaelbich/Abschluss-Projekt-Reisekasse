@@ -127,7 +127,7 @@ class EventControllerTest {
         Instant expectedTime = Instant.parse("2020-11-22T18:00:00Z");
 
         AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
-                .eventId(eventId)
+                .description("Bahnfahrkarten")
                 .members(List.of(new EventMember("Janice", 0.0),
                         new EventMember("Manu", 0.0),
                         new EventMember("Henny", 0.0)))
@@ -137,6 +137,7 @@ class EventControllerTest {
 
         Expenditure newExpenditure = Expenditure.builder()
                 .id(expenditureId)
+                .description("Bahnfahrkarten")
                 .members(List.of(new UserDto("Janice"), new UserDto("Manu"), new UserDto("Henny")))
                 .payer(new UserDto("Manu"))
                 .amount(15.0)

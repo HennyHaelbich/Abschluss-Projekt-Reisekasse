@@ -13,7 +13,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @Document(collection = "user")
 public class User {
+
     @Id
     private String username;
     private String password;
+
 }

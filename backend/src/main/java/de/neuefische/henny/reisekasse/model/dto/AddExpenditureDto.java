@@ -13,7 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class AddExpenditureDto {
-    private String eventId;
+
+    private String description;
     private List<EventMember> members;
     private UserDto payer;
     private double amount;
