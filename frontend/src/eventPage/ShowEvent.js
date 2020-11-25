@@ -11,7 +11,7 @@ export default function ShowEvent() {
 
   return (
     <>
-      <Header title={event.title} />
+      <Header title={event?.title} />
       <TabPanel />
     </>
   );

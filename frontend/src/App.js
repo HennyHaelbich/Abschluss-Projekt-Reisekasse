@@ -12,8 +12,8 @@ function App() {
       <Switch>
         <Route path={'/new'} component={AddEventForm} />
         <Route path={'/events'} component={EventsPage} />
-        <Route path={'/event/:id'} component={ShowEvent} />
-        <Route path={'/event/:id/new-expnd'} component={AddExpenditureForm} />
+        <Route exact path={'/event/:id'} component={ShowEvent} />
+        <Route path={'/event/new-expand/:id'} component={AddExpenditureForm} />
         <Route path="/">
           <Redirect to="/new" />
         </Route>

@@ -9,12 +9,20 @@ export default function EventContextProvider({ children }) {
 
   useEffect(() => {
     axios
-      .get('api/events')
+      .get('/api/events')
       .then((response) => response.data)
       .then(setEvents)
       .catch(console.log);
   }, []);
-
+  
+  const updateEvent = (description, members, payer, amount, id) => {
+    axios
+      .post('/api/events/' + id, {description, members, payer, amount})
+      .then((response) => response.data)
+      .then((updateEvent) => setEvents(events.map((event)=> event.id === id ? updateEvent : event)))
+      .catch(console.log);
+  }
+  
   const createEvent = (title, members) =>
     axios
       .post('/api/events', { title, members })
@@ -40,6 +48,7 @@ export default function EventContextProvider({ children }) {
         error,
         setError,
         events,
+        updateEvent
       }}
     >
       {children}
