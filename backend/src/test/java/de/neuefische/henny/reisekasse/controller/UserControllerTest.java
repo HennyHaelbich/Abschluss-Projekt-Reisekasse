@@ -2,7 +2,7 @@ package de.neuefische.henny.reisekasse.controller;
 
 import de.neuefische.henny.reisekasse.db.UserDb;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
-import de.neuefische.henny.reisekasse.model.User;
+import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,9 +36,9 @@ class UserControllerTest {
     public void setupDb(){
         userDb.deleteAll();
         userDb.saveAll(List.of(
-                User.builder().username("Malte").build(),
-                User.builder().username("Sven").build(),
-                User.builder().username("Dennis").build()
+                TravelFoundUser.builder().username("Malte").build(),
+                TravelFoundUser.builder().username("Sven").build(),
+                TravelFoundUser.builder().username("Dennis").build()
         ));
     }
 

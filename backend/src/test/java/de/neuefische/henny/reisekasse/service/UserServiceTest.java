@@ -1,7 +1,7 @@
 package de.neuefische.henny.reisekasse.service;
 
 import de.neuefische.henny.reisekasse.db.UserDb;
-import de.neuefische.henny.reisekasse.model.User;
+import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -18,12 +18,12 @@ class UserServiceTest {
     void findUserByIdTestWithExistingUserIdShouldGiveBackOptionOfUser(){
         // Given
         String userId = "Sven";
-        User expectedUser = User.builder().username(userId).password("SvensPassword").build();
-        Optional<User> optionalExpectedUser = Optional.of(expectedUser);
+        TravelFoundUser expectedUser = TravelFoundUser.builder().username(userId).password("SvensPassword").build();
+        Optional<TravelFoundUser> optionalExpectedUser = Optional.of(expectedUser);
         when(userDb.findById(userId)).thenReturn(optionalExpectedUser);
 
         // When
-        Optional<User> resultUser = userService.getUserById(userId);
+        Optional<TravelFoundUser> resultUser = userService.getUserById(userId);
 
         // Then
         assertThat(resultUser, is(optionalExpectedUser));
@@ -36,7 +36,7 @@ class UserServiceTest {
         when(userDb.findById("NotExistingUserId")).thenReturn(Optional.empty());
 
         // When
-        Optional<User> resultUser = userService.getUserById(userId);
+        Optional<TravelFoundUser> resultUser = userService.getUserById(userId);
 
         // Then
         assertThat(resultUser, is(Optional.empty()));
