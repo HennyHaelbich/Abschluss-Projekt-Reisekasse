@@ -19,7 +19,7 @@ public class Expenditures {
     @Id
     private String id;
     private List<UserDto> members;
-    private de.neuefische.henny.reisekasse.model.User payer;
+    private TravelFoundUser payer;
     private Double amount;
 
 }
