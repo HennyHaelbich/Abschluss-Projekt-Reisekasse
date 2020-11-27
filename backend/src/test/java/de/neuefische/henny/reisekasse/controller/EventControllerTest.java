@@ -73,7 +73,7 @@ class EventControllerTest {
 
         userDb.deleteAll();
         String password = new BCryptPasswordEncoder().encode("superPassword123");
-        userDb.save(new TravelFoundUser("henny", password));
+        userDb.save(TravelFoundUser.builder().username("henny").password(password).build());;
     }
 
     private String getEventUrl() {

@@ -22,13 +22,16 @@ public class UserService {
         return userDb.findById(username);
     }
 
-    public TravelFoundUser signUp(AddTravelFundUserDto addTravelFundUserDto) {
+    public TravelFoundUser registerNewUser(AddTravelFundUserDto addTravelFundUserDto) {
+        String passwordBCrypt = new BCryptPasswordEncoder().encode(addTravelFundUserDto.getPassword());
+
         TravelFoundUser newUser = TravelFoundUser.builder()
                 .username(addTravelFundUserDto.getUsername())
-                .password(new BCryptPasswordEncoder().encode(addTravelFundUserDto.getPassword()))
+                .password(passwordBCrypt)
                 .firstName(addTravelFundUserDto.getFirstName())
                 .lastName(addTravelFundUserDto.getLastName())
                 .build();
+
         return userDb.save(newUser);
     }
 

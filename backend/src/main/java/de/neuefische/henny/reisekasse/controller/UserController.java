@@ -40,7 +40,7 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user already exists");
         }
 
-        TravelFoundUser newUser = userService.signUp(addTravelFoundUserDto);
+        TravelFoundUser newUser = userService.registerNewUser(addTravelFoundUserDto);
         return newUser.getFirstName();
     }
 
