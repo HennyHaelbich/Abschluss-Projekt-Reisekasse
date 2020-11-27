@@ -1,15 +1,13 @@
 package de.neuefische.henny.reisekasse.controller;
 
+import de.neuefische.henny.reisekasse.model.dto.AddTravelFundUserDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 import de.neuefische.henny.reisekasse.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -31,6 +29,19 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new UserDto(optionalUser.get().getUsername());
+    }
+
+    @PostMapping
+    public String signUp(@RequestBody AddTravelFundUserDto addTravelFoundUserDto){
+        if(!userService.passwordIsValid(addTravelFoundUserDto.getPassword())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password not valid");
+        }
+        if(userService.getUserById(addTravelFoundUserDto.getUsername()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user already exists");
+        }
+
+        TravelFoundUser newUser = userService.signUp(addTravelFoundUserDto);
+        return newUser.getFirstName();
     }
 
 }
