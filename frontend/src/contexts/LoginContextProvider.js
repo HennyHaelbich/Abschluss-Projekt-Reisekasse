@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react'
 import LoginContext from "./LoginContext";
+import React, {useEffect, useState} from 'react'
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 import {
   loadTokenFromLocalStorage,
   loadUserDataFromLocalStorage,
   saveTokenToLocalStorage,
   saveUserDataToLocalStorage,
 } from '../service/LocalStorage';
-import axios from 'axios';
 
 
 export default function LoginContextProvider({children}) {
@@ -29,11 +30,11 @@ export default function LoginContextProvider({children}) {
     }, [token])
   
   const tokenIsValid = () =>
-    token && userData?.exp > new Data().getTime() / 1000;
+    token && userData?.exp > new Date().getTime() / 1000;
   
   const loginWithUserCredentials = (loginData) =>
     axios
-      .post('auth/login', loginData)
+      .post('/auth/login', loginData)
       .then((response) => setToken(response.data));
   
   return(
