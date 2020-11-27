@@ -5,9 +5,11 @@ import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
-import static org.mockito.Mockito.*;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class UserServiceTest {
     final UserDb userDb = mock(UserDb.class);
@@ -15,7 +17,7 @@ class UserServiceTest {
 
 
     @Test
-    void findUserByIdTestWithExistingUserIdShouldGiveBackOptionOfUser(){
+    void findUserByIdTestWithExistingUserIdShouldGiveBackOptionOfUser() {
         // Given
         String userId = "Sven";
         TravelFoundUser expectedUser = TravelFoundUser.builder().username(userId).password("SvensPassword").build();
@@ -30,7 +32,7 @@ class UserServiceTest {
     }
 
     @Test
-    void findUserByIdTestWithNotExistingUserIdShouldGiveBackEmptyOption(){
+    void findUserByIdTestWithNotExistingUserIdShouldGiveBackEmptyOption() {
         // Given
         String userId = "NotExistingUserId";
         when(userDb.findById("NotExistingUserId")).thenReturn(Optional.empty());

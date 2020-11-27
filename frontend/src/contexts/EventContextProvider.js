@@ -17,11 +17,19 @@ export default function EventContextProvider({ children }) {
 
   useEffect(() => {
     tokenIsValid() && axios
-      .get('api/events', header(token))
+      .get('/api/events', header(token))
       .then((response) => response.data)
       .then(setEvents)
       .catch(console.log);
   }, [token, tokenIsValid]);
+  
+  const updateEvent = (description, members, payer, amount, id) => {
+    axios
+      .post('/api/events/' + id, {description, members, payer, amount})
+      .then((response) => response.data)
+      .then((updateEvent) => setEvents(events.map((event)=> event.id === id ? updateEvent : event)))
+      .catch(console.log);
+  }
 
   const createEvent = (title, members) =>
     axios
@@ -48,6 +56,7 @@ export default function EventContextProvider({ children }) {
         error,
         setError,
         events,
+        updateEvent
       }}
     >
       {children}

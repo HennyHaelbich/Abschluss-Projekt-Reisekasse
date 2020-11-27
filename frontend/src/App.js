@@ -7,6 +7,7 @@ import EventsPage from './eventsListPage/EventsPage';
 import LoginPage from "./loginPage/LoginPage";
 import LoginContextProvider from "./contexts/LoginContextProvider";
 import ProtectedRoute from "./routing/ProtectedRoute";
+import AddExpenditureForm from './addExpenditurePage/AddExpenditureForm';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <ProtectedRoute path={'/new'} component={AddEventForm} />
           <ProtectedRoute path={'/events'} component={EventsPage} />
           <ProtectedRoute path={'/event/:id'} component={ShowEvent} />
+          <ProtectedRoute path={'/event/new-expand/:id'} component={AddExpenditureForm} />
           <Route path="/">
             <Redirect to="/events" />
           </Route>

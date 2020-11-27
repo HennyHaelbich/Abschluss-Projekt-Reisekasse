@@ -1,7 +1,8 @@
 package de.neuefische.henny.reisekasse.controller;
 
-import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
 import de.neuefische.henny.reisekasse.model.Event;
+import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
+import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,17 @@ public class EventController {
     }
 
     @PostMapping
-    public Event addEvent(@RequestBody AddEventDto addEventDto){
+    public Event addEvent(@RequestBody AddEventDto addEventDto) {
         return eventService.addEvent(addEventDto);
     }
 
     @GetMapping
-    public List<Event> getEvents(){
+    public List<Event> getEvents() {
         return eventService.listEvents();
+    }
+
+    @PostMapping("{eventId}")
+    public Event addExpenditure(@PathVariable String eventId, @RequestBody AddExpenditureDto addExpenditureDto) {
+        return eventService.addExpenditure(eventId, addExpenditureDto);
     }
 }

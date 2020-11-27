@@ -1,6 +1,6 @@
 package de.neuefische.henny.reisekasse.model.dto;
 
-import de.neuefische.henny.reisekasse.model.Expenditure;
+import de.neuefische.henny.reisekasse.model.EventMember;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,8 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddEventDto {
-    private String title;
-    private List<UserDto> members;
-    private List<Expenditure> expenditures;
+public class AddExpenditureDto {
+
+    private String description;
+    private List<EventMember> members;
+    private UserDto payer;
+    private double amount;
+
 }

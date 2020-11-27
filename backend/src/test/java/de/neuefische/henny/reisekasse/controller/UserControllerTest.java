@@ -1,27 +1,22 @@
 package de.neuefische.henny.reisekasse.controller;
 
 import de.neuefische.henny.reisekasse.db.UserDb;
-import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
+import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 import de.neuefische.henny.reisekasse.model.dto.LoginDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
-import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-
-
-import java.util.List;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -38,7 +33,7 @@ class UserControllerTest {
     private UserDb userDb;
 
     @BeforeEach
-    public void setupDb(){
+    public void setupDb() {
         userDb.deleteAll();
 
         String password_1 = new BCryptPasswordEncoder().encode("superPassword123");
@@ -73,9 +68,8 @@ class UserControllerTest {
         String username = "Janice";
 
         // When
-        HttpEntity<AddEventDto> entity = getValidAuthorizationEntity(null);
+        HttpEntity<Void> entity = getValidAuthorizationEntity(null);
         ResponseEntity<UserDto> response = restTemplate.exchange(getUserUrl() + "/" + username, HttpMethod.GET, entity, UserDto.class);
-
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(new UserDto(username)));
@@ -87,10 +81,10 @@ class UserControllerTest {
         String username = "UnknownUserName";
 
         // When
-        HttpEntity<AddEventDto> entity = getValidAuthorizationEntity(null);
+        HttpEntity<Void> entity = getValidAuthorizationEntity(null);
         ResponseEntity<UserDto> response = restTemplate.exchange(getUserUrl() + "/" + username, HttpMethod.GET, entity, UserDto.class);
 
         // Then
-        assertThat(response.getStatusCode(),is(HttpStatus.NOT_FOUND));
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
 }

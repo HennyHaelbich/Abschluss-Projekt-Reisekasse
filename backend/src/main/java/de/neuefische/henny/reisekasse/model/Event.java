@@ -15,10 +15,11 @@ import java.util.List;
 @Builder
 @Document(collection = "event")
 public class Event {
+
     @Id
     private String id;
     private String title;
     private List<EventMember> members;
-    private List<Expenditures> expenditures;
+    private List<Expenditure> expenditures;
 
 }

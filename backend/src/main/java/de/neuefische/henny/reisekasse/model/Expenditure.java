@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -15,11 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Document(collection = "expenditures")
-public class Expenditures {
+public class Expenditure {
     @Id
     private String id;
+    private String description;
     private List<UserDto> members;
-    private TravelFoundUser payer;
+    private UserDto payer;
     private Double amount;
-
+    private Instant timestamp;
 }

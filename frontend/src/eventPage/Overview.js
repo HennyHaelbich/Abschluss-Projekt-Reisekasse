@@ -7,13 +7,16 @@ export default function Overview() {
   const { events } = useContext(EventContext);
   const { id } = useParams();
   const event = events.find((event) => event.id === id);
+  console.log("String", event)
 
-  return event.members.map((member) => (
-    <ListStyled key={member.id}>
+  return (
+  event ? event.members.map((member) => (
+    <ListStyled key={member.username}>
       <p>{member.username}</p>
       <p>{member.balance.toFixed(2)} €</p>
     </ListStyled>
-  ));
+  )) : null
+  );
 }
 
 const ListStyled = styled.ul`
