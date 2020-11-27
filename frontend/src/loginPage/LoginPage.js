@@ -15,14 +15,14 @@ const setupCredentials = {
 };
 
 const setupError = {
-  status: true,
+  status: false,
   message: ''
 }
 
 export default function LoginPage() {
   const { loginWithUserCredentials } = useContext(LoginContext);
   const [credentials, setCredentials] = useState(setupCredentials);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(setupError);
   const history = useHistory();
   
   return(
