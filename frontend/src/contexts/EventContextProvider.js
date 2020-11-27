@@ -25,7 +25,7 @@ export default function EventContextProvider({ children }) {
   
   const updateEvent = (description, members, payer, amount, id) => {
     axios
-      .post('/api/events/' + id, {description, members, payer, amount})
+      .post('/api/events/' + id, {description, members, payer, amount}, header(token))
       .then((response) => response.data)
       .then((updateEvent) => setEvents(events.map((event)=> event.id === id ? updateEvent : event)))
       .catch(console.log);

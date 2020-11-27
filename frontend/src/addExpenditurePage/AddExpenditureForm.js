@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -74,7 +74,6 @@ export default function AddExpenditureForm() {
   function saveExpenditure(event) {
     event.preventDefault();
     const amount = parseFloat(amountString)
-    console.log("amount", amount)
     updateEvent(description, members, payer, amount, id)
     history.push(`/event/${id}`)
   }
