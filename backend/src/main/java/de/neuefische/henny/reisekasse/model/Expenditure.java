@@ -21,7 +21,7 @@ public class Expenditure {
     private String id;
     private String description;
     private List<UserDto> members;
-    private TravelFoundUser payer;
+    private UserDto payer;
     private Double amount;
     private Instant timestamp;
 }

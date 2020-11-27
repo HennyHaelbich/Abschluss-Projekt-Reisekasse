@@ -140,7 +140,7 @@ class EventControllerTest {
                         .expenditures(List.of()).build());
 
         // When
-        HttpEntity<AddEventDto> entity = getValidAuthorizationEntity(null);
+        HttpEntity<Void> entity = getValidAuthorizationEntity(null);
         ResponseEntity<Event[]> response = restTemplate.exchange(getEventUrl(), HttpMethod.GET, entity, Event[].class);
 
         // Then
@@ -149,7 +149,7 @@ class EventControllerTest {
     }
 
     @Test
-    void testSetNewSaldo(){
+    void testPostMappingAddNewExpenditure(){
         // Given
         String eventId = "id_1";
         String expenditureId = "expenditure_id";
@@ -188,7 +188,8 @@ class EventControllerTest {
         when(mockedtimestampUtils.generateTimestampEpochSeconds()).thenReturn(expectedTime);
 
         // When
-        ResponseEntity<Event> response = restTemplate.postForEntity(getEventUrl() + "/" +  eventId, expenditureToBeAdded, Event.class);
+        HttpEntity<AddExpenditureDto> entity = getValidAuthorizationEntity(expenditureToBeAdded);
+        ResponseEntity<Event> response = restTemplate.exchange(getEventUrl() + "/" +  eventId, HttpMethod.POST, entity, Event.class);
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
