@@ -4,8 +4,11 @@ import de.neuefische.henny.reisekasse.db.EventDb;
 import de.neuefische.henny.reisekasse.model.Event;
 import de.neuefische.henny.reisekasse.model.EventMember;
 import de.neuefische.henny.reisekasse.model.Expenditure;
+import de.neuefische.henny.reisekasse.db.UserDb;
+import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
+import de.neuefische.henny.reisekasse.model.dto.LoginDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
@@ -16,8 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(properties = "jwt.secretkey=secretkey")
 class EventControllerTest {
 
     @LocalServerPort
@@ -44,6 +49,9 @@ class EventControllerTest {
 
     @Autowired
     private EventDb eventDb;
+
+    @Autowired
+    private UserDb userDb;
 
     @BeforeEach
     public void setupDb() {
@@ -62,10 +70,29 @@ class EventControllerTest {
                                 new EventMember("Manu", 0.0)))
                         .expenditures(List.of()).build()
         ));
+
+        userDb.deleteAll();
+        String password = new BCryptPasswordEncoder().encode("superPassword123");
+        userDb.save(new TravelFoundUser("henny", password));
     }
 
     private String getEventUrl() {
         return "http://localhost:" + port + "/api/events";
+    }
+
+    private String login() {
+        ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:" + port + "auth/login",
+                new LoginDto( "henny", "superPassword123"), String.class);
+
+        return response.getBody();
+    }
+
+    private <T> HttpEntity<T> getValidAuthorizationEntity(T data) {
+        String token = login();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        return new HttpEntity<>(data, headers);
     }
 
     @Test
@@ -87,7 +114,8 @@ class EventControllerTest {
                 .build();
 
         // When
-        ResponseEntity<Event> response = restTemplate.postForEntity(getEventUrl(), eventToBeAdded, Event.class);
+        HttpEntity<AddEventDto> entity = getValidAuthorizationEntity(eventToBeAdded);
+        ResponseEntity<Event> response = restTemplate.exchange(getEventUrl(), HttpMethod.POST, entity, Event.class);
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -112,7 +140,8 @@ class EventControllerTest {
                         .expenditures(List.of()).build());
 
         // When
-        ResponseEntity<Event[]> response = restTemplate.getForEntity(getEventUrl(), Event[].class);
+        HttpEntity<AddEventDto> entity = getValidAuthorizationEntity(null);
+        ResponseEntity<Event[]> response = restTemplate.exchange(getEventUrl(), HttpMethod.GET, entity, Event[].class);
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

@@ -1,7 +1,7 @@
 package de.neuefische.henny.reisekasse.controller;
 
-import de.neuefische.henny.reisekasse.model.User;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
+import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 import de.neuefische.henny.reisekasse.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +26,8 @@ public class UserController {
 
     @GetMapping("{username}")
     public UserDto getUserById(@PathVariable @NonNull String username) {
-        Optional<User> optionalUser = userService.getUserById(username);
-        if (optionalUser.isEmpty()) {
+        Optional<TravelFoundUser> optionalUser = userService.getUserById(username);
+        if(optionalUser.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new UserDto(optionalUser.get().getUsername());

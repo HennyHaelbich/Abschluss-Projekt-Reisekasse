@@ -1,7 +1,7 @@
 package de.neuefische.henny.reisekasse.service;
 
+import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 import de.neuefische.henny.reisekasse.db.UserDb;
-import de.neuefische.henny.reisekasse.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class UserService {
         this.userDb = userDb;
     }
 
-    public Optional<User> getUserById(String username) {
+    public Optional<TravelFoundUser> getUserById(String username) {
         return userDb.findById(username);
     }
 

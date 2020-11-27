@@ -1,0 +1,10 @@
+import React, { useContext } from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import UserContext from '../contexts/LoginContext';
+
+export default function ProtectedRoute(props) {
+  
+  const { tokenIsValid } = useContext(UserContext);
+  return tokenIsValid() ? <Route {...props} /> : <Redirect to="/login" />;
+  
+}

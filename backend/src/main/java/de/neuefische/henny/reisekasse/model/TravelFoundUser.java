@@ -12,10 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Builder
 @Document(collection = "user")
-public class User {
-
+public class TravelFoundUser {
     @Id
     private String username;
     private String password;
-
 }
