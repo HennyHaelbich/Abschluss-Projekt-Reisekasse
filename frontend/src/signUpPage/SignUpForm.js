@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { useHistory } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 import Header from "../commons/Header";
 import { signUp } from "../service/SignUpService";
 import styled from "styled-components/macro";
@@ -14,16 +14,11 @@ const setupSignInData = {
   lastName: '',
 }
 
-const setupError = {
-  status: false,
-  message: ''
-}
-
 export default function SignUpForm() {
-  const history = useHistory;
   const [signUpData, setSignUpData] = useState(setupSignInData);
-  const [errorUser, setErrorUser] = useState(setupError)
-  const [errorPassword, setErrorPassword] = useState(setupError)
+  const [errorUser, setErrorUser] = useState('')
+  const [errorPassword, setErrorPassword] = useState('')
+  const history = useHistory();
   
   return(
     <>
@@ -33,9 +28,9 @@ export default function SignUpForm() {
         <TextField
           label="Mailadresse"
           name="username"
-          type="text"
-          error={errorUser.status}
-          helperText={errorUser.message}
+          type="email"
+          error={!!errorUser}
+          helperText={errorUser}
           value={signUpData.username}
           onChange={handleChange}
           variant="outlined"
@@ -45,6 +40,7 @@ export default function SignUpForm() {
           label="Passwort"
           name="password"
           type="password"
+          helperText='das Passwort muss mindestens 8 Zeichen lang sein und Großbuchstaben, Kleinbuchstaben und Zahlen enthalten'
           value={signUpData.password}
           onChange={handleChange}
           variant="outlined"
@@ -54,8 +50,8 @@ export default function SignUpForm() {
           label="Passwort wiederholen"
           name="password_rep"
           type="password"
-          error={errorPassword.status}
-          helperText={errorPassword.message}
+          error={!!errorPassword}
+          helperText={errorPassword}
           value={signUpData.password_rep}
           onChange={handleChange}
           variant="outlined"
@@ -81,9 +77,10 @@ export default function SignUpForm() {
   
         <Button
           variant="outlined"
-          disabled={!signUpData.username || !signUpData.password || !signUpData.password_rep || !signUpData.firstName || !signUpData.lastName}
+          disabled={ !signUpData.username || !signUpData.password || !signUpData.password_rep || !signUpData.firstName ||
+            !signUpData.lastName }
           onClick={handleSubmit}>
-          Login
+          Registrieren
         </Button>
 
       </FormStyled>
@@ -95,26 +92,35 @@ export default function SignUpForm() {
   }
   
   function handleSubmit(event) {
+    
     event.preventDefault();
-    checkIfPasswordsMatch()
-    validatePasswort()
-    if (errorPassword.status === false){
+    (console.log("Passwortfehler:", errorPassword))
+  
+    if (doPasswordsMatch() && isPasswordValid()){
       signUp(signUpData)
-        .then((data) => console.log(data))
-        .then(() => history.push('/login'))
-        .catch(() => {
-          setErrorUser({ status: true, message: 'Diese Mailadresse existiert bereits' })
+        .then(() => history.push("/login"))
+        .catch((err) => {
+          console.log(err.response.data.message);
+          if (err.response.data.message === 'user already exists') {
+            setErrorUser( 'Diese Mailadresse existiert bereits')
+          } else {
+            console.log('Fehler in der Registrierung: ', err.response)
+          }
         })
     }
   }
   
-  function checkIfPasswordsMatch() {
+  function doPasswordsMatch() {
     if(signUpData.password !== signUpData.password_rep){
-      setErrorPassword({ status: true, message: 'Passwort und Passwortwiederholung stimmen nicht überein' });
+      setErrorPassword('Passwort und Passwortwiederholung stimmen nicht überein');
+      return false;
+    } else {
+      setErrorPassword('')
+      return true;
     }
   }
   
-  function validatePasswort() {
+  function isPasswordValid() {
     // password is long enough
     if (signUpData.password.length < 8 ||
       // password contains numbers
@@ -124,9 +130,12 @@ export default function SignUpForm() {
       // password contains upper case letters
       !/[A-Z]/.test(signUpData.password)
     ) {
-      setErrorPassword({ status: true, message: 'das Passwort muss mindestens 8 Zeichen lang sein und Großbuchstaben, ' +
-          'Kleinbuchstaben und Zahlen enthalten' })
+      setErrorPassword('das Passwort muss mindestens 8 Zeichen lang sein und Großbuchstaben, Kleinbuchstaben ' +
+          'und Zahlen enthalten')
+      return false;
+      
     }
+    return true;
   }
   
 }
