@@ -69,7 +69,9 @@ public class EventService {
         Event event = getEventById(eventId);
         event.getExpenditures().add(newExpenditure);
 
-        List<EventMember> updatedEventMembers = setNewBalance(addExpenditureDto.getMembers(), addExpenditureDto.getPayer(), addExpenditureDto.getAmount());
+        List<EventMember> updatedEventMembers = setNewBalance(addExpenditureDto.getMembers(),
+                addExpenditureDto.getPayer(), addExpenditureDto.getAmount());
+
         event.setMembers(updatedEventMembers);
 
         return eventDb.save(event);
