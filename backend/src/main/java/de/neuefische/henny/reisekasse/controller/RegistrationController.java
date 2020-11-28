@@ -29,15 +29,7 @@ public class RegistrationController {
         if(userService.getUserById(addTravelFoundUserDto.getUsername()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user already exists");
         }
-
         TravelFoundUser newUser = userService.registerNewUser(addTravelFoundUserDto);
         return newUser.getFirstName();
     }
-
-    /*
-    @PostMapping
-    public AddTravelFundUserDto signUp(@RequestBody AddTravelFundUserDto addTravelFoundUserDto){
-        return addTravelFoundUserDto;
-    }
-     */
 }
