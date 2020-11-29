@@ -4,9 +4,7 @@ import axios from 'axios';
 import LoginContext from "./LoginContext";
 
 export default function EventContextProvider({ children }) {
-  const [members, setMembers] = useState([]);
   const [events, setEvents] = useState([]);
-  const [error, setError] = useState({ status: false, message: '' });
   const { token, tokenIsValid } = useContext(LoginContext);
   
   const header = (token) => ({
@@ -37,24 +35,12 @@ export default function EventContextProvider({ children }) {
       .then((response) => response.data)
       .then((newEvent) => setEvents([...events, newEvent]))
       .catch(console.log);
-
-  const addMember = (member) =>
-    axios
-      .get('/api/users/' + member, header(token))
-      .then((response) => response.data)
-      .then((newMember) => setMembers([...members, newMember]))
-      .catch(() => {
-        setError({ status: true, message: 'Dieser Benutzer existiert nicht' });
-      });
+  
 
   return (
     <EventContext.Provider
       value={{
-        members,
-        addMember,
         createEvent,
-        error,
-        setError,
         events,
         updateEvent
       }}
