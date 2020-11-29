@@ -17,7 +17,8 @@ const setupSignInData = {
 export default function SignUpForm() {
   const [signUpData, setSignUpData] = useState(setupSignInData);
   const [errorUser, setErrorUser] = useState('')
-  const [errorPassword, setErrorPassword] = useState('')
+  const [errorPasswordRepetition, setErrorPasswordRepetition] = useState('')
+  const [errorPasswordValidation, setErrorPasswordValidation] = useState('')
   const history = useHistory();
   
   return(
@@ -32,6 +33,7 @@ export default function SignUpForm() {
           error={!!errorUser}
           helperText={errorUser}
           value={signUpData.username}
+          onClick={() => setErrorUser('')}
           onChange={handleChange}
           variant="outlined"
           />
@@ -40,6 +42,8 @@ export default function SignUpForm() {
           label="Passwort"
           name="password"
           type="password"
+          error={!!errorPasswordValidation}
+          onClick={() => setErrorPasswordValidation('')}
           helperText='das Passwort muss mindestens 8 Zeichen lang sein und Großbuchstaben, Kleinbuchstaben und Zahlen enthalten'
           value={signUpData.password}
           onChange={handleChange}
@@ -50,8 +54,9 @@ export default function SignUpForm() {
           label="Passwort wiederholen"
           name="password_rep"
           type="password"
-          error={!!errorPassword}
-          helperText={errorPassword}
+          error={!!errorPasswordRepetition}
+          helperText={errorPasswordRepetition}
+          onClick={() => setErrorPasswordRepetition('')}
           value={signUpData.password_rep}
           onChange={handleChange}
           variant="outlined"
@@ -92,10 +97,7 @@ export default function SignUpForm() {
   }
   
   function handleSubmit(event) {
-    
     event.preventDefault();
-    (console.log("Passwortfehler:", errorPassword))
-  
     if (doPasswordsMatch() && isPasswordValid()){
       signUp(signUpData)
         .then(() => history.push("/login"))
@@ -112,16 +114,14 @@ export default function SignUpForm() {
   
   function doPasswordsMatch() {
     if(signUpData.password !== signUpData.password_rep){
-      setErrorPassword('Passwort und Passwortwiederholung stimmen nicht überein');
+      setErrorPasswordRepetition('Passwort und Passwortwiederholung stimmen nicht überein');
       return false;
-    } else {
-      setErrorPassword('')
-      return true;
     }
+    return true;
   }
   
   function isPasswordValid() {
-    // password is long enough
+      // password is long enough
     if (signUpData.password.length < 8 ||
       // password contains numbers
       !/\d/.test(signUpData.password) ||
@@ -130,15 +130,14 @@ export default function SignUpForm() {
       // password contains upper case letters
       !/[A-Z]/.test(signUpData.password)
     ) {
-      setErrorPassword('das Passwort muss mindestens 8 Zeichen lang sein und Großbuchstaben, Kleinbuchstaben ' +
+      setErrorPasswordValidation('das Passwort muss mindestens 8 Zeichen lang sein und Großbuchstaben, Kleinbuchstaben ' +
           'und Zahlen enthalten')
       return false;
-      
     }
     return true;
   }
-  
 }
+
 
 const FormStyled = styled.form`
       display: grid;
