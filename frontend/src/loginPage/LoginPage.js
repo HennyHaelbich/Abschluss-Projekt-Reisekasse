@@ -14,15 +14,10 @@ const setupCredentials = {
   password: '',
 };
 
-const setupError = {
-  status: false,
-  message: ''
-}
-
 export default function LoginPage() {
   const { loginWithUserCredentials } = useContext(LoginContext);
   const [credentials, setCredentials] = useState(setupCredentials);
-  const [error, setError] = useState(setupError);
+  const [error, setError] = useState('');
   const history = useHistory();
   
   return(
@@ -34,7 +29,7 @@ export default function LoginPage() {
         label="Mailadresse"
         name="username"
         type="text"
-        error={error.status}
+        error={!!error}
         value={credentials.username}
         onChange={handleChange}
         variant="outlined"
@@ -44,7 +39,7 @@ export default function LoginPage() {
         label="Passwort"
         name="password"
         type="password"
-        error={error.status}
+        error={!!error}
         value={credentials.password}
         onChange={handleChange}
         variant="outlined"
@@ -57,8 +52,18 @@ export default function LoginPage() {
           Login
         </Button>
       
+      <br/>
+      <br/>
+      <br/>
+      <p>noch nicht Registriert? dann bitte hier entlang</p>
   
-        <Snackbar open={error.status} autoHideDuration={3000} onClose={handleClose} >
+      <Button
+        variant="outlined"
+        onClick={() => history.push('/signup')} >
+        Registrierung
+      </Button>
+  
+        <Snackbar open={error} autoHideDuration={3000} onClose={handleClose} >
           <Alert severity="error">
             Mailadresse oder Passwort sind nicht bekannt!
           </Alert>
@@ -76,7 +81,7 @@ export default function LoginPage() {
     event.preventDefault();
     loginWithUserCredentials(credentials)
       .then(() => history.push('/events'))
-      .catch(() => setError({ status: true, message: 'Mailadresse oder Passwort sind nicht bekannt!' }));
+      .catch(() => setError( 'Mailadresse oder Passwort sind nicht bekannt!'));
   }
   
   function handleClose(event, reason) {
@@ -84,7 +89,7 @@ export default function LoginPage() {
       return;
     }
     setCredentials(setupCredentials);
-    setError({ status: false, message: '' });
+    setError('' );
   }
   
 }
