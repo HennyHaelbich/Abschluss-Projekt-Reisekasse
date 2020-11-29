@@ -11,14 +11,14 @@ import MenuItem from "@material-ui/core/MenuItem";
 export default function AddExpenditureForm() {
   const history = useHistory();
   const [description, setDescription] = useState('');
-  const [amountString, setAmountString] = useState('');
+  const [amount, setAmount] = useState('');
   const [payer, setPayer] = useState('');
   const { events, updateEvent } = useContext(EventContext);
   const { id } = useParams();
   const event = events.find((event) => event.id === id);
   const members = event.members;
   
-
+  
   return (
     <>
       <Header title='Ausgabe hinzufügen' />
@@ -35,12 +35,12 @@ export default function AddExpenditureForm() {
           label = "Betrag"
           type = "number"
           placeholder={'0.00'}
-          value = {amountString}
+          value = {amount}
           variant = "outlined"
           InputProps={{
             endAdornment: <InputAdornment position="end">€</InputAdornment>,
           }}
-          onChange = {(event) => setAmountString(event.target.value.replace(',', '.'))}
+          onChange = {(event) => setAmount(event.target.value.replace(',', '.'))}
         />
         
         <TextField
@@ -58,7 +58,7 @@ export default function AddExpenditureForm() {
         
         <Button
           variant="outlined"
-          disabled={description.length === 0 || amountString.length === 0 || payer.length === 0 }
+          disabled={description.length === 0 || amount.length === 0 || payer.length === 0 }
           onClick={saveExpenditure}
         >
           Ausgabe speichern
@@ -73,7 +73,6 @@ export default function AddExpenditureForm() {
 
   function saveExpenditure(event) {
     event.preventDefault();
-    const amount = parseFloat(amountString)
     updateEvent(description, members, payer, amount, id)
     history.push(`/event/${id}`)
   }

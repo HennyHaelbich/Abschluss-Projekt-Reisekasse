@@ -4,7 +4,7 @@ import Header from "../commons/Header";
 import { signUp } from "../service/SignUpService";
 import styled from "styled-components/macro";
 import TextField from "@material-ui/core/TextField";
-import {Button} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 const setupSignInData = {
   username: '',
