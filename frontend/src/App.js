@@ -8,12 +8,14 @@ import LoginPage from "./loginPage/LoginPage";
 import LoginContextProvider from "./contexts/LoginContextProvider";
 import ProtectedRoute from "./routing/ProtectedRoute";
 import AddExpenditureForm from './addExpenditurePage/AddExpenditureForm';
+import SignUpForm from "./signUpPage/SignUpForm";
 
 function App() {
   return (
     <LoginContextProvider>
       <EventContextProvider>
         <Switch>
+          <Route path={'/signup'} component={SignUpForm} />
           <Route path={'/login'} component={LoginPage} />
           <ProtectedRoute path={'/new'} component={AddEventForm} />
           <ProtectedRoute path={'/events'} component={EventsPage} />

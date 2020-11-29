@@ -40,7 +40,10 @@ class LoginControllerTest {
     public void setUpUserDb() {
         userDb.deleteAll();
         String password = new BCryptPasswordEncoder().encode("superPassword123");
-        userDb.save(new TravelFoundUser("henny", password));
+        userDb.save(TravelFoundUser.builder()
+                .username("henny")
+                .password(password)
+                .build());
     }
 
     private String getLoginUrl() { return "http://localhost:" + port + "auth/login"; }
