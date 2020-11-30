@@ -4,6 +4,7 @@ import de.neuefische.henny.reisekasse.db.EventDb;
 import de.neuefische.henny.reisekasse.model.Event;
 import de.neuefische.henny.reisekasse.model.EventMember;
 import de.neuefische.henny.reisekasse.model.Expenditure;
+import de.neuefische.henny.reisekasse.model.ExpenditurePerMember;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.anyOf;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -34,10 +36,12 @@ class EventServiceTest {
         // Given
         List<Event> eventList = List.of(
                 Event.builder().id("id_1").title("Schwedenreise")
-                        .members(List.of(new EventMember("Janice", 0.0), new EventMember("Manu", 0)))
+                        .members(List.of(EventMember.builder().username("Janice").balance(0).build(),
+                                EventMember.builder().username("Manu").balance(0).build()))
                         .expenditures(new ArrayList<>()).build(),
                 Event.builder().id("id_2").title("Norwegen 2020")
-                        .members(List.of(new EventMember("Julius", 0.0), new EventMember("Henny", 0)))
+                        .members(List.of(EventMember.builder().username("Julius").balance(0).build(),
+                                EventMember.builder().username("Henny").balance(0).build()))
                         .expenditures(new ArrayList<>()).build()
         );
         when(mockEventDb.findAll()).thenReturn(eventList);
@@ -49,12 +53,14 @@ class EventServiceTest {
         assertThat(allEvents, is(eventList));
     }
 
+
     @Test
     void testGetEventByIdShouldReturnTheSpecifiedEvent() {
         // Given
         String eventId = "uniqueId";
         Event expectedEvent = Event.builder().id("id_1").title("Schwedenreise")
-                .members(List.of(new EventMember("Janice", 0.0), new EventMember("Manu", 0)))
+                .members(List.of(EventMember.builder().username("Janice").balance(0).build(),
+                        EventMember.builder().username("Manu").balance(0).build()))
                 .expenditures(new ArrayList<>()).build();
         when(mockEventDb.findById(eventId)).thenReturn(Optional.of(expectedEvent));
 
@@ -84,75 +90,72 @@ class EventServiceTest {
     @Test
     void testSetNewBalanceShouldGiveBackMemberListWithUpdatedBalance() {
         // Given
-        List<EventMember> givenMemberList = List.of(new EventMember("Janice", 2.0),
-                new EventMember("Manu", 0.0),
-                new EventMember("Henny", -5.0));
-        UserDto payer = new UserDto("Manu");
-        double amount = 15;
-        List<EventMember> expectedMemberList = List.of(new EventMember("Janice", -3.0),
-                new EventMember("Manu", 10.0),
-                new EventMember("Henny", -10.0));
+        List<EventMember> givenMemberList = List.of(
+                EventMember.builder().username("Janice").balance(200).build(),
+                EventMember.builder().username("Manu").balance(0).build(),
+                EventMember.builder().username("Henny").balance(-500).build());
+
+        List<ExpenditurePerMember> givenExpenditurePerMemberList = List.of(
+                ExpenditurePerMember.builder().username("Manu").amount(333).build(),
+                ExpenditurePerMember.builder().username("Janice").amount(333).build(),
+                ExpenditurePerMember.builder().username("Henny").amount(334).build());
+
+        UserDto payer = UserDto.builder().username("Manu").build();
+
+        int amount = 1000;
+
+        List<EventMember> expectedMemberList = List.of(
+                EventMember.builder().username("Janice").balance(-133).build(),
+                EventMember.builder().username("Manu").balance(667).build(),
+                EventMember.builder().username("Henny").balance(-834).build());
+
         // When
-        List<EventMember> result = eventService.setNewBalance(givenMemberList, payer, amount);
+        List<EventMember> result = eventService.setNewBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount);
+
         // Then
         assertThat(result, is(expectedMemberList));
     }
 
     @Test
-    void testAddExpenditureShouldReturnEventWithAddedExpenditure() {
+    void testCalculateExpenditurePerMemberShouldReturnListWithExpenditurePerPerson() {
         // Given
-        String eventId = "event_id";
-        String expenditureId = "expenditure_id";
-        Instant expectedTime = Instant.parse("2020-11-22T18:00:00Z");
+        List<EventMember> givenMemberList = List.of(
+                EventMember.builder().username("Janice").build(),
+                EventMember.builder().username("Henny").build());
+        int amount = 200;
 
-        Event eventBefore = Event.builder()
-                .id(eventId)
-                .title("Radreise")
-                .members(List.of(new EventMember("Janice", 0.0),
-                        new EventMember("Manu", 0.0),
-                        new EventMember("Henny", 0.0)))
-                .expenditures(new ArrayList<>())
-                .build();
-
-        AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
-                .description("Bahnfahrkarten")
-                .members(List.of(new EventMember("Janice", 0.0),
-                        new EventMember("Manu", 0.0),
-                        new EventMember("Henny", 0.0)))
-                .payer(new UserDto("Manu"))
-                .amount(15)
-                .build();
-
-        Expenditure newExpenditure = Expenditure.builder()
-                .id(expenditureId)
-                .description("Bahnfahrkarten")
-                .members(List.of(new UserDto("Janice"), new UserDto("Manu"), new UserDto("Henny")))
-                .payer(new UserDto("Manu"))
-                .amount(15.0)
-                .timestamp(expectedTime)
-                .build();
-
-        Event eventExpected = Event.builder()
-                .id(eventId)
-                .title("Radreise")
-                .members(List.of(new EventMember("Janice", -5.0),
-                        new EventMember("Manu", 10.0),
-                        new EventMember("Henny", -5.0)))
-                .expenditures(new ArrayList<Expenditure>() {{
-                    add(newExpenditure);
-                }})
-                .build();
-
-        when(mockIdUtils.generateId()).thenReturn(expenditureId);
-        when(mockTimestampUtils.generateTimestampEpochSeconds()).thenReturn(expectedTime);
-        when(mockEventDb.findById(eventId)).thenReturn(Optional.of(eventBefore));
-        when(mockEventDb.save(eventExpected)).thenReturn(eventExpected);
+        List<ExpenditurePerMember> expectedExpendituresList = List.of(
+                ExpenditurePerMember.builder().username("Henny").amount(100).build(),
+                ExpenditurePerMember.builder().username("Janice").amount(100).build());
 
         // When
-        Event result = eventService.addExpenditure(eventId, expenditureToBeAdded);
+        List<ExpenditurePerMember> result = eventService.calculateExpenditurePerMember(givenMemberList, amount);
 
         // Then
-        assertThat(result, is(eventExpected));
+        assertThat(result, is(expectedExpendituresList));
+    }
+
+    @Test
+    void testCalculateExpenditurePerMemberShouldReturnListWhereRestIsGivenToSomePerson() {
+        // Given
+        List<EventMember> givenMemberList = List.of(
+                EventMember.builder().username("Janice").build(),
+                EventMember.builder().username("Henny").build());
+        int amount = 201;
+
+        List<ExpenditurePerMember> expectedPossibilityOne = List.of(
+                ExpenditurePerMember.builder().username("Henny").amount(100).build(),
+                ExpenditurePerMember.builder().username("Janice").amount(101).build());
+
+        List<ExpenditurePerMember> expectedPossibilityTwo = List.of(
+                ExpenditurePerMember.builder().username("Henny").amount(101).build(),
+                ExpenditurePerMember.builder().username("Janice").amount(100).build());
+
+        // When
+        List<ExpenditurePerMember> result = eventService.calculateExpenditurePerMember(givenMemberList, amount);
+
+        // Then
+        assertThat(result, anyOf(is(expectedPossibilityOne), is(expectedPossibilityTwo)));
     }
 
 }

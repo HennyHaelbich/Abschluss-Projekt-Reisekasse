@@ -24,7 +24,7 @@ export default function Expenditures() {
 
       {event.expenditures.map((expenditure) => (
         <Card key={expenditure.id}>
-          <p>{expenditure.description}: {expenditure.amount.toFixed(2)} €</p>
+          <p>{expenditure.description}: {(expenditure.amount / 100).toFixed(2)} €</p>
           <p>Bezahlt von {expenditure.payer.username}</p>
         </Card>
       ))}

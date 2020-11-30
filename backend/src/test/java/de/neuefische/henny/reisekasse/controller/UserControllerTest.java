@@ -74,7 +74,7 @@ class UserControllerTest {
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(new UserDto(username)));
+        assertThat(response.getBody(), is(UserDto.builder().username(username).build()));
     }
 
     @Test
