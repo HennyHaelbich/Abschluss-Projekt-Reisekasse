@@ -23,11 +23,11 @@ public class UserController {
 
     @GetMapping("{username}")
     public UserDto getUserById(@PathVariable @NonNull String username) {
-        Optional<TravelFoundUser> optionalUser = userService.getUserById(username);
+        Optional<UserDto> optionalUser = userService.getUserById(username);
         if(optionalUser.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return new UserDto(optionalUser.get().getUsername());
+        return optionalUser.get();
     }
 
 }

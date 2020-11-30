@@ -11,8 +11,8 @@ export default function Expenditures() {
   const { events } = useContext(EventContext);
   const { id } = useParams();
   const event = events.find((event) => event.id === id);
-  
   const history = useHistory();
+  
   
   return (
     <div>
@@ -25,7 +25,7 @@ export default function Expenditures() {
       {event.expenditures.map((expenditure) => (
         <Card key={expenditure.id}>
           <p>{expenditure.description}: {(expenditure.amount / 100).toFixed(2)} €</p>
-          <p>Bezahlt von {expenditure.payer.username}</p>
+          <p>Bezahlt von {expenditure.payer.firstName} {expenditure.payer.lastName.substring(0,1)}.</p>
         </Card>
       ))}
     </div>

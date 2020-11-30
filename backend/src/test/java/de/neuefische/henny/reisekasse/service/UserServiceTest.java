@@ -2,11 +2,10 @@ package de.neuefische.henny.reisekasse.service;
 
 import de.neuefische.henny.reisekasse.db.UserDb;
 import de.neuefische.henny.reisekasse.model.TravelFoundUser;
-import de.neuefische.henny.reisekasse.model.dto.AddTravelFundUserDto;
+import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -25,16 +24,17 @@ class UserServiceTest {
     @Test
     void findUserByIdTestWithExistingUserIdShouldGiveBackOptionOfUser() {
         // Given
-        String userId = "Sven";
-        TravelFoundUser expectedUser = TravelFoundUser.builder().username(userId).password("SvensPassword").build();
-        Optional<TravelFoundUser> optionalExpectedUser = Optional.of(expectedUser);
-        when(userDb.findById(userId)).thenReturn(optionalExpectedUser);
+        String userId = "sven.s@web.de";
+        TravelFoundUser userFromDb = TravelFoundUser.builder().username(userId).firstName("Sven").lastName("Seifert").password("passwort").build();
+        Optional<UserDto> expectedUser = Optional.of(UserDto.builder().username(userId).firstName("Sven").lastName("Seifert").build());
+
+        when(userDb.findById(userId)).thenReturn(Optional.of(userFromDb));
 
         // When
-        Optional<TravelFoundUser> resultUser = userService.getUserById(userId);
+        Optional<UserDto> resultUser = userService.getUserById(userId);
 
         // Then
-        assertThat(resultUser, is(optionalExpectedUser));
+        assertThat(resultUser, is(expectedUser));
     }
 
     @Test
@@ -44,7 +44,7 @@ class UserServiceTest {
         when(userDb.findById("NotExistingUserId")).thenReturn(Optional.empty());
 
         // When
-        Optional<TravelFoundUser> resultUser = userService.getUserById(userId);
+        Optional<UserDto> resultUser = userService.getUserById(userId);
 
         // Then
         assertThat(resultUser, is(Optional.empty()));

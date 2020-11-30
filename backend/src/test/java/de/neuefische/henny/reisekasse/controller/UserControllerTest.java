@@ -40,8 +40,18 @@ class UserControllerTest {
         String password_1 = new BCryptPasswordEncoder().encode("superPassword123");
         String password_2 = new BCryptPasswordEncoder().encode("superPassword456");
 
-        userDb.save(TravelFoundUser.builder().username("Henny").password(password_1).build());
-        userDb.save(TravelFoundUser.builder().username("Janice").password(password_2).build());
+        userDb.save(TravelFoundUser.builder()
+                .username("henny.haelbich@gmail.com")
+                .firstName("Henny")
+                .lastName("Haelbich")
+                .password(password_1)
+                .build());
+        userDb.save(TravelFoundUser.builder()
+                .username("janice82@web.de")
+                .firstName("Janice")
+                .lastName("Müller")
+                .password(password_2)
+                .build());
     }
 
     private String getUserUrl() {
@@ -50,7 +60,7 @@ class UserControllerTest {
 
     private String login() {
         ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:" + port + "auth/login",
-                new LoginDto( "Henny", "superPassword123"), String.class);
+                new LoginDto( "henny.haelbich@gmail.com", "superPassword123"), String.class);
 
         return response.getBody();
     }
@@ -64,9 +74,9 @@ class UserControllerTest {
     }
 
     @Test
-    public void testGetUserWithExistingUsernameShouldReturnUsername() {
+    public void testGetUserWithExistingUsernameShouldReturnUserDtoData() {
         // Given
-        String username = "Janice";
+        String username = "henny.haelbich@gmail.com";
 
         // When
         HttpEntity<Void> entity = getValidAuthorizationEntity(null);
@@ -74,7 +84,11 @@ class UserControllerTest {
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(UserDto.builder().username(username).build()));
+        assertThat(response.getBody(), is(UserDto.builder()
+                .username(username)
+                .firstName("Henny")
+                .lastName("Haelbich")
+                .build()));
     }
 
     @Test

@@ -10,9 +10,8 @@ import Header from '../commons/Header';
 
 export default function AddEventForm() {
   const { createEvent } = useContext(EventContext);
-  const [addMember] = useEventMembers();
+  const { addMember, members  } = useEventMembers();
   const [newMember, setNewMember] = useState('');
-  const [members, setMembers] = useState([]);
   const [title, setTitle] = useState('');
   const [error, setError] = useState('');
   const history = useHistory();
@@ -66,7 +65,6 @@ export default function AddEventForm() {
       setError('Dieser Benutzer ist bereits Teil der Gruppe');
     } else {
       addMember(newMember)
-        .then((newMember) => setMembers([...members, newMember]))
         .catch(() => {
           setError('Dieser Benutzer existiert nicht');
         });
