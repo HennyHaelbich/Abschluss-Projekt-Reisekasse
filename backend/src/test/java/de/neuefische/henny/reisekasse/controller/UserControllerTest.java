@@ -60,7 +60,7 @@ class UserControllerTest {
 
     private String login() {
         ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:" + port + "auth/login",
-                new LoginDto( "Henny", "superPassword123"), String.class);
+                new LoginDto( "henny.haelbich@gmail.com", "superPassword123"), String.class);
 
         return response.getBody();
     }
@@ -74,7 +74,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void testGetUserWithExistingUsernameShouldReturnUsername() {
+    public void testGetUserWithExistingUsernameShouldReturnUserDtoData() {
         // Given
         String username = "henny.haelbich@gmail.com";
 
@@ -84,7 +84,7 @@ class UserControllerTest {
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(TravelFoundUser.builder()
+        assertThat(response.getBody(), is(UserDto.builder()
                 .username(username)
                 .firstName("Henny")
                 .lastName("Haelbich")

@@ -3,9 +3,12 @@ package de.neuefische.henny.reisekasse.service;
 import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 import de.neuefische.henny.reisekasse.db.UserDb;
 import de.neuefische.henny.reisekasse.model.dto.AddTravelFundUserDto;
+import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -18,8 +21,13 @@ public class UserService {
         this.userDb = userDb;
     }
 
-    public Optional<TravelFoundUser> getUserById(String username) {
-        return userDb.findById(username);
+    public Optional<UserDto> getUserById(String username) {
+        Optional<TravelFoundUser> optionalUser = userDb.findById(username);
+        if(optionalUser.isEmpty()) {
+            return Optional.empty();
+        }
+        UserDto userWithoutPassword = new UserDto(optionalUser.get().getUsername(), optionalUser.get().getFirstName(), optionalUser.get().getLastName());
+        return Optional.of(userWithoutPassword);
     }
 
     public TravelFoundUser registerNewUser(AddTravelFundUserDto addTravelFundUserDto) {
