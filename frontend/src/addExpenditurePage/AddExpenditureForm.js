@@ -74,7 +74,6 @@ export default function AddExpenditureForm() {
   function saveExpenditure(event) {
     event.preventDefault();
     const amount = Number(amountString) * 100
-    console.log("Amount", amount)
     updateEvent(description, members, payer, amount, id)
     history.push(`/event/${id}`)
   }
