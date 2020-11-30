@@ -1,10 +1,12 @@
 import React, {useContext} from 'react';
 import EventContext from "../contexts/EventContext";
 import {useHistory, useParams} from "react-router-dom";
+import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
 import Card from "@material-ui/core/Card";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components/macro'
+import {Button} from "@material-ui/core";
 
 
 export default function Expenditures() {
@@ -24,8 +26,11 @@ export default function Expenditures() {
 
       {event.expenditures.map((expenditure) => (
         <Card key={expenditure.id}>
-          <p>{expenditure.description}: {(expenditure.amount / 100).toFixed(2)} €</p>
-          <p>Bezahlt von {expenditure.payer.firstName} {expenditure.payer.lastName.substring(0,1)}.</p>
+          <p>{expenditure.description}: {formattedAmount(expenditure.amount)}</p>
+          <p>Bezahlt von {displayName(expenditure.payer)}</p>
+          <Button variant="outlined" onClick={() => history.push(`/event/${event.id}/${expenditure.id}`)} >
+            Details
+          </Button>
         </Card>
       ))}
     </div>

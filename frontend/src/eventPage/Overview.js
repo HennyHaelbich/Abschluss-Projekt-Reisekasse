@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import EventContext from '../contexts/EventContext';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components/macro';
+import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
 
 export default function Overview() {
   const { events } = useContext(EventContext);
@@ -11,8 +12,8 @@ export default function Overview() {
   return (
   event ? event.members.map((member) => (
     <ListStyled key={member.username}>
-      <p>{member.firstName} {member.lastName.substring(0,1)}.</p>
-      <p>{(member.balance / 100).toFixed(2)} €</p>
+      <p>{displayName(member)}</p>
+      <p>{formattedAmount(member.balance)}</p>
     </ListStyled>
   )) : null
   );

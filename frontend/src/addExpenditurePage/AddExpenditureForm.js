@@ -7,6 +7,7 @@ import Header from '../commons/Header';
 import EventContext from "../contexts/EventContext";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import MenuItem from "@material-ui/core/MenuItem";
+import { displayName } from "../helperFunctions/helperFunctions";
 
 export default function AddExpenditureForm() {
   const history = useHistory();
@@ -51,7 +52,7 @@ export default function AddExpenditureForm() {
           variant = "outlined"
         > {members.map((member) => (
           <MenuItem key={member.username} value={member}>
-            {member.firstName} {member.lastName.substring(0,1)}.
+            {displayName(member)}
           </MenuItem>
         ))}
         </TextField>
