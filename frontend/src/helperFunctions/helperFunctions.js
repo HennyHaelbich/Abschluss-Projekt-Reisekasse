@@ -1,4 +1,3 @@
-import React from "react";
 
 export const displayName = (component) => {
   return `${component.firstName} ${component.lastName.substring(0,1)}.`;
