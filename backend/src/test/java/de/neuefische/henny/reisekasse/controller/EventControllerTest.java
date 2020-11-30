@@ -1,11 +1,8 @@
 package de.neuefische.henny.reisekasse.controller;
 
 import de.neuefische.henny.reisekasse.db.EventDb;
-import de.neuefische.henny.reisekasse.model.Event;
-import de.neuefische.henny.reisekasse.model.EventMember;
-import de.neuefische.henny.reisekasse.model.Expenditure;
+import de.neuefische.henny.reisekasse.model.*;
 import de.neuefische.henny.reisekasse.db.UserDb;
-import de.neuefische.henny.reisekasse.model.TravelFoundUser;
 import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.LoginDto;
@@ -59,15 +56,14 @@ class EventControllerTest {
         eventDb.saveAll(List.of(
                 Event.builder().id("id_1").title("Schwedenreise")
                         .members(List.of(
-                                new EventMember("Janice", 0.0),
-                                new EventMember("Manu", 0.0),
-                                new EventMember("Henny", 0.0)))
+                                new EventMember("Janice", 0),
+                                new EventMember("Manu", 0),
+                                new EventMember("Henny", 0)))
                         .expenditures(List.of()).build(),
-                Event.builder().id("id_2").title("Norwegen 2020")
+                Event.builder().id("id_2").title("Kanutour")
                         .members(List.of(
-                                new EventMember("Julius", 0.0),
-                                new EventMember("Henny", 0.0),
-                                new EventMember("Manu", 0.0)))
+                                new EventMember("Janice", 0),
+                                new EventMember("Henny", 0)))
                         .expenditures(List.of()).build()
         ));
 
@@ -108,8 +104,8 @@ class EventControllerTest {
         Event expectedEvent = Event.builder()
                 .id("id")
                 .title("Norwegen 2020")
-                .members(List.of(new EventMember("Julius", 0.0),
-                        new EventMember("Henny", 0.0)))
+                .members(List.of(new EventMember("Julius", 0),
+                        new EventMember("Henny", 0)))
                 .expenditures(new ArrayList<>())
                 .build();
 
@@ -128,16 +124,16 @@ class EventControllerTest {
         List<Event> eventList = List.of(
                 Event.builder().id("id_1").title("Schwedenreise")
                         .members(List.of(
-                                new EventMember("Janice", 0.0),
-                                new EventMember("Manu", 0.0),
-                                new EventMember("Henny", 0.0)))
+                                new EventMember("Janice", 0),
+                                new EventMember("Manu", 0),
+                                new EventMember("Henny", 0)))
                         .expenditures(List.of()).build(),
-                Event.builder().id("id_2").title("Norwegen 2020")
+                Event.builder().id("id_2").title("Kanutour")
                         .members(List.of(
-                                new EventMember("Julius", 0.0),
-                                new EventMember("Henny", 0.0),
-                                new EventMember("Manu", 0.0)))
-                        .expenditures(List.of()).build());
+                                new EventMember("Janice", 0),
+                                new EventMember("Henny", 0)))
+                        .expenditures(List.of()).build()
+        );
 
         // When
         HttpEntity<Void> entity = getValidAuthorizationEntity(null);
@@ -151,41 +147,41 @@ class EventControllerTest {
     @Test
     void testPostMappingAddNewExpenditure(){
         // Given
-        String eventId = "id_1";
+        String eventId = "id_2";
         String expenditureId = "expenditure_id";
-        Instant expectedTime = Instant.parse("2020-11-22T18:00:00Z");
+        Instant givenTime = Instant.parse("2020-11-22T18:00:00Z");
 
         AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
                 .description("Bahnfahrkarten")
-                .members(List.of(new EventMember("Janice", 0.0),
-                        new EventMember("Manu", 0.0),
-                        new EventMember("Henny", 0.0)))
-                .payer(new UserDto("Manu"))
-                .amount(15)
+                .members(List.of(new EventMember("Janice", 0),
+                        new EventMember("Henny", 0)))
+                .payer(new UserDto("Henny"))
+                .amount(20)
                 .build();
 
         Expenditure newExpenditure = Expenditure.builder()
                 .id(expenditureId)
                 .description("Bahnfahrkarten")
-                .members(List.of(new UserDto("Janice"), new UserDto("Manu"), new UserDto("Henny")))
-                .payer(new UserDto("Manu"))
-                .amount(15.0)
-                .timestamp(expectedTime)
+                .expenditurePerMemberList(List.of(
+                        ExpenditurePerMember.builder().username("Henny").amount(10).build(),
+                        ExpenditurePerMember.builder().username("Janice").amount(10).build()))
+                .payer(new UserDto("Henny"))
+                .amount(20)
+                .timestamp(givenTime)
                 .build();
 
         Event eventExpected = Event.builder()
                 .id(eventId)
-                .title("Schwedenreise")
-                .members(List.of(new EventMember("Janice", -5.0),
-                        new EventMember("Manu", 10.0),
-                        new EventMember("Henny", -5.0)))
+                .title("Kanutour")
+                .members(List.of(new EventMember("Janice", -10),
+                        new EventMember("Henny", 10)))
                 .expenditures(new ArrayList<Expenditure>() {{
                     add(newExpenditure);
                 }})
                 .build();
 
         when(mockedIdUtils.generateId()).thenReturn(expenditureId);
-        when(mockedtimestampUtils.generateTimestampEpochSeconds()).thenReturn(expectedTime);
+        when(mockedtimestampUtils.generateTimestampEpochSeconds()).thenReturn(givenTime);
 
         // When
         HttpEntity<AddExpenditureDto> entity = getValidAuthorizationEntity(expenditureToBeAdded);

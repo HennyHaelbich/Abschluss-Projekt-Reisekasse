@@ -19,9 +19,9 @@ import java.util.List;
 public class Expenditure {
     @Id
     private String id;
-    private String description;
-    private List<UserDto> members;
-    private UserDto payer;
-    private Double amount;
     private Instant timestamp;
+    private String description;
+    private List<ExpenditurePerMember> expenditurePerMemberList;
+    private UserDto payer;
+    private int amount;
 }

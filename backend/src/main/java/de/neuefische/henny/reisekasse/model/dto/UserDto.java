@@ -11,4 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserDto {
     private String username;
+    private String firstName;
+    private String lastName;
+
+    public UserDto(String username) {
+        this.username = username;
+    }
 }

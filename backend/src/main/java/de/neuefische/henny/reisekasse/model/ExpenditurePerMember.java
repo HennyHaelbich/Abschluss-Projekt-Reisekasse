@@ -9,14 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EventMember {
+public class ExpenditurePerMember {
+
     private String username;
     private String firstName;
     private String lastName;
-    private int balance;
+    private int amount;
 
-    public EventMember(String username, int balance) {
-        this.username = username;
-        this.balance = balance;
-    };
 }
