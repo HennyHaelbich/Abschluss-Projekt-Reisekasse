@@ -13,7 +13,7 @@ export default function Overview() {
   event ? event.members.map((member) => (
     <ListStyled key={member.username}>
       <p>{member.username}</p>
-      <p>{member.balance.toFixed(2)} €</p>
+      <p>{(member.balance / 100).toFixed(2)} €</p>
     </ListStyled>
   )) : null
   );
