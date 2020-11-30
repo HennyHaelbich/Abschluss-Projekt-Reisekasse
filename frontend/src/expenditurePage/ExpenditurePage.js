@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import EventContext from "../contexts/EventContext";
 import {useHistory, useParams} from "react-router-dom";
+import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
 import Card from "@material-ui/core/Card";
 import {Button} from "@material-ui/core";
 
@@ -11,18 +12,16 @@ export default function ExpenditurePage() {
   const expenditure = event?.expenditures.find((exp) => exp.id === expenditureId)
   const history = useHistory();
   
-  console.log(expenditure);
 
   return (
     expenditure ? (
       <>
         <p>{expenditure.description}</p>
-        <p>{(expenditure.amount / 100).toFixed(2)} €</p>
-        <p>Bezahlt von: {expenditure.payer.firstName} {expenditure.payer.lastName.substring(0,1)}.</p>
-        {expenditure.expenditurePerMemberList.map((ExpenditurePerMember) => (
-          <Card key={ExpenditurePerMember.username}>
-            <p>{ExpenditurePerMember.firstName} {ExpenditurePerMember.lastName.substring(0,1)}.:
-              {(ExpenditurePerMember.amount / 100).toFixed(2)} €</p>
+        <p>{(formattedAmount(expenditure.amount))}</p>
+        <p>Bezahlt von: {displayName(expenditure.payer)}</p>
+        {expenditure.expenditurePerMemberList.map((expenditurePerMember) => (
+          <Card key={expenditurePerMember.username}>
+            <p>{displayName(expenditurePerMember)}: {(formattedAmount(expenditurePerMember.amount))}</p>
           </Card>
         ))}
         <Button variant = 'outlined' onClick={() => history.goBack()}>Zurück</Button>
