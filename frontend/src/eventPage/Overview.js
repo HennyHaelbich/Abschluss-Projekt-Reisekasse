@@ -7,12 +7,11 @@ export default function Overview() {
   const { events } = useContext(EventContext);
   const { id } = useParams();
   const event = events.find((event) => event.id === id);
-  console.log("String", event)
 
   return (
   event ? event.members.map((member) => (
     <ListStyled key={member.username}>
-      <p>{member.username}</p>
+      <p>{member.firstName} {member.lastName.substring(0,1)}.</p>
       <p>{(member.balance / 100).toFixed(2)} €</p>
     </ListStyled>
   )) : null

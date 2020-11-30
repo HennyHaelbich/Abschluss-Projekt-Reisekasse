@@ -27,7 +27,7 @@ public class UserController {
         if(optionalUser.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return new UserDto(optionalUser.get().getUsername());
+        return new UserDto(optionalUser.get().getUsername(), optionalUser.get().getFirstName(), optionalUser.get().getLastName());
     }
 
 }

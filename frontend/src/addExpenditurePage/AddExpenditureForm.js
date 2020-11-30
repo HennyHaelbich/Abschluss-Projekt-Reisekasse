@@ -50,8 +50,8 @@ export default function AddExpenditureForm() {
           onChange = {(event) => setPayer(event.target.value)}
           variant = "outlined"
         > {members.map((member) => (
-          <MenuItem key={member.username} value={member.username}>
-            {member.username}
+          <MenuItem key={member.username} value={member}>
+            {member.firstName} {member.lastName.substring(0,1)}.
           </MenuItem>
         ))}
         </TextField>
