@@ -6,8 +6,8 @@ import Card from "@material-ui/core/Card";
 import {Button} from "@material-ui/core";
 
 export default function ExpenditurePage() {
-  const { events } = useContext(EventContext);
-  const { id, expenditureId, removeExpenditure } = useParams();
+  const { events , removeExpenditure } = useContext(EventContext);
+  const { id, expenditureId } = useParams();
   const event = events.find((event) => event.id === id);
   const expenditure = event?.expenditures.find((exp) => exp.id === expenditureId)
   const history = useHistory();
@@ -24,13 +24,13 @@ export default function ExpenditurePage() {
             <p>{displayName(expenditurePerMember)}: {(formattedAmount(expenditurePerMember.amount))}</p>
           </Card>
         ))}
-        <Button variant = 'outlined' onClick={() => history.goBack()}>Zurück</Button>
+        <Button variant='outlined' onClick={() => history.goBack()}>Zurück</Button>
         <Button variant="outlined" onClick={handleDelete}>Löschen</Button>
         </>) : null
   )
   
   function handleDelete() {
-    removeExpenditure()
+    removeExpenditure(id, expenditureId)
     history.goBack()
   }
 

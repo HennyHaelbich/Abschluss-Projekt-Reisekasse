@@ -36,13 +36,19 @@ export default function EventContextProvider({ children }) {
       .then((newEvent) => setEvents([...events, newEvent]))
       .catch(console.log);
   
-  const removeExpenditure = (id) =>
+  const removeExpenditure = (id, expenditureId) =>
     axios
-      .put(id, header(token))
+      .put('/api/events', header(token))
       .then((response) => response.data)
-      .then((updateEvent) => setEvents(events.map((event) => event.id === id ? updateEvent : event)))
+      .then((data) => console.log(data))
       .catch(console.log);
   
+/*  const removeExpenditure = (id, expenditureId) =>
+    axios
+      .put('/api/events/' + id + '/' + expenditureId, header(token))
+      .then((response) => response.data)
+      .then((updateEvent) => setEvents(events.map((event) => event.id === id ? updateEvent : event)))
+      .catch(console.log);*/
   
   
   return (
