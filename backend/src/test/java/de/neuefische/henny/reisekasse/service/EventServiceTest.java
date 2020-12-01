@@ -158,4 +158,63 @@ class EventServiceTest {
         assertThat(result, anyOf(is(expectedPossibilityOne), is(expectedPossibilityTwo)));
     }
 
+    @Test
+    void testAddExpenditureShouldReturnEventWithAddedExpenditure() {
+        // Given
+        String eventId = "event_id";
+        String expenditureId = "expenditure_id";
+        Instant expectedTime = Instant.parse("2020-11-22T18:00:00Z");
+
+        Event eventBefore = Event.builder()
+                .id(eventId)
+                .title("Radreise")
+                .members(List.of(
+                        EventMember.builder().username("Janice").balance(0).build(),
+                        EventMember.builder().username("Henny").balance(0).build()))
+                .expenditures(new ArrayList<>())
+                .build();
+
+        AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
+                .description("Bahnfahrkarten")
+                .members(List.of(
+                        EventMember.builder().username("Janice").balance(0).build(),
+                        EventMember.builder().username("Henny").balance(0).build()))
+                .payer(UserDto.builder().username("Henny").build())
+                .amount(20)
+                .build();
+
+        Expenditure newExpenditure = Expenditure.builder()
+                .id(expenditureId)
+                .description("Bahnfahrkarten")
+                .expenditurePerMemberList(List.of(
+                        ExpenditurePerMember.builder().username("Henny").amount(10).build(),
+                        ExpenditurePerMember.builder().username("Janice").amount(10).build()))
+                .amount(20)
+                .timestamp(expectedTime)
+                .payer(UserDto.builder().username("Henny").build())
+                .build();
+
+        Event eventExpected = Event.builder()
+                .id(eventId)
+                .title("Radreise")
+                .members(List.of(
+                        EventMember.builder().username("Janice").balance(-10).build(),
+                        EventMember.builder().username("Henny").balance(10).build()))
+                .expenditures(new ArrayList<>() {{
+                    add(newExpenditure);
+                }})
+                .build();
+
+        when(mockIdUtils.generateId()).thenReturn(expenditureId);
+        when(mockTimestampUtils.generateTimestampEpochSeconds()).thenReturn(expectedTime);
+        when(mockEventDb.findById(eventId)).thenReturn(Optional.of(eventBefore));
+        when(mockEventDb.save(eventExpected)).thenReturn(eventExpected);
+
+        // When
+        Event result = eventService.addExpenditure(eventId, expenditureToBeAdded);
+
+        // Then
+        assertThat(result, is(eventExpected));
+    }
+
 }
