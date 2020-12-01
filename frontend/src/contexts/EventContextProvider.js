@@ -44,6 +44,7 @@ export default function EventContextProvider({ children }) {
       .catch(console.log);
   
   
+  
   return (
     <EventContext.Provider
       value={{

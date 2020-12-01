@@ -33,4 +33,11 @@ public class EventController {
     public Event addExpenditure(@PathVariable String eventId, @RequestBody AddExpenditureDto addExpenditureDto) {
         return eventService.addExpenditure(eventId, addExpenditureDto);
     }
+
+    @PutMapping("{eventId}/{expenditureId}")
+    public Event addExpenditure(@PathVariable String eventId, @PathVariable String expenditureId) {
+        System.out.println(eventId);
+        System.out.println(expenditureId);
+        return null;
+    }
 }

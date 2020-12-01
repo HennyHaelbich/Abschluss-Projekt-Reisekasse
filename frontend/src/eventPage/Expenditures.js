@@ -10,7 +10,7 @@ import {Button} from "@material-ui/core";
 
 
 export default function Expenditures() {
-  const { events, removeExpenditure } = useContext(EventContext);
+  const { events } = useContext(EventContext);
   const { id } = useParams();
   const event = events.find((event) => event.id === id);
   const history = useHistory();
@@ -31,18 +31,11 @@ export default function Expenditures() {
           <Button variant="outlined" onClick={() => history.push(`/event/${event.id}/${expenditure.id}`)} >
             Details
           </Button>
-          <Button variant="outlined" onClick={handleDelete} >
-            Löschen
-          </Button>
         </Card>
       ))}
     </div>
   );
   
-  function handleDelete() {
-    removeExpenditure(id)
-    history.goBack()
-  }
 }
 
 const DivStyled = styled.div`
