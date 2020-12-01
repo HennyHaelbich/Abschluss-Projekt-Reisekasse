@@ -3,9 +3,7 @@ package de.neuefische.henny.reisekasse.service;
 import de.neuefische.henny.reisekasse.db.EventDb;
 import de.neuefische.henny.reisekasse.model.Event;
 import de.neuefische.henny.reisekasse.model.EventMember;
-import de.neuefische.henny.reisekasse.model.Expenditure;
 import de.neuefische.henny.reisekasse.model.ExpenditurePerMember;
-import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
@@ -13,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -110,7 +107,7 @@ class EventServiceTest {
                 EventMember.builder().username("Henny").balance(-834).build());
 
         // When
-        List<EventMember> result = eventService.setNewBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount);
+        List<EventMember> result = eventService.setNewBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount, true);
 
         // Then
         assertThat(result, is(expectedMemberList));
@@ -157,5 +154,6 @@ class EventServiceTest {
         // Then
         assertThat(result, anyOf(is(expectedPossibilityOne), is(expectedPossibilityTwo)));
     }
+
 
 }

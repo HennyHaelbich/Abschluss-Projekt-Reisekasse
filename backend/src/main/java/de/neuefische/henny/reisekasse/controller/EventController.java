@@ -35,15 +35,13 @@ public class EventController {
     }
 
     @PutMapping()
-    public String addExpenditure() {
+    public String deleteExpenditure() {
         return "Hallo";
     }
 
-/*    @PutMapping("{eventId}/{expenditureId}")
-    public Event addExpenditure(@PathVariable String eventId, @PathVariable String expenditureId) {
-        System.out.println(eventId);
-        System.out.println(expenditureId);
-        return null;
-    }*/
+    @PutMapping("{eventId}/{expenditureId}")
+    public Event deleteExpenditure(@PathVariable String eventId, @PathVariable String expenditureId) {
+        return eventService.deleteExpenditure(eventId, expenditureId);
+    }
 
 }
