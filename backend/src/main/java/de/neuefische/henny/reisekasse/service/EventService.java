@@ -100,7 +100,7 @@ public class EventService {
 
         // get Expenditures without Expenditure to delete
         List<Expenditure> ExpendituresWithoutToDeleteExpenditure = event.getExpenditures().stream()
-                .filter(expenditure -> expenditure.getId() != expenditureId)
+                .filter(expenditure -> !expenditure.getId().equals(expenditureId))
                 .collect(Collectors.toList());
 
         if(optionalExpenditureToDelete.isEmpty()) {

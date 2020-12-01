@@ -11,8 +11,8 @@ import {Button} from "@material-ui/core";
 
 export default function Expenditures() {
   const { events } = useContext(EventContext);
-  const { id } = useParams();
-  const event = events.find((event) => event.id === id);
+  const { eventId } = useParams();
+  const event = events.find((event) => event.id === eventId);
   const history = useHistory();
   
   

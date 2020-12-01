@@ -21,8 +21,8 @@ function App() {
           <ProtectedRoute path={'/new'} component={AddEventForm} />
           <ProtectedRoute path={'/events'} component={EventsPage} />
           <ProtectedRoute exact path={'/event/new-expand/:id'} component={AddExpenditureForm} />
-          <ProtectedRoute exact path={'/event/:id/:expenditureId'} component={ExpenditurePage} />
-          <ProtectedRoute exact path={'/event/:id'} component={ShowEvent} />
+          <ProtectedRoute exact path={'/event/:eventId/:expenditureId'} component={ExpenditurePage} />
+          <ProtectedRoute exact path={'/event/:eventId'} component={ShowEvent} />
           <Route path="/">
             <Redirect to="/events" />
           </Route>
