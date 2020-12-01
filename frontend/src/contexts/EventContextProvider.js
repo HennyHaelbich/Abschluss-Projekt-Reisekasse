@@ -21,13 +21,13 @@ export default function EventContextProvider({ children }) {
       .catch(console.log);
   }, [token, tokenIsValid]);
   
-  const updateEvent = (description, members, payer, amount, id) => {
+  const updateEvent = (description, members, payer, amount, id) =>
     axios
       .post('/api/events/' + id, {description, members, payer, amount}, header(token))
       .then((response) => response.data)
-      .then((updateEvent) => setEvents(events.map((event)=> event.id === id ? updateEvent : event)))
+      .then((updateEvent) => setEvents(events.map((event) => event.id === id ? updateEvent : event)))
       .catch(console.log);
-  }
+  
 
   const createEvent = (title, members) =>
     axios
@@ -36,13 +36,21 @@ export default function EventContextProvider({ children }) {
       .then((newEvent) => setEvents([...events, newEvent]))
       .catch(console.log);
   
-
+  const removeExpenditure = (id) =>
+    axios
+      .put(id, header(token))
+      .then((response) => response.data)
+      .then((updateEvent) => setEvents(events.map((event) => event.id === id ? updateEvent : event)))
+      .catch(console.log);
+  
+  
   return (
     <EventContext.Provider
       value={{
         createEvent,
         events,
-        updateEvent
+        updateEvent,
+        removeExpenditure
       }}
     >
       {children}
