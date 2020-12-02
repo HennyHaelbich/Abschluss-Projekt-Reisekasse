@@ -3,10 +3,7 @@ package de.neuefische.henny.reisekasse.controller;
 import de.neuefische.henny.reisekasse.db.EventDb;
 import de.neuefische.henny.reisekasse.model.*;
 import de.neuefische.henny.reisekasse.db.UserDb;
-import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
-import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
-import de.neuefische.henny.reisekasse.model.dto.LoginDto;
-import de.neuefische.henny.reisekasse.model.dto.UserDto;
+import de.neuefische.henny.reisekasse.model.dto.*;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -191,6 +188,51 @@ class EventControllerTest {
         // When
         HttpEntity<AddExpenditureDto> entity = getValidAuthorizationEntity(expenditureToBeAdded);
         ResponseEntity<Event> response = restTemplate.exchange(getEventUrl() + "/" +  eventId, HttpMethod.POST, entity, Event.class);
+
+        // Then
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(eventExpected));
+    }
+
+    @Test
+    void testPutMappingDeleteExpenditure(){
+        // Given
+        String eventId = "id_3";
+        String expenditureId = "expenditure_id";
+        IdsDto ids = IdsDto.builder().eventId(eventId).expenditureId(expenditureId).build();
+
+        Expenditure expenditureToDelete = Expenditure.builder()
+                .id(expenditureId)
+                .description("Bahnfahrkarten")
+                .expenditurePerMemberList(List.of(
+                        ExpenditurePerMember.builder().username("Henny").amount(10).build(),
+                        ExpenditurePerMember.builder().username("Janice").amount(10).build()))
+                .payer(new UserDto("Henny"))
+                .amount(20)
+                .build();
+
+        Event event = Event.builder()
+                .id(eventId)
+                .title("Kanutour")
+                .members(List.of(new EventMember("Janice", 50),
+                        new EventMember("Henny", 50)))
+                .expenditures(List.of(expenditureToDelete))
+                .build();
+
+        eventDb.save(event);
+
+        Event eventExpected = Event.builder()
+                .id(eventId)
+                .title("Kanutour")
+                .members(List.of(new EventMember("Janice", 60),
+                        new EventMember("Henny", 40)))
+                .expenditures(List.of())
+                .build();
+
+
+        // When
+        HttpEntity<IdsDto> entity = getValidAuthorizationEntity(ids);
+        ResponseEntity<Event> response = restTemplate.exchange(getEventUrl() + "/expenditure/delete", HttpMethod.PUT, entity, Event.class);
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

@@ -122,7 +122,7 @@ class EventServiceTest {
                 EventMember.builder().username("Henny").balance(-834).build());
 
         // When
-        List<EventMember> result = eventService.updateBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount);
+         List<EventMember> result = eventService.updateBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount, true);
 
         // Then
         assertThat(result, is(expectedMemberList));
@@ -229,4 +229,49 @@ class EventServiceTest {
         assertThat(result, is(eventExpected));
     }
 
+    @Test
+    void testDeleteExpenditureShouldReturnEventWithDeletedExpenditure() {
+        // Given
+        String eventId = "event_id";
+        String expenditureId = "expenditure_id";
+        Instant expectedTime = Instant.parse("2020-11-22T18:00:00Z");
+
+        Expenditure expenditureToDelete = Expenditure.builder()
+                .id(expenditureId)
+                .description("Bahnfahrkarten")
+                .expenditurePerMemberList(List.of(
+                        ExpenditurePerMember.builder().username("Henny").amount(10).build(),
+                        ExpenditurePerMember.builder().username("Janice").amount(10).build()))
+                .amount(20)
+                .timestamp(expectedTime)
+                .payer(UserDto.builder().username("Henny").build())
+                .build();
+
+        Event eventBefore = Event.builder()
+                .id(eventId)
+                .title("Radreise")
+                .members(List.of(
+                        EventMember.builder().username("Janice").balance(50).build(),
+                        EventMember.builder().username("Henny").balance(50).build()))
+                .expenditures(List.of(expenditureToDelete))
+                .build();
+
+        Event eventExpected = Event.builder()
+                .id(eventId)
+                .title("Radreise")
+                .members(List.of(
+                        EventMember.builder().username("Janice").balance(60).build(),
+                        EventMember.builder().username("Henny").balance(40).build()))
+                .expenditures(List.of())
+                .build();
+
+        when(mockEventDb.findById(eventId)).thenReturn(Optional.of(eventBefore));
+        when(mockEventDb.save(eventExpected)).thenReturn(eventExpected);
+
+        // When
+        Event result = eventService.deleteExpenditure(eventId, expenditureId);
+
+        // Then
+        assertThat(result, is(eventExpected));
+    }
 }
