@@ -25,7 +25,7 @@ export default function EventContextProvider({ children }) {
     axios
       .post('/api/events/' + id, {description, members, payer, amount}, header(token))
       .then((response) => response.data)
-      .then((updateEvent) => setEvents(events.map((event) => event.id === id ? updateEvent : event)))
+      .then((updatedEvent) => setEvents(events.map((event) => event.id === id ? updateEvent : event)))
       .catch(console.log);
   
 
@@ -40,7 +40,7 @@ export default function EventContextProvider({ children }) {
     axios
       .put('/api/events/expenditure/delete', {eventId, expenditureId}, header(token))
       .then((response) => response.data)
-      .then((updateEvent) => setEvents(events.map((event) => event.id === eventId ? updateEvent : event)))
+      .then((updatedEvent) => setEvents(events.map((event) => event.id === eventId ? updateEvent : event)))
       .catch(console.log);
     
   return (
