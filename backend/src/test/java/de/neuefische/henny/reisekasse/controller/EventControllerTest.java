@@ -50,23 +50,10 @@ class EventControllerTest {
     @BeforeEach
     public void setupDb() {
         eventDb.deleteAll();
-        eventDb.saveAll(List.of(
-                Event.builder().id("id_1").title("Schwedenreise")
-                        .members(List.of(
-                                new EventMember("Janice", 0),
-                                new EventMember("Manu", 0),
-                                new EventMember("Henny", 0)))
-                        .expenditures(List.of()).build(),
-                Event.builder().id("id_2").title("Kanutour")
-                        .members(List.of(
-                                new EventMember("Janice", 0),
-                                new EventMember("Henny", 0)))
-                        .expenditures(List.of()).build()
-        ));
-
         userDb.deleteAll();
+
         String password = new BCryptPasswordEncoder().encode("superPassword123");
-        userDb.save(TravelFoundUser.builder().username("henny").password(password).build());;
+        userDb.save(TravelFoundUser.builder().username("henny").password(password).build());
     }
 
     private String getEventUrl() {
@@ -121,14 +108,24 @@ class EventControllerTest {
         List<Event> eventList = List.of(
                 Event.builder().id("id_1").title("Schwedenreise")
                         .members(List.of(
-                                new EventMember("Janice", 0),
-                                new EventMember("Manu", 0),
-                                new EventMember("Henny", 0)))
+                                new EventMember("janice", 0),
+                                new EventMember("manu", 0),
+                                new EventMember("henny", 0)))
                         .expenditures(List.of()).build(),
                 Event.builder().id("id_2").title("Kanutour")
                         .members(List.of(
-                                new EventMember("Janice", 0),
-                                new EventMember("Henny", 0)))
+                                new EventMember("janice", 0),
+                                new EventMember("torben", 0)))
+                        .expenditures(List.of()).build()
+        );
+        eventDb.saveAll(eventList);
+
+        List<Event> expectedEventList = List.of(
+                Event.builder().id("id_1").title("Schwedenreise")
+                        .members(List.of(
+                                new EventMember("janice", 0),
+                                new EventMember("manu", 0),
+                                new EventMember("henny", 0)))
                         .expenditures(List.of()).build()
         );
 
@@ -138,7 +135,7 @@ class EventControllerTest {
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(eventList.toArray()));
+        assertThat(response.getBody(), is(expectedEventList.toArray()));
     }
 
     @Test
@@ -147,6 +144,14 @@ class EventControllerTest {
         String eventId = "id_2";
         String expenditureId = "expenditure_id";
         Instant givenTime = Instant.parse("2020-11-22T18:00:00Z");
+
+        eventDb.saveAll(List.of(
+                Event.builder().id("id_2").title("Kanutour")
+                        .members(List.of(
+                                new EventMember("Janice", 0),
+                                new EventMember("Henny", 0)))
+                        .expenditures(List.of()).build()
+        ));
 
         AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
                 .description("Bahnfahrkarten")
@@ -172,7 +177,7 @@ class EventControllerTest {
                 .title("Kanutour")
                 .members(List.of(new EventMember("Janice", -10),
                         new EventMember("Henny", 10)))
-                .expenditures(new ArrayList<Expenditure>() {{
+                .expenditures(new ArrayList<>() {{
                     add(newExpenditure);
                 }})
                 .build();

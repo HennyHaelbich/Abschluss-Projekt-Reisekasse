@@ -35,7 +35,7 @@ export default function EventContextProvider({ children }) {
       .then((response) => response.data)
       .then((newEvent) => setEvents([...events, newEvent]))
       .catch(console.log);
-  
+    
     const removeExpenditure = (eventId, expenditureId) =>
     axios
       .put('/api/events/expenditure/delete', {eventId, expenditureId}, header(token))

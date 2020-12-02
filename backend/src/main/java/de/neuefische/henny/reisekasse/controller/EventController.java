@@ -8,6 +8,8 @@ import de.neuefische.henny.reisekasse.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 import java.util.List;
 
 @RestController
@@ -26,8 +28,8 @@ public class EventController {
     }
 
     @GetMapping
-    public List<Event> getEvents() {
-        return eventService.listEvents();
+    public List<Event> getEvents(Principal principal) {
+        return eventService.listEvents(principal.getName());
     }
 
     @PostMapping("{eventId}")

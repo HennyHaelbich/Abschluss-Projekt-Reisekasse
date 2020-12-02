@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,12 +26,14 @@ public class EventService {
     private final EventDb eventDb;
     private final IdUtils idUtils;
     private final TimestampUtils timestampUtils;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
-    public EventService(EventDb eventDb, IdUtils idUtils, TimestampUtils timestampUtils) {
+    public EventService(EventDb eventDb, IdUtils idUtils, TimestampUtils timestampUtils, MongoTemplate mongoTemplate) {
         this.eventDb = eventDb;
         this.idUtils = idUtils;
         this.timestampUtils = timestampUtils;
+        this.mongoTemplate = mongoTemplate;
     }
 
 
@@ -53,8 +58,12 @@ public class EventService {
         return eventDb.save(newEvent);
     }
 
-    public List<Event> listEvents() {
-        return eventDb.findAll();
+    public List<Event> listEvents(String username) {
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("members.username").is(username));
+
+        return mongoTemplate.find(query, Event.class);
     }
 
 

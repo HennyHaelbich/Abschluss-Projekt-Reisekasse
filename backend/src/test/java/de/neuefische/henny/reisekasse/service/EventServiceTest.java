@@ -10,6 +10,9 @@ import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,14 +29,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class EventServiceTest {
-    final EventDb mockEventDb = mock(EventDb.class);
-    final IdUtils mockIdUtils = mock(IdUtils.class);
-    final TimestampUtils mockTimestampUtils = mock(TimestampUtils.class);
-    final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockTimestampUtils);
+    private final EventDb mockEventDb = mock(EventDb.class);
+    private final IdUtils mockIdUtils = mock(IdUtils.class);
+    private final TimestampUtils mockTimestampUtils = mock(TimestampUtils.class);
+    private final MongoTemplate mockMongoTemplate = mock(MongoTemplate.class);
+    private final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockTimestampUtils, mockMongoTemplate);
 
     @Test
     void listEventsShouldGiveBackAllEventsInEventDb() {
         // Given
+        String username = "Janice";
         List<Event> eventList = List.of(
                 Event.builder().id("id_1").title("Schwedenreise")
                         .members(List.of(EventMember.builder().username("Janice").balance(0).build(),
@@ -42,17 +47,24 @@ class EventServiceTest {
                 Event.builder().id("id_2").title("Norwegen 2020")
                         .members(List.of(EventMember.builder().username("Julius").balance(0).build(),
                                 EventMember.builder().username("Henny").balance(0).build()))
-                        .expenditures(new ArrayList<>()).build()
-        );
-        when(mockEventDb.findAll()).thenReturn(eventList);
+                        .expenditures(new ArrayList<>()).build());
+
+        List<Event> eventListOfUser = List.of(
+                Event.builder().id("id_1").title("Schwedenreise")
+                        .members(List.of(EventMember.builder().username("Janice").balance(0).build(),
+                                EventMember.builder().username("Manu").balance(0).build()))
+                        .expenditures(new ArrayList<>()).build());
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("members.username").is(username));
+        when(mockMongoTemplate.find(query, Event.class)).thenReturn(eventList);
 
         // When
-        List<Event> allEvents = eventService.listEvents();
+        List<Event> allEvents = eventService.listEvents(username);
 
         // Then
         assertThat(allEvents, is(eventList));
     }
-
 
     @Test
     void testGetEventByIdShouldReturnTheSpecifiedEvent() {
@@ -110,7 +122,7 @@ class EventServiceTest {
                 EventMember.builder().username("Henny").balance(-834).build());
 
         // When
-        List<EventMember> result = eventService.updateBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount, true);
+         List<EventMember> result = eventService.updateBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount, true);
 
         // Then
         assertThat(result, is(expectedMemberList));
