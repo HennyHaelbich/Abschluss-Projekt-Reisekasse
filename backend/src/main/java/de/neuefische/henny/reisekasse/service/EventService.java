@@ -63,7 +63,6 @@ public class EventService {
         List<ExpenditurePerMember> expenditurePerMemberList =
                 calculateExpenditurePerMember(addExpenditureDto.getMembers(), addExpenditureDto.getAmount());
 
-        // build new expenditure
         Expenditure newExpenditure = Expenditure.builder()
                 .id(idUtils.generateId())
                 .timestamp(timestampUtils.generateTimestampEpochSeconds())
@@ -73,14 +72,12 @@ public class EventService {
                 .amount(addExpenditureDto.getAmount())
                 .build();
 
-        // get Event from Database
         Event event = getEventById(eventId);
 
         event.getExpenditures().add(newExpenditure);
 
-        // calculate nur balance
         List<EventMember> updatedEventMembers =
-                setNewBalance(addExpenditureDto.getMembers(), expenditurePerMemberList, addExpenditureDto.getPayer(), addExpenditureDto.getAmount(), true);
+                updateBalance(addExpenditureDto.getMembers(), expenditurePerMemberList, addExpenditureDto.getPayer(), addExpenditureDto.getAmount(), true);
 
         event.setMembers(updatedEventMembers);
 
@@ -90,15 +87,12 @@ public class EventService {
 
     public Event deleteExpenditure(String eventId, String expenditureId) {
 
-        // get Event from Database
         Event event = getEventById(eventId);
 
-        // get Expenditure to delete
         Optional<Expenditure> optionalExpenditureToDelete = event.getExpenditures().stream()
                 .filter(expenditure -> expenditure.getId().equals(expenditureId))
                 .findAny();
 
-        // get Expenditures without Expenditure to delete
         List<Expenditure> ExpendituresWithoutToDeleteExpenditure = event.getExpenditures().stream()
                 .filter(expenditure -> !expenditure.getId().equals(expenditureId))
                 .collect(Collectors.toList());
@@ -109,8 +103,7 @@ public class EventService {
 
         Expenditure expenditureToDelete = optionalExpenditureToDelete.get();
 
-        // calculate nur balance
-        List<EventMember> updatedEventMembers = setNewBalance(
+        List<EventMember> updatedEventMembers = updateBalance(
                 event.getMembers(), expenditureToDelete.getExpenditurePerMemberList(), expenditureToDelete.getPayer(), expenditureToDelete.getAmount(), false);
 
         event.setMembers(updatedEventMembers);
@@ -156,7 +149,7 @@ public class EventService {
         return expenditurePerMemberList;
     }
 
-    public List<EventMember> setNewBalance(
+    public List<EventMember> updateBalance(
             List<EventMember> eventMembers, List<ExpenditurePerMember> expenditurePerMembers, UserDto payer, int amount, boolean addExpenditure) {
         for (EventMember eventMember : eventMembers) {
             for (ExpenditurePerMember expenditurePerMember : expenditurePerMembers) {
