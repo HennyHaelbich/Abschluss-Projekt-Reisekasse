@@ -29,13 +29,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class EventServiceTest {
-    final EventDb mockEventDb = mock(EventDb.class);
-    final IdUtils mockIdUtils = mock(IdUtils.class);
-    final TimestampUtils mockTimestampUtils = mock(TimestampUtils.class);
-    MongoTemplate mockMongoTemplate = mock(MongoTemplate.class);
-    final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockTimestampUtils, mockMongoTemplate);
+    private final EventDb mockEventDb = mock(EventDb.class);
+    private final IdUtils mockIdUtils = mock(IdUtils.class);
+    private final TimestampUtils mockTimestampUtils = mock(TimestampUtils.class);
+    private final MongoTemplate mockMongoTemplate = mock(MongoTemplate.class);
+    private final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockTimestampUtils, mockMongoTemplate);
 
-   @Test
+    @Test
     void listEventsShouldGiveBackAllEventsInEventDb() {
         // Given
         String username = "Janice";
@@ -122,7 +122,7 @@ class EventServiceTest {
                 EventMember.builder().username("Henny").balance(-834).build());
 
         // When
-        List<EventMember> result = eventService.setNewBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount);
+        List<EventMember> result = eventService.updateBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount);
 
         // Then
         assertThat(result, is(expectedMemberList));

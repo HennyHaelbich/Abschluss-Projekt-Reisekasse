@@ -90,7 +90,7 @@ public class EventService {
         event.getExpenditures().add(newExpenditure);
 
         List<EventMember> updatedEventMembers =
-                setNewBalance(addExpenditureDto.getMembers(), expenditurePerMemberList, addExpenditureDto.getPayer(), addExpenditureDto.getAmount());
+                updateBalance(addExpenditureDto.getMembers(), expenditurePerMemberList, addExpenditureDto.getPayer(), addExpenditureDto.getAmount());
 
         event.setMembers(updatedEventMembers);
 
@@ -134,7 +134,7 @@ public class EventService {
         return expenditurePerMemberList;
     }
 
-    public List<EventMember> setNewBalance(
+    public List<EventMember> updateBalance(
             List<EventMember> eventMembers, List<ExpenditurePerMember> expenditurePerMembers, UserDto payer, int amount) {
         for (EventMember eventMember : eventMembers) {
             for (ExpenditurePerMember expenditurePerMember : expenditurePerMembers) {
