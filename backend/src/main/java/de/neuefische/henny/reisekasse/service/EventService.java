@@ -126,6 +126,7 @@ public class EventService {
         return eventDb.findById(eventId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "event not found"));
     }
 
+
     public List<ExpenditurePerMember> calculateExpenditurePerMember(List<EventMember> eventMembers, int amount) {
         int amountRest =  (amount % eventMembers.size());
         int amountToDivideEvenly = amount - amountRest;
