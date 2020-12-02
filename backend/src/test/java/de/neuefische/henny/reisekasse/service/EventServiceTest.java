@@ -110,7 +110,7 @@ class EventServiceTest {
                 EventMember.builder().username("Henny").balance(-834).build());
 
         // When
-        List<EventMember> result = eventService.setNewBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount, true);
+        List<EventMember> result = eventService.updateBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount, true);
 
         // Then
         assertThat(result, is(expectedMemberList));
@@ -262,6 +262,4 @@ class EventServiceTest {
         // Then
         assertThat(result, is(eventExpected));
     }
-
-
 }
