@@ -11,6 +11,8 @@ import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -33,9 +35,10 @@ class EventServiceTest {
     MongoTemplate mockMongoTemplate = mock(MongoTemplate.class);
     final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockTimestampUtils, mockMongoTemplate);
 
-   /* @Test
+   @Test
     void listEventsShouldGiveBackAllEventsInEventDb() {
         // Given
+        String username = "Janice";
         List<Event> eventList = List.of(
                 Event.builder().id("id_1").title("Schwedenreise")
                         .members(List.of(EventMember.builder().username("Janice").balance(0).build(),
@@ -52,15 +55,16 @@ class EventServiceTest {
                                 EventMember.builder().username("Manu").balance(0).build()))
                         .expenditures(new ArrayList<>()).build());
 
+        Query query = new Query();
+        query.addCriteria(Criteria.where("members.username").is(username));
         when(mockMongoTemplate.find(query, Event.class)).thenReturn(eventList);
 
         // When
-        List<Event> allEvents = eventService.listEvents("Janice");
+        List<Event> allEvents = eventService.listEvents(username);
 
         // Then
         assertThat(allEvents, is(eventList));
     }
-*/
 
     @Test
     void testGetEventByIdShouldReturnTheSpecifiedEvent() {
