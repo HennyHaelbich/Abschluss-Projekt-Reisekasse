@@ -1,10 +1,7 @@
 package de.neuefische.henny.reisekasse.service;
 
 import de.neuefische.henny.reisekasse.db.EventDb;
-import de.neuefische.henny.reisekasse.model.Event;
-import de.neuefische.henny.reisekasse.model.EventMember;
-import de.neuefische.henny.reisekasse.model.Expenditure;
-import de.neuefische.henny.reisekasse.model.ExpenditurePerMember;
+import de.neuefische.henny.reisekasse.model.*;
 import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
@@ -180,6 +177,41 @@ public class EventService {
             }
         }
         return eventMembers;
+    }
+
+    public List<Transfer> compensateBalances(List<EventMember> eventMembers) {
+        List<EventMember> payers = eventMembers.stream()
+                .filter(member -> member.getBalance() < 0)
+                .collect(Collectors.toList());
+        payers.sort(Comparator.comparing(EventMember::getBalance));
+
+        List<EventMember> paymentReceiver = eventMembers.stream()
+                .filter(member -> member.getBalance() > 0)
+                .collect(Collectors.toList());
+        paymentReceiver.sort(Comparator.comparing(EventMember::getBalance));
+
+        List<Transfer> transferList = new ArrayList<>();
+
+
+    if (paymentReceiver.get(0).getBalance() <= Math.abs(payers.get(0).getBalance())){
+
+        Transfer transfer = new Transfer(new UserDto(payers.get(0).getUsername(), payers.get(0).getFirstName(), payers.get(0).getLastName()),
+                new UserDto(payers.get(0).getUsername(), payers.get(0).getFirstName(), payers.get(0).getLastName()),
+                paymentReceiver.get(0).getBalance());
+        transferList.add(transfer);
+
+        payers.get(0).setBalance(payers.get(0).getBalance() + paymentReceiver.get(0).getBalance());
+        paymentReceiver.remove(0);
+
+        if(payers.get(0).getBalance() == 0){
+            payers.remove(0);
+        }
+
+
+
+        }
+
+        return null;
     }
 
 }
