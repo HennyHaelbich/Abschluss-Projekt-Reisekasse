@@ -189,9 +189,8 @@ public class EventService {
 
         List<EventMember> payers = eventMembers.stream()
                 .filter(member -> member.getBalance() < 0)
-                .sorted(Comparator.comparing(EventMember::getBalance))
+                .sorted(Comparator.comparing(EventMember::getBalance).reversed())
                 .collect(Collectors.toList());
-        Collections.reverse(payers);
 
         List<Transfer> transferList = new ArrayList<>();
 
@@ -199,7 +198,7 @@ public class EventService {
         // to optimise the compensate balances algorithm subgroups of higher order must be found and separated
         for (EventMember paymentReceiver : paymentReceivers) {
             for (EventMember payer : payers) {
-                if (paymentReceiver.getBalance() == -1 * (payer.getBalance())) {
+                if (paymentReceiver.getBalance() == Math.abs((payer.getBalance()))) {
                     Transfer transfer = Transfer.builder()
                             .payer(new UserIdDto(payer.getUsername()))
                             .paymentReceiver(new UserIdDto(paymentReceiver.getUsername()))
@@ -223,7 +222,7 @@ public class EventService {
         List<Transfer> transferList = new ArrayList<>();
 
         while (payers.size() > 0) {
-            if (paymentReceivers.get(0).getBalance() <= -1 * payers.get(0).getBalance()){
+            if (paymentReceivers.get(0).getBalance() <= Math.abs(payers.get(0).getBalance())){
 
                 Transfer transfer = Transfer.builder().payer(new UserIdDto(payers.get(0).getUsername()))
                         .paymentReceiver(new UserIdDto(paymentReceivers.get(0).getUsername()))
