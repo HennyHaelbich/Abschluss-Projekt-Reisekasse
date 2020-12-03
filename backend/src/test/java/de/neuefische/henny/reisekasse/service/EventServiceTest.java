@@ -37,15 +37,6 @@ class EventServiceTest {
     void listEventsShouldGiveBackAllEventsInEventDb() {
         // Given
         String username = "Janice";
-        List<Event> eventList = List.of(
-                Event.builder().id("id_1").title("Schwedenreise")
-                        .members(List.of(EventMember.builder().username("Janice").balance(0).build(),
-                                EventMember.builder().username("Manu").balance(0).build()))
-                        .expenditures(new ArrayList<>()).build(),
-                Event.builder().id("id_2").title("Norwegen 2020")
-                        .members(List.of(EventMember.builder().username("Julius").balance(0).build(),
-                                EventMember.builder().username("Henny").balance(0).build()))
-                        .expenditures(new ArrayList<>()).build());
 
         List<Event> eventListOfUser = List.of(
                 Event.builder().id("id_1").title("Schwedenreise")
@@ -55,13 +46,13 @@ class EventServiceTest {
 
         Query query = new Query();
         query.addCriteria(Criteria.where("members.username").is(username));
-        when(mockMongoTemplate.find(query, Event.class)).thenReturn(eventList);
+        when(mockMongoTemplate.find(query, Event.class)).thenReturn(eventListOfUser);
 
         // When
-        List<Event> allEvents = eventService.listEvents(username);
+        List<Event> userEvents = eventService.listEvents(username);
 
         // Then
-        assertThat(allEvents, is(eventList));
+        assertThat(userEvents, is(eventListOfUser));
     }
 
     @Test
