@@ -4,7 +4,6 @@ import de.neuefische.henny.reisekasse.db.EventDb;
 import de.neuefische.henny.reisekasse.model.*;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
-import de.neuefische.henny.reisekasse.model.dto.UserIdDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.junit.jupiter.api.Test;
@@ -278,23 +277,23 @@ class EventServiceTest {
 
         List<Transfer> expectedTransfers = List.of(
                 Transfer.builder()
-                        .payer(new UserIdDto("Janice"))
-                        .paymentReceiver(new UserIdDto("Rene"))
+                        .payer(new UserDto("Janice"))
+                        .paymentReceiver(new UserDto("Rene"))
                         .amount(15)
                         .build(),
                 Transfer.builder()
-                        .payer(new UserIdDto("Henny"))
-                        .paymentReceiver(new UserIdDto("Rene"))
+                        .payer(new UserDto("Henny"))
+                        .paymentReceiver(new UserDto("Rene"))
                         .amount(5)
                         .build(),
                 Transfer.builder()
-                        .payer(new UserIdDto("Henny"))
-                        .paymentReceiver(new UserIdDto("Manu"))
+                        .payer(new UserDto("Henny"))
+                        .paymentReceiver(new UserDto("Manu"))
                         .amount(18)
                         .build(),
                 Transfer.builder()
-                        .payer(new UserIdDto("Steffen"))
-                        .paymentReceiver(new UserIdDto("Manu"))
+                        .payer(new UserDto("Steffen"))
+                        .paymentReceiver(new UserDto("Manu"))
                         .amount(25)
                         .build());
 
@@ -317,18 +316,18 @@ class EventServiceTest {
 
         List<Transfer> expectedTransfers = List.of(
                 Transfer.builder()
-                        .payer(new UserIdDto("Henny"))
-                        .paymentReceiver(new UserIdDto("Rene"))
+                        .payer(new UserDto("Henny"))
+                        .paymentReceiver(new UserDto("Rene"))
                         .amount(20)
                         .build(),
                 Transfer.builder()
-                        .payer(new UserIdDto("Janice"))
-                        .paymentReceiver(new UserIdDto("Manu"))
+                        .payer(new UserDto("Janice"))
+                        .paymentReceiver(new UserDto("Manu"))
                         .amount(15)
                         .build(),
                 Transfer.builder()
-                        .payer(new UserIdDto("Steffen"))
-                        .paymentReceiver(new UserIdDto("Manu"))
+                        .payer(new UserDto("Steffen"))
+                        .paymentReceiver(new UserDto("Manu"))
                         .amount(25)
                         .build());
 

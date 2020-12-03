@@ -5,7 +5,6 @@ import de.neuefische.henny.reisekasse.model.*;
 import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
-import de.neuefische.henny.reisekasse.model.dto.UserIdDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,8 +199,8 @@ public class EventService {
             for (EventMember payer : payers) {
                 if (paymentReceiver.getBalance() == Math.abs((payer.getBalance()))) {
                     Transfer transfer = Transfer.builder()
-                            .payer(new UserIdDto(payer.getUsername()))
-                            .paymentReceiver(new UserIdDto(paymentReceiver.getUsername()))
+                            .payer(new UserDto(payer.getUsername(), payer.getFirstName(), payer.getLastName()))
+                            .paymentReceiver(new UserDto(paymentReceiver.getUsername(), paymentReceiver.getFirstName(), paymentReceiver.getLastName()))
                             .amount(paymentReceiver.getBalance())
                             .build();
                     transferList.add(transfer);
@@ -224,8 +223,9 @@ public class EventService {
         while (payers.size() > 0) {
             if (paymentReceivers.get(0).getBalance() <= Math.abs(payers.get(0).getBalance())){
 
-                Transfer transfer = Transfer.builder().payer(new UserIdDto(payers.get(0).getUsername()))
-                        .paymentReceiver(new UserIdDto(paymentReceivers.get(0).getUsername()))
+                Transfer transfer = Transfer.builder()
+                        .payer(new UserDto(payers.get(0).getUsername(), payers.get(0).getFirstName(), payers.get(0).getLastName()))
+                        .paymentReceiver(new UserDto(paymentReceivers.get(0).getUsername(), paymentReceivers.get(0).getFirstName(), paymentReceivers.get(0).getLastName()))
                         .amount(paymentReceivers.get(0).getBalance())
                         .build();
                 transferList.add(transfer);
@@ -237,9 +237,10 @@ public class EventService {
                     payers.remove(0);
                 }
             } else {
-                Transfer transfer = Transfer.builder().payer(new UserIdDto(payers.get(0).getUsername()))
-                        .paymentReceiver(new UserIdDto(paymentReceivers.get(0).getUsername()))
-                        .amount(-payers.get(0).getBalance())
+                Transfer transfer = Transfer.builder()
+                        .payer(new UserDto(payers.get(0).getUsername(), payers.get(0).getFirstName(), payers.get(0).getLastName()))
+                        .paymentReceiver(new UserDto(paymentReceivers.get(0).getUsername(), paymentReceivers.get(0).getFirstName(), paymentReceivers.get(0).getLastName()))
+                        .amount(Math.abs(payers.get(0).getBalance()))
                         .build();
                 transferList.add(transfer);
 
