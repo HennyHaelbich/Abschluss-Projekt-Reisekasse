@@ -5,11 +5,10 @@ import styled from 'styled-components/macro';
 import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
 import {Button} from "@material-ui/core";
 import useCalculateCompensation from "../compensationPage/useCalculateCompensation";
+import useEvent from "../hooks/useEvent";
 
 export default function Overview() {
-  const { events, calculateCompensations } = useContext(EventContext);
-  const { eventId } = useParams();
-  const event = events.find((event) => event.id === eventId);
+  const { event } = useEvent();
   const { calculateCompensation } = useCalculateCompensation();
 
   return (
