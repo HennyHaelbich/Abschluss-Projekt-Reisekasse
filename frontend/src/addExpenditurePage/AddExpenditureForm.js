@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -8,23 +8,24 @@ import EventContext from "../contexts/EventContext";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import MenuItem from "@material-ui/core/MenuItem";
 import { displayName } from "../helperFunctions/helperFunctions";
+import useEvent from "../hooks/useEvent";
 
 export default function AddExpenditureForm() {
   const history = useHistory();
   const [description, setDescription] = useState('');
   const [amountString, setAmountString] = useState('');
   const [payer, setPayer] = useState('');
-  const { events, updateEvent } = useContext(EventContext);
-  const { id } = useParams();
-  const event = events.find((event) => event.id === id);
-  const members = event.members;
+  const { updateEvent } = useContext(EventContext);
+  const { event, eventId } = useEvent();
+  const members = event?.members;
   
   
   return (
-    <>
+    members ? <>
       <Header title='Ausgabe hinzufügen' />
-      
-      <FormStyled>
+  
+  
+        <FormStyled>
         <TextField
           label = "Beschreibung"
           value = {description}
@@ -69,14 +70,14 @@ export default function AddExpenditureForm() {
           Abbrechen
         </Button>
       </FormStyled>
-    </>
+    </> : null
   );
 
   function saveExpenditure(event) {
     event.preventDefault();
     const amount = Number(amountString) * 100
-    updateEvent(description, members, payer, amount, id)
-    history.push(`/event/${id}`)
+    updateEvent(description, members, payer, amount, eventId)
+    history.push(`/event/${eventId}`)
   }
 }
 
