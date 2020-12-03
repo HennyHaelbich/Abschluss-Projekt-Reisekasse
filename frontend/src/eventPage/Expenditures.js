@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom"
 import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
 import Card from "@material-ui/core/Card";
 import Fab from "@material-ui/core/Fab";
@@ -7,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components/macro'
 import { Button } from "@material-ui/core";
 import useEvent from "../hooks/useEvent";
+
 
 
 export default function Expenditures() {

@@ -20,7 +20,7 @@ function App() {
           <Route path={'/login'} component={LoginPage} />
           <ProtectedRoute path={'/new'} component={AddEventForm} />
           <ProtectedRoute path={'/events'} component={EventsPage} />
-          <ProtectedRoute exact path={'/event/compensation/:eventId'} component={CompensationPage} />
+         {/*<ProtectedRoute exact path={'/event/compensation/:eventId'} component={CompensationPage} />*/}
           <ProtectedRoute exact path={'/event/new-expand/:eventId'} component={AddExpenditureForm} />
           <ProtectedRoute exact path={'/event/:eventId/:expenditureId'} component={ExpenditurePage} />
           <ProtectedRoute exact path={'/event/:eventId'} component={ShowEvent} />

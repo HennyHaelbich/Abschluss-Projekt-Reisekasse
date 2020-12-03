@@ -1,35 +1,37 @@
-import React, { useContext } from 'react';
-import EventContext from '../contexts/EventContext';
-import { useParams } from 'react-router-dom';
+import React, {useContext} from 'react';
 import styled from 'styled-components/macro';
 import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
 import {Button} from "@material-ui/core";
-import useCalculateCompensation from "../compensationPage/useCalculateCompensation";
 import useEvent from "../hooks/useEvent";
+import { useHistory } from "react-router-dom";
+import EventContext from "../contexts/EventContext";
 
 export default function Overview() {
   const { event } = useEvent();
-  const { calculateCompensation } = useCalculateCompensation();
+  const { calculateCompensation } = useContext(EventContext);
+  const history = useHistory();
+  const members = event?.members;
 
   return (
     <>
-      event ? event.members.map((member) => (
+      {members ? members.map((member) => (
         <ListStyled key={member.username}>
           <p>{displayName(member)}</p>
           <p>{formattedAmount(member.balance)}</p>
         </ListStyled>
-      )) : null
-  
+        )) : null }
+      
       <Button variant="outlined" onClick={handleClick}>
         Ausgleichszahlungen berechnen
       </Button>
-      
+
     </>
   );
   
   function handleClick(event) {
     event.preventDefault();
-    calculateCompensation(event.members);
+    console.log("EventMembers", members)
+    calculateCompensation(members);
     history.push('/balancing/:eventId');
   }
 }
