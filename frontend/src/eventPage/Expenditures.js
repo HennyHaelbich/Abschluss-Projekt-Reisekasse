@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom";
 import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
 import Card from "@material-ui/core/Card";
 import Fab from "@material-ui/core/Fab";
@@ -9,11 +9,9 @@ import { Button } from "@material-ui/core";
 import useEvent from "../hooks/useEvent";
 
 
-
 export default function Expenditures() {
   const { event } = useEvent();
   const history = useHistory();
-  
   
   return (
     <div>
@@ -22,7 +20,7 @@ export default function Expenditures() {
           <AddIcon />
         </Fab>
       </DivStyled>
-
+      
       {event.expenditures.map((expenditure) => (
         <Card key={expenditure.id}>
           <p>{expenditure.description}: {formattedAmount(expenditure.amount)}</p>
@@ -42,4 +40,3 @@ const DivStyled = styled.div`
       bottom: 30px;
       right: 30px;
 `;
-

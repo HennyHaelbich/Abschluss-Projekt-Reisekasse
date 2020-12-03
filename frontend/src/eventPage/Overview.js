@@ -32,7 +32,7 @@ export default function Overview() {
     event.preventDefault();
     console.log("EventMembers", members)
     calculateCompensation(members);
-    history.push('/balancing/:eventId');
+    history.push('/event/compensation/:eventId');
   }
 }
 
