@@ -1,8 +1,10 @@
 package de.neuefische.henny.reisekasse.controller;
 
 import de.neuefische.henny.reisekasse.model.Event;
+import de.neuefische.henny.reisekasse.model.Transfer;
 import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
+import de.neuefische.henny.reisekasse.model.dto.EventMembersDto;
 import de.neuefische.henny.reisekasse.model.dto.IdsDto;
 import de.neuefische.henny.reisekasse.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,11 @@ public class EventController {
    @PutMapping("/expenditure/delete")
     public Event deleteExpenditure(@RequestBody IdsDto ids) {
         return eventService.deleteExpenditure(ids.getEventId(), ids.getExpenditureId());
+    }
+
+    @PutMapping("/compensations")
+    public List<Transfer> compensateBalances(@RequestBody EventMembersDto members) {
+        return eventService.compensateBalances(members.getMembers());
     }
 
 }
