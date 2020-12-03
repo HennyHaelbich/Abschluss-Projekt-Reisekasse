@@ -1,13 +1,10 @@
-import React, { useContext } from 'react';
-import EventContext from '../contexts/EventContext';
-import { useParams } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components/macro';
 import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
+import useEvent from "../hooks/useEvent";
 
 export default function Overview() {
-  const { events } = useContext(EventContext);
-  const { eventId } = useParams();
-  const event = events.find((event) => event.id === eventId);
+  const { event } = useEvent();
 
   return (
   event ? event.members.map((member) => (

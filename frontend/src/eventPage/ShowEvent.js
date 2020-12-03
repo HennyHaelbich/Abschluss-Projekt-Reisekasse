@@ -1,13 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Header from '../commons/Header';
-import EventContext from '../contexts/EventContext';
 import TabPanel from './TabPanel';
-import { useParams } from 'react-router-dom';
+import useEvent from "../hooks/useEvent";
 
 export default function ShowEvent() {
-  const { events } = useContext(EventContext);
-  const { eventId } = useParams();
-  const event = events.find((event) => event.id === eventId);
+  const { event } = useEvent();
 
   return (
     <>

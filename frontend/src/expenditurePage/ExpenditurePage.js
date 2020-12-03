@@ -4,11 +4,12 @@ import {useHistory, useParams} from "react-router-dom";
 import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
 import Card from "@material-ui/core/Card";
 import {Button} from "@material-ui/core";
+import useEvent from "../hooks/useEvent";
 
 export default function ExpenditurePage() {
-  const { events , removeExpenditure } = useContext(EventContext);
-  const { eventId, expenditureId } = useParams();
-  const event = events.find((event) => event.id === eventId);
+  const { removeExpenditure } = useContext(EventContext);
+  const { expenditureId } = useParams();
+  const { event, eventId } = useEvent();
   const expenditure = event?.expenditures.find((exp) => exp.id === expenditureId)
   const history = useHistory();
   
