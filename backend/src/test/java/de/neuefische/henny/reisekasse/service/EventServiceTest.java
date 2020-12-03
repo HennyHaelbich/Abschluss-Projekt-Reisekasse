@@ -1,12 +1,10 @@
 package de.neuefische.henny.reisekasse.service;
 
 import de.neuefische.henny.reisekasse.db.EventDb;
-import de.neuefische.henny.reisekasse.model.Event;
-import de.neuefische.henny.reisekasse.model.EventMember;
-import de.neuefische.henny.reisekasse.model.Expenditure;
-import de.neuefische.henny.reisekasse.model.ExpenditurePerMember;
+import de.neuefische.henny.reisekasse.model.*;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
+import de.neuefische.henny.reisekasse.model.dto.UserIdDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.junit.jupiter.api.Test;
@@ -273,5 +271,80 @@ class EventServiceTest {
 
         // Then
         assertThat(result, is(eventExpected));
+    }
+
+    @Test
+    void testCompensateBalancesOfSubgroupShouldReturnListOfTransfers() {
+        // Given
+        List<EventMember> paymentReceivers = new ArrayList<>();
+        paymentReceivers.add(EventMember.builder().username("Rene").balance(20).build());
+        paymentReceivers.add(EventMember.builder().username("Manu").balance(43).build());
+
+        List<EventMember> payers = new ArrayList<>();
+        payers.add(EventMember.builder().username("Janice").balance(-15).build());
+        payers.add(EventMember.builder().username("Henny").balance(-23).build());
+        payers.add(EventMember.builder().username("Steffen").balance(-25).build());
+
+        List<Transfer> expectedTransfers = List.of(
+                Transfer.builder()
+                        .payer(new UserIdDto("Janice"))
+                        .paymentReceiver(new UserIdDto("Rene"))
+                        .amount(15)
+                        .build(),
+                Transfer.builder()
+                        .payer(new UserIdDto("Henny"))
+                        .paymentReceiver(new UserIdDto("Rene"))
+                        .amount(5)
+                        .build(),
+                Transfer.builder()
+                        .payer(new UserIdDto("Henny"))
+                        .paymentReceiver(new UserIdDto("Manu"))
+                        .amount(18)
+                        .build(),
+                Transfer.builder()
+                        .payer(new UserIdDto("Steffen"))
+                        .paymentReceiver(new UserIdDto("Manu"))
+                        .amount(25)
+                        .build());
+
+        // When
+        List<Transfer> result = eventService.compensateBalancesOfSubgroup(paymentReceivers, payers);
+
+        // Then
+        assertThat(result, is(expectedTransfers));
+    }
+
+    @Test
+    void testCompensateBalanceShouldFindeOneToOneMatchesAndReturnListOfTransfers() {
+        // Given
+        List<EventMember> givenEventMemberList = List.of(
+                EventMember.builder().username("Henny").balance(-20).build(),
+                EventMember.builder().username("Janice").balance(-15).build(),
+                EventMember.builder().username("Steffen").balance(-25).build(),
+                EventMember.builder().username("Manu").balance(40).build(),
+                EventMember.builder().username("Rene").balance(20).build());
+
+        List<Transfer> expectedTransfers = List.of(
+                Transfer.builder()
+                        .payer(new UserIdDto("Henny"))
+                        .paymentReceiver(new UserIdDto("Rene"))
+                        .amount(20)
+                        .build(),
+                Transfer.builder()
+                        .payer(new UserIdDto("Janice"))
+                        .paymentReceiver(new UserIdDto("Manu"))
+                        .amount(15)
+                        .build(),
+                Transfer.builder()
+                        .payer(new UserIdDto("Steffen"))
+                        .paymentReceiver(new UserIdDto("Manu"))
+                        .amount(25)
+                        .build());
+
+        // When
+        List<Transfer> result = eventService.compensateBalances(givenEventMemberList);
+
+        // Then
+        assertThat(result, is(expectedTransfers));
     }
 }

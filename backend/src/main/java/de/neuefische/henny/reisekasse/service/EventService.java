@@ -1,13 +1,11 @@
 package de.neuefische.henny.reisekasse.service;
 
 import de.neuefische.henny.reisekasse.db.EventDb;
-import de.neuefische.henny.reisekasse.model.Event;
-import de.neuefische.henny.reisekasse.model.EventMember;
-import de.neuefische.henny.reisekasse.model.Expenditure;
-import de.neuefische.henny.reisekasse.model.ExpenditurePerMember;
+import de.neuefische.henny.reisekasse.model.*;
 import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
+import de.neuefische.henny.reisekasse.model.dto.UserIdDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +104,7 @@ public class EventService {
                 .filter(expenditure -> !expenditure.getId().equals(expenditureId))
                 .collect(Collectors.toList());
 
-        if(optionalExpenditureToDelete.isEmpty()) {
+        if (optionalExpenditureToDelete.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "expenditure not found");
         }
 
@@ -128,7 +126,7 @@ public class EventService {
 
 
     public List<ExpenditurePerMember> calculateExpenditurePerMember(List<EventMember> eventMembers, int amount) {
-        int amountRest =  (amount % eventMembers.size());
+        int amountRest = (amount % eventMembers.size());
         int amountToDivideEvenly = amount - amountRest;
         int amountPerPerson = amountToDivideEvenly / eventMembers.size();
 
@@ -162,14 +160,14 @@ public class EventService {
             List<EventMember> eventMembers, List<ExpenditurePerMember> expenditurePerMembers, UserDto payer, int amount, boolean addExpenditure) {
         for (EventMember eventMember : eventMembers) {
             for (ExpenditurePerMember expenditurePerMember : expenditurePerMembers) {
-                if (eventMember.getUsername().equals(expenditurePerMember.getUsername())){
+                if (eventMember.getUsername().equals(expenditurePerMember.getUsername())) {
                     if (addExpenditure) {
                         eventMember.setBalance(eventMember.getBalance() - expenditurePerMember.getAmount());
                     } else {
                         eventMember.setBalance(eventMember.getBalance() + expenditurePerMember.getAmount());
                     }
                     if (eventMember.getUsername().equals(payer.getUsername())) {
-                        if(addExpenditure) {
+                        if (addExpenditure) {
                             eventMember.setBalance(eventMember.getBalance() + amount);
                         } else {
                             eventMember.setBalance(eventMember.getBalance() - amount);
@@ -182,4 +180,75 @@ public class EventService {
         return eventMembers;
     }
 
+    public List<Transfer> compensateBalances(List<EventMember> eventMembers) {
+
+        List<EventMember> paymentReceivers = eventMembers.stream()
+                .filter(member -> member.getBalance() > 0)
+                .sorted(Comparator.comparing(EventMember::getBalance))
+                .collect(Collectors.toList());
+
+        List<EventMember> payers = eventMembers.stream()
+                .filter(member -> member.getBalance() < 0)
+                .sorted(Comparator.comparing(EventMember::getBalance).reversed())
+                .collect(Collectors.toList());
+
+        List<Transfer> transferList = new ArrayList<>();
+
+        // Find and handle Subgroups of two
+        // to optimise the compensate balances algorithm subgroups of higher order must be found and separated
+        for (EventMember paymentReceiver : paymentReceivers) {
+            for (EventMember payer : payers) {
+                if (paymentReceiver.getBalance() == Math.abs((payer.getBalance()))) {
+                    Transfer transfer = Transfer.builder()
+                            .payer(new UserIdDto(payer.getUsername()))
+                            .paymentReceiver(new UserIdDto(paymentReceiver.getUsername()))
+                            .amount(paymentReceiver.getBalance())
+                            .build();
+                    transferList.add(transfer);
+
+                    paymentReceivers.remove(paymentReceiver);
+                    payers.remove(payer);
+                }
+            }
+        }
+        
+        List<Transfer> transferListOfSubgroup = compensateBalancesOfSubgroup(paymentReceivers, payers);
+        transferList.addAll(transferListOfSubgroup);
+                
+        return transferList;
+    }
+
+    public List<Transfer> compensateBalancesOfSubgroup(List<EventMember> paymentReceivers, List<EventMember> payers) {
+        List<Transfer> transferList = new ArrayList<>();
+
+        while (payers.size() > 0) {
+            if (paymentReceivers.get(0).getBalance() <= Math.abs(payers.get(0).getBalance())){
+
+                Transfer transfer = Transfer.builder().payer(new UserIdDto(payers.get(0).getUsername()))
+                        .paymentReceiver(new UserIdDto(paymentReceivers.get(0).getUsername()))
+                        .amount(paymentReceivers.get(0).getBalance())
+                        .build();
+                transferList.add(transfer);
+
+                payers.get(0).setBalance(payers.get(0).getBalance() + paymentReceivers.get(0).getBalance());
+                paymentReceivers.remove(0);
+
+                if (payers.get(0).getBalance() == 0) {
+                    payers.remove(0);
+                }
+            } else {
+                Transfer transfer = Transfer.builder().payer(new UserIdDto(payers.get(0).getUsername()))
+                        .paymentReceiver(new UserIdDto(paymentReceivers.get(0).getUsername()))
+                        .amount(-payers.get(0).getBalance())
+                        .build();
+                transferList.add(transfer);
+
+                paymentReceivers.get(0).setBalance(payers.get(0).getBalance() + paymentReceivers.get(0).getBalance());
+                payers.remove(0);
+            }
+        }
+        return transferList;
+    }
+
 }
+
