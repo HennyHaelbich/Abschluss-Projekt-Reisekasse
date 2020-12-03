@@ -181,37 +181,61 @@ public class EventService {
 
     public List<Transfer> compensateBalances(List<EventMember> eventMembers) {
         List<EventMember> payers = eventMembers.stream()
-                .filter(member -> member.getBalance() < 0)
-                .collect(Collectors.toList());
-        payers.sort(Comparator.comparing(EventMember::getBalance));
+                .filter(member -> member.getBalance() < 0).sorted(Comparator.comparing(EventMember::getBalance)).collect(Collectors.toList());
+        Collections.reverse(payers);
 
-        List<EventMember> paymentReceiver = eventMembers.stream()
-                .filter(member -> member.getBalance() > 0)
-                .collect(Collectors.toList());
-        paymentReceiver.sort(Comparator.comparing(EventMember::getBalance));
+        List<EventMember> paymentReceivers = eventMembers.stream()
+                .filter(member -> member.getBalance() > 0).sorted(Comparator.comparing(EventMember::getBalance)).collect(Collectors.toList());
 
         List<Transfer> transferList = new ArrayList<>();
 
+        for (EventMember paymentReceiver : paymentReceivers){
+            for(EventMember payer : payers) {
+                if(paymentReceiver.getBalance() == -1 * (payer.getBalance())) {
+                    Transfer transfer = Transfer.builder().payer(new UserDto(payer.getUsername(), payer.getFirstName(), payer.getLastName()))
+                            .paymentReceiver(new UserDto(paymentReceiver.getUsername(), paymentReceiver.getFirstName(), paymentReceiver.getLastName()))
+                            .amount(paymentReceiver.getBalance())
+                            .build();
+                    transferList.add(transfer);
 
-    if (paymentReceiver.get(0).getBalance() <= Math.abs(payers.get(0).getBalance())){
-
-        Transfer transfer = new Transfer(new UserDto(payers.get(0).getUsername(), payers.get(0).getFirstName(), payers.get(0).getLastName()),
-                new UserDto(payers.get(0).getUsername(), payers.get(0).getFirstName(), payers.get(0).getLastName()),
-                paymentReceiver.get(0).getBalance());
-        transferList.add(transfer);
-
-        payers.get(0).setBalance(payers.get(0).getBalance() + paymentReceiver.get(0).getBalance());
-        paymentReceiver.remove(0);
-
-        if(payers.get(0).getBalance() == 0){
-            payers.remove(0);
+                    paymentReceivers.remove(paymentReceiver);
+                    payers.remove(payer);
+                }
+            }
         }
 
+        while(payers.size()>0){
+            if (paymentReceivers.get(0).getBalance() <= Math.abs(payers.get(0).getBalance())) {
 
+                Transfer transfer = Transfer.builder().payer(new UserDto(payers.get(0).getUsername(), payers.get(0).getFirstName(), payers.get(0).getLastName()))
+                        .paymentReceiver(new UserDto(paymentReceivers.get(0).getUsername(), paymentReceivers.get(0).getFirstName(), paymentReceivers.get(0).getLastName()))
+                        .amount(paymentReceivers.get(0).getBalance())
+                        .build();
+                transferList.add(transfer);
 
+                payers.get(0).setBalance(payers.get(0).getBalance() + paymentReceivers.get(0).getBalance());
+                paymentReceivers.remove(0);
+
+                if (payers.get(0).getBalance() == 0) {
+                    payers.remove(0);
+                }
+            } else {
+                Transfer transfer = Transfer.builder().payer(new UserDto(payers.get(0).getUsername(), payers.get(0).getFirstName(), payers.get(0).getLastName()))
+                        .paymentReceiver(new UserDto(paymentReceivers.get(0).getUsername(), paymentReceivers.get(0).getFirstName(), paymentReceivers.get(0).getLastName()))
+                        .amount(-payers.get(0).getBalance())
+                        .build();
+                transferList.add(transfer);
+
+                paymentReceivers.get(0).setBalance(payers.get(0).getBalance() + paymentReceivers.get(0).getBalance());
+                payers.remove(0);
+
+                if (paymentReceivers.get(0).getBalance() == 0) {
+                    paymentReceivers.remove(0);
+                }
+            }
         }
-
-        return null;
+        return transferList;
     }
 
 }
+
