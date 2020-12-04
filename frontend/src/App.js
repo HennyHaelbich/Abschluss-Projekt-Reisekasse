@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import AddEventForm from './addEventPage/AddEventForm';
 import EventContextProvider from './contexts/EventContextProvider';
 import ShowEvent from './eventPage/ShowEvent';
