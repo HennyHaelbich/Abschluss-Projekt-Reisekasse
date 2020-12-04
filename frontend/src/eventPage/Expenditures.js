@@ -13,7 +13,6 @@ export default function Expenditures() {
   const { event } = useEvent();
   const history = useHistory();
   
-  
   return (
     <div>
       <DivStyled>
@@ -21,7 +20,7 @@ export default function Expenditures() {
           <AddIcon />
         </Fab>
       </DivStyled>
-
+      
       {event.expenditures.map((expenditure) => (
         <Card key={expenditure.id}>
           <p>{expenditure.description}: {formattedAmount(expenditure.amount)}</p>
@@ -41,4 +40,3 @@ const DivStyled = styled.div`
       bottom: 30px;
       right: 30px;
 `;
-

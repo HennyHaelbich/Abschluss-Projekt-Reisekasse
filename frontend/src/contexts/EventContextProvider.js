@@ -4,8 +4,10 @@ import axios from 'axios';
 import LoginContext from "./LoginContext";
 
 export default function EventContextProvider({ children }) {
-  const [events, setEvents] = useState([]);
   const { token, tokenIsValid } = useContext(LoginContext);
+  const [events, setEvents] = useState([]);
+  const [compensationsPayments, setCompensationPayments] = useState([]);
+  
   
   const header = (token) => ({
     headers: {
@@ -42,6 +44,14 @@ export default function EventContextProvider({ children }) {
       .then((response) => response.data)
       .then((updatedEvent) => setEvents(events.map((event) => event.id === eventId ? updatedEvent : event)))
       .catch(console.log);
+  
+  const calculateCompensation = (members) =>
+    axios
+      .put('/api/events/compensations', {members}, header(token))
+      .then((response) => response.data)
+      .then((compensations) => setCompensationPayments(compensations))
+      .then(console.log(compensationsPayments))
+      .catch(console.log)
     
   return (
     <EventContext.Provider
@@ -49,7 +59,9 @@ export default function EventContextProvider({ children }) {
         createEvent,
         events,
         updateEvent,
-        removeExpenditure
+        removeExpenditure,
+        calculateCompensation,
+        compensationsPayments
       }}
     >
       {children}

@@ -16,7 +16,7 @@ export default function useEventMembers() {
     axios
       .get('/api/users/' + member, header(token))
       .then((response) => response.data)
-    //  .then((data) => console.log("Daten aus dem Backend", data))
       .then((newMember) => setMembers([...members, newMember]));
+  
   return { addMember, members }
 }

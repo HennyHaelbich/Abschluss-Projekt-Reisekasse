@@ -238,4 +238,40 @@ class EventControllerTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(eventExpected));
     }
+
+    @Test
+    void testPutMappingCompensateBalances(){
+        // Given
+        EventMembersDto givenEventMemberList = new EventMembersDto(List.of(
+                EventMember.builder().username("Henny").balance(-20).build(),
+                EventMember.builder().username("Janice").balance(-15).build(),
+                EventMember.builder().username("Steffen").balance(-25).build(),
+                EventMember.builder().username("Manu").balance(40).build(),
+                EventMember.builder().username("Rene").balance(20).build()));
+
+        List<Transfer> expectedTransfers = List.of(
+                Transfer.builder()
+                        .payer(new UserDto("Henny"))
+                        .paymentReceiver(new UserDto("Rene"))
+                        .amount(20)
+                        .build(),
+                Transfer.builder()
+                        .payer(new UserDto("Janice"))
+                        .paymentReceiver(new UserDto("Manu"))
+                        .amount(15)
+                        .build(),
+                Transfer.builder()
+                        .payer(new UserDto("Steffen"))
+                        .paymentReceiver(new UserDto("Manu"))
+                        .amount(25)
+                        .build());
+
+        // When
+        HttpEntity<EventMembersDto> entity = getValidAuthorizationEntity(givenEventMemberList);
+        ResponseEntity<Transfer[]> response = restTemplate.exchange(getEventUrl() + "/compensations", HttpMethod.PUT, entity, Transfer[].class);
+
+        // Then
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(expectedTransfers.toArray()));
+    }
 }
