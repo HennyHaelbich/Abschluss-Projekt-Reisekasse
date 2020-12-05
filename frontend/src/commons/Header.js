@@ -21,4 +21,7 @@ const HeadingStyled = styled.h1`
   margin: 0;
   color: white;
   font-weight: normal;
+  font-family: 'Amaranth';
+  font-size: x-large;
+  text-align: center;
 `;

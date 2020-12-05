@@ -23,7 +23,7 @@ export default createGlobalStyle`
 
   html, body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Titillium Web', sans-serif;
 
   }
   
