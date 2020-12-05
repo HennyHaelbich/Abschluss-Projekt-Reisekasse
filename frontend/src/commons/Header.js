@@ -1,20 +1,37 @@
 import React from 'react';
 import styled from 'styled-components/macro';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { useHistory } from 'react-router-dom';
+import { IconButton } from '@material-ui/core';
 
-export default function Header({ title }) {
+export default function Header({ title, backbutton }) {
+  const history = useHistory();
+
   return (
     <HeaderStyled>
+      <div>
+        {backbutton && (
+          <IconButton onClick={() => history.push(`/events`)}>
+            <ArrowBackIcon />
+          </IconButton>
+        )}
+      </div>
       <HeadingStyled>{title}</HeadingStyled>
     </HeaderStyled>
   );
 }
 
 const HeaderStyled = styled.header`
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 50px 1fr 50px;
   align-items: center;
   background: var(--primary);
-  padding: var(--size-s);
+  padding: 0;
+  color: white;
+  width: 100%;
+  .MuiIconButton-root {
+    color: white;
+  }
 `;
 
 const HeadingStyled = styled.h1`
