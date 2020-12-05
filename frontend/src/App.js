@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import AddEventForm from './addEventPage/AddEventForm';
 import EventContextProvider from './contexts/EventContextProvider';
 import ShowEvent from './eventPage/ShowEvent';
@@ -12,6 +12,7 @@ import AddExpenditureForm from './addExpenditurePage/AddExpenditureForm';
 import SignUpForm from './signUpPage/SignUpForm';
 import ExpenditurePage from './expenditurePage/ExpenditurePage';
 import CompensationPage from './compensationPage/CompensationPage';
+import TabPanel from './eventPage/TabPanel';
 
 function App() {
   return (
@@ -30,18 +31,23 @@ function App() {
             />
             <ProtectedRoute
               exact
-              path={'/event/new-expand/:eventId'}
+              path={'/event/expenditures/:eventId'}
               component={AddExpenditureForm}
             />
             <ProtectedRoute
               exact
-              path={'/event/:eventId/:expenditureId'}
+              path={'/event/expenditures/:eventId/:expenditureId'}
               component={ExpenditurePage}
+            />
+            <Redirect
+              exact
+              from="/event/:eventId/"
+              to="/event/:eventId/:page?"
             />
             <ProtectedRoute
               exact
-              path={'/event/:eventId'}
-              component={ShowEvent}
+              path={'/event/:eventId/:page?'}
+              render={(props) => <TabPanel {...props} />}
             />
           </Switch>
         </PageLayout>
