@@ -72,7 +72,10 @@ export default function AddExpenditureForm() {
           Ausgabe speichern
         </Button>
 
-        <Button variant="outlined" onClick={() => history.push('/events')}>
+        <Button
+          variant="outlined"
+          onClick={() => history.push(`/event/${eventId}/expenditures`)}
+        >
           Abbrechen
         </Button>
       </FormStyled>

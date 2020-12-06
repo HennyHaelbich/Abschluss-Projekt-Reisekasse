@@ -8,7 +8,6 @@ export default createGlobalStyle`
    
    --secundary: #ff8500;
    --secundary-dark: #ff7900;
-   
   
    --size-xs: 4px;
    --size-s: 8px;
