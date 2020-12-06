@@ -23,7 +23,9 @@ export default function Expenditures() {
           <p>Bezahlt von {displayName(expenditure.payer)}</p>
           <Button
             variant="outlined"
-            onClick={() => history.push(`/event/${event.id}/${expenditure.id}`)}
+            onClick={() =>
+              history.push(`/event/expenditures/${event.id}/${expenditure.id}`)
+            }
           >
             Details
           </Button>
@@ -35,6 +37,6 @@ export default function Expenditures() {
   );
 
   function handleAddExpenditure() {
-    history.push(`/event/new-expand/${event.id}`);
+    history.push(`/event/expenditures/${event.id}`);
   }
 }

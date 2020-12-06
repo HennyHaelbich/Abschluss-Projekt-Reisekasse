@@ -8,16 +8,18 @@ export default function Header({ title, backbutton }) {
   const history = useHistory();
 
   return (
-    <HeaderStyled>
-      <div>
-        {backbutton && (
-          <IconButton onClick={() => history.push(`/events`)}>
-            <ArrowBackIcon />
-          </IconButton>
-        )}
-      </div>
-      <HeadingStyled>{title}</HeadingStyled>
-    </HeaderStyled>
+    <>
+      <HeaderStyled>
+        <div>
+          {backbutton && (
+            <IconButton onClick={() => history.push(`/events`)}>
+              <ArrowBackIcon />
+            </IconButton>
+          )}
+        </div>
+        <HeadingStyled>{title}</HeadingStyled>
+      </HeaderStyled>
+    </>
   );
 }
 

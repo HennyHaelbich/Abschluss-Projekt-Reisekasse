@@ -24,43 +24,49 @@ const theme = createMuiTheme({
     },
   },
 });
+import TabPanel from './eventPage/TabPanel';
 
 function App() {
   return (
     <LoginContextProvider>
       <EventContextProvider>
         <MuiThemeProvider theme={theme}>
-          <PageLayout>
-            <Switch>
-              <Route path={'/signup'} component={SignUpForm} />
-              <Route path={'/login'} component={LoginPage} />
-              <ProtectedRoute path={'/new'} component={AddEventForm} />
-              <ProtectedRoute path={'/events'} component={EventsPage} />
-              <ProtectedRoute
-                exact
-                path={'/event/compensation/:eventId'}
-                component={CompensationPage}
-              />
-              <ProtectedRoute
-                exact
-                path={'/event/new-expand/:eventId'}
-                component={AddExpenditureForm}
-              />
-              <ProtectedRoute
-                exact
-                path={'/event/:eventId/:expenditureId'}
-                component={ExpenditurePage}
-              />
-              <ProtectedRoute
-                exact
-                path={'/event/:eventId'}
-                component={ShowEvent}
-              />
-              <Route path="/">
-                <Redirect to="/events" />
-              </Route>
-            </Switch>
-          </PageLayout>
+        <PageLayout>
+          <Switch>
+            <Route path={'/signup'} component={SignUpForm} />
+            <Route path={'/login'} component={LoginPage} />
+            <ProtectedRoute path={'/new'} component={AddEventForm} />
+            <ProtectedRoute path={'/events'} component={EventsPage} />
+            <ProtectedRoute
+              exact
+              path={'/event/compensation/:eventId'}
+              component={CompensationPage}
+            />
+            <ProtectedRoute
+              exact
+              path={'/event/expenditures/:eventId'}
+              component={AddExpenditureForm}
+            />
+            <ProtectedRoute
+              exact
+              path={'/event/expenditures/:eventId/:expenditureId'}
+              component={ExpenditurePage}
+            />
+            <Redirect
+              exact
+              from="/event/:eventId/"
+              to="/event/:eventId/overview"
+            />
+            <ProtectedRoute
+              exact
+              path={'/event/:eventId/:page?'}
+              render={(props) => <TabPanel {...props} />}
+            />
+            <Route path="/">
+              <Redirect to="/events" />
+            </Route>
+          </Switch>
+        </PageLayout>
         </MuiThemeProvider>
       </EventContextProvider>
     </LoginContextProvider>
