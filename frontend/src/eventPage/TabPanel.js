@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Overview from './Overview';
-import Expenditures from './Expenditures';
+import ExpenditureList from './ExpenditureList';
 import useEvent from '../hooks/useEvent';
 import Header from '../commons/Header';
 
@@ -38,7 +38,7 @@ export default function TabPanel(props) {
         <Tab label="Ausgaben" />
       </Tabs>
       {selectedTab === 0 && <Overview />}
-      {selectedTab === 1 && <Expenditures />}
+      {selectedTab === 1 && <ExpenditureList />}
     </div>
   );
 }

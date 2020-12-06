@@ -9,7 +9,6 @@ import LoginContextProvider from './contexts/LoginContextProvider';
 import ProtectedRoute from './routing/ProtectedRoute';
 import AddExpenditureForm from './addExpenditurePage/AddExpenditureForm';
 import SignUpForm from './signUpPage/SignUpForm';
-import ExpenditurePage from './expenditurePage/ExpenditurePage';
 import CompensationPage from './compensationPage/CompensationPage';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import TabPanel from './eventPage/TabPanel';
@@ -45,11 +44,6 @@ function App() {
                 exact
                 path={'/event/expenditures/:eventId'}
                 component={AddExpenditureForm}
-              />
-              <ProtectedRoute
-                exact
-                path={'/event/expenditures/:eventId/:expenditureId'}
-                component={ExpenditurePage}
               />
               <Redirect
                 exact
