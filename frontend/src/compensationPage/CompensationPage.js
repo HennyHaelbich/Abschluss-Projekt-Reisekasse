@@ -1,23 +1,47 @@
-import React, {useContext} from 'react';
-import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
-import Card from "@material-ui/core/Card";
-import EventContext from "../contexts/EventContext";
+import React, { useContext } from 'react';
+import {
+  displayName,
+  formattedAmount,
+} from '../helperFunctions/helperFunctions';
+import Card from '@material-ui/core/Card';
+import EventContext from '../contexts/EventContext';
+import Header from '../commons/Header';
+import {
+  CardFirstLineStyle,
+  CardSecondLineStyle,
+  CardPageStyle,
+} from '../styling/CommonStyledComponents';
+import CardContent from '@material-ui/core/CardContent';
 
 export default function CompensationPage() {
   const { compensationsPayments } = useContext(EventContext);
-  
-  
-  return (
-    compensationsPayments ?
-      <div>
+
+  return compensationsPayments ? (
+    <div>
+      <Header title="Ausgleichszahlungen" backbutton />
+      <CardPageStyle>
         {compensationsPayments.map((compensationsPayment) => (
           <Card>
-            <p>Betrag {formattedAmount(compensationsPayment.amount)}</p>
-            <p>von {displayName(compensationsPayment.payer)}</p>
-            <p>an {displayName(compensationsPayment.paymentReceiver)}</p>
+            <CardContent>
+              <CardFirstLineStyle>
+                <p>Betrag</p>
+                <p>{formattedAmount(compensationsPayment.amount)}</p>
+              </CardFirstLineStyle>
+              <CardSecondLineStyle>
+                <p>
+                  von <strong>{displayName(compensationsPayment.payer)}</strong>
+                </p>
+                <p>
+                  an{' '}
+                  <strong>
+                    {displayName(compensationsPayment.paymentReceiver)}
+                  </strong>
+                </p>
+              </CardSecondLineStyle>
+            </CardContent>
           </Card>
         ))}
-      </div> : null
-  );
-  
+      </CardPageStyle>
+    </div>
+  ) : null;
 }

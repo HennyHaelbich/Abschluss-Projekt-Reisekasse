@@ -10,9 +10,18 @@ export const CardFirstLineStyle = styled.div`
   }
 `;
 
+export const CardSecondLineStyle = styled.div`
+  display: block;
+  p {
+    margin: 0;
+    font-size: 1em;
+    color: grey;
+  }
+`;
+
 export const CardPageStyle = styled.div`
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-gap: var(--size-s);
-  padding: var(--size-s);
+  padding: var(--size-m);
+  & > * {
+    margin: var(--size-m) 0;
+  }
 `;
