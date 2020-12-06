@@ -42,7 +42,7 @@ function App() {
             <Redirect
               exact
               from="/event/:eventId/"
-              to="/event/:eventId/:page?"
+              to="/event/:eventId/overview"
             />
             <ProtectedRoute
               exact
