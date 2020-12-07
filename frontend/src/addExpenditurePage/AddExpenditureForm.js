@@ -9,7 +9,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuItem from '@material-ui/core/MenuItem';
 import { displayName } from '../helperFunctions/helperFunctions';
 import useEvent from '../hooks/useEvent';
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   root: {
@@ -30,7 +30,6 @@ export default function AddExpenditureForm() {
   const { updateEvent } = useContext(EventContext);
   const { event, eventId } = useEvent();
   const members = event?.members;
-  import { makeStyles } from '@material-ui/core/styles';
   const classes = useStyles();
 
   return members ? (

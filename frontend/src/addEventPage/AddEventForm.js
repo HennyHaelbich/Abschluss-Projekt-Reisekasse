@@ -48,7 +48,6 @@ export default function AddEventForm() {
           label="Teilnehmer"
           value={newMember}
           helperText={error}
-          color="primarydark"
           onClick={() => setError('')}
           onChange={(event) => setNewMember(event.target.value)}
           variant="outlined"
