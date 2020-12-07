@@ -23,16 +23,15 @@ export default function CompensationPage() {
     event &&
       calculateCompensation(event.members)
         .then((compensations) => setCompensationPayments(compensations))
-        .then(console.log(compensationsPayments))
         .catch(console.log);
-  }, [event]);
+  }, [event, calculateCompensation, setCompensationPayments]);
 
   return compensationsPayments ? (
     <div>
       <Header title="Ausgleichszahlungen" backbutton />
       <CardPageStyle>
         {compensationsPayments.map((compensationsPayment) => (
-          <Card>
+          <Card key={Math.random()}>
             <CardContent>
               <CardFirstLineStyle>
                 <p>Betrag</p>
