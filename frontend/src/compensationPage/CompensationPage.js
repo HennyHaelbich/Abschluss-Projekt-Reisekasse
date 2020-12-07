@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   displayName,
   formattedAmount,
@@ -12,9 +12,21 @@ import {
   CardPageStyle,
 } from '../styling/CommonStyledComponents';
 import CardContent from '@material-ui/core/CardContent';
+import useEvent from '../hooks/useEvent';
 
 export default function CompensationPage() {
-  const { compensationsPayments } = useContext(EventContext);
+  const { event } = useEvent();
+  const { calculateCompensation } = useContext(EventContext);
+
+  const [compensationsPayments, setCompensationPayments] = useState([]);
+
+  useEffect(() => {
+    event &&
+      calculateCompensation(event.members)
+        .then((compensations) => setCompensationPayments(compensations))
+        .then(console.log(compensationsPayments))
+        .catch(console.log);
+  }, [event]);
 
   return compensationsPayments ? (
     <div>

@@ -16,8 +16,7 @@ import {
 } from '../styling/CommonStyledComponents';
 
 export default function Overview() {
-  const { event } = useEvent();
-  const { calculateCompensation } = useContext(EventContext);
+  const { event, eventId } = useEvent();
   const history = useHistory();
   const members = event?.members;
 
@@ -45,9 +44,7 @@ export default function Overview() {
 
   function handleClick(event) {
     event.preventDefault();
-    console.log('EventMembers', members);
-    calculateCompensation(members);
-    history.push('/event/compensation/:eventId');
+    history.push(`/event/compensation/${eventId}`);
   }
 }
 
