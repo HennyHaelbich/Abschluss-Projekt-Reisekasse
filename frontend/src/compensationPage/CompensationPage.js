@@ -16,11 +16,11 @@ import useEvent from '../hooks/useEvent';
 
 export default function CompensationPage() {
   const { event } = useEvent();
-  const { calculateCompensation } = useContext(EventContext);
-
-  const [compensationsPayments, setCompensationPayments] = useState([]);
 
   useEffect(() => {
+    const { calculateCompensation } = useContext(EventContext);
+    const [compensationsPayments, setCompensationPayments] = useState([]);
+    
     event &&
       calculateCompensation(event.members)
         .then((compensations) => setCompensationPayments(compensations))
