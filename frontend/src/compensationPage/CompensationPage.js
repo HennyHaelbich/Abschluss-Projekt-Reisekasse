@@ -20,7 +20,6 @@ export default function CompensationPage() {
   const { calculateCompensation } = useContext(EventContext);
 
   useEffect(() => {
-    event &&
       calculateCompensation(event.members)
         .then((compensations) => setCompensationPayments(compensations))
         .then(console.log(compensationsPayments))
