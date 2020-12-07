@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components/macro';
 import {
   displayName,
   formattedAmount,
@@ -12,6 +11,7 @@ import CardContent from '@material-ui/core/CardContent';
 import {
   CardFirstLineStyle,
   CardPageStyle,
+  SmallButtonDiv,
 } from '../styling/CommonStyledComponents';
 
 export default function Overview() {
@@ -33,11 +33,11 @@ export default function Overview() {
             </Card>
           ))
         : null}
-      <ButtonDiv>
+      <SmallButtonDiv>
         <Button variant="contained" color="primary" onClick={handleClick}>
           Ausgleichszahlungen
         </Button>
-      </ButtonDiv>
+      </SmallButtonDiv>
     </CardPageStyle>
   );
 
@@ -46,8 +46,3 @@ export default function Overview() {
     history.push(`/event/compensation/${eventId}`);
   }
 }
-
-const ButtonDiv = styled.div`
-  display: flex;
-  justify-content: center;
-`;
