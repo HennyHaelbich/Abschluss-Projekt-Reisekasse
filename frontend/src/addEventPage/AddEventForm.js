@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Header from '../commons/Header';
 import { useTextFieldStyle } from '../styling/MaterialUiStyling';
+import { SmallButtonDiv } from '../styling/CommonStyledComponents';
 
 export default function AddEventForm() {
   const { createEvent } = useContext(EventContext);
@@ -42,23 +43,29 @@ export default function AddEventForm() {
           variant="outlined"
         />
 
-        <Button
-          variant="outlined"
-          onClick={findUser}
-          disabled={newMember.length === 0}
-        >
-          Gruppenmitglied hinzufügen
-        </Button>
+        <SmallButtonDiv>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={findUser}
+            disabled={newMember.length === 0}
+          >
+            Gruppenmitglied hinzufügen
+          </Button>
+        </SmallButtonDiv>
 
         <MembersList members={members} />
 
-        <Button
-          variant="outlined"
-          disabled={members.length === 0 || title.length === 0}
-          onClick={saveEvent}
-        >
-          Reise speichern
-        </Button>
+        <SmallButtonDiv>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={members.length === 0 || title.length === 0}
+            onClick={saveEvent}
+          >
+            Reise speichern
+          </Button>
+        </SmallButtonDiv>
       </FormStyled>
     </>
   );

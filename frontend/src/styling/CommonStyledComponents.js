@@ -25,3 +25,8 @@ export const CardPageStyle = styled.div`
     margin: var(--size-m) 0;
   }
 `;
+
+export const SmallButtonDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`;
