@@ -15,6 +15,10 @@ export default function EventPage() {
       <Header title={'Reisekasse'} />
       <CardPageStyle>
         {events ? events.map((event) => <EventsCard event={event} />) : null}
+        <br />
+        <br />
+        <br />
+        <br />
       </CardPageStyle>
       <AddButton handle={handleAddExpenditure} />
     </>

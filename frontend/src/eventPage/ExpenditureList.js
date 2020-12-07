@@ -16,6 +16,11 @@ export default function ExpenditureList() {
       ))}
 
       <AddButton handle={handleAddExpenditure} />
+
+      <br />
+      <br />
+      <br />
+      <br />
     </CardPageStyle>
   );
 
