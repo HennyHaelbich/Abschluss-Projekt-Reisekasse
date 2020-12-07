@@ -71,6 +71,7 @@ export default App;
 const PageLayout = styled.div`
   display: grid;
   grid-template-rows: 48px 1fr;
-  height: 100vh;
+  height: calc(100vh - 48px);
+  margin-top: 48px;
   background-color: whitesmoke;
 `;

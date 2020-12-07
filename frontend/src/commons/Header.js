@@ -24,12 +24,17 @@ export default function Header({ title, backbutton }) {
 }
 
 const HeaderStyled = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 48px;
   display: grid;
   grid-template-columns: 50px 1fr 50px;
   align-items: center;
   background: var(--primary);
   padding: 0;
   color: white;
+  z-index: 10;
   width: 100%;
   .MuiIconButton-root {
     color: white;

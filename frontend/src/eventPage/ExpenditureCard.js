@@ -4,7 +4,10 @@ import {
   formattedAmount,
   formattedDate,
 } from '../helperFunctions/helperFunctions';
-import { CardFirstLineStyle } from '../styling/CommonStyledComponents';
+import {
+  CardFirstLineStyle,
+  CardSecondLineStyle,
+} from '../styling/CommonStyledComponents';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -106,15 +109,6 @@ export default function ExpenditureCard({ expenditure }) {
     history.push(`/event/expenditures/${eventId}`);
   }
 }
-
-const CardSecondLineStyle = styled.div`
-  display: block;
-  p {
-    margin: 0;
-    font-size: 1em;
-    color: grey;
-  }
-`;
 
 const ListStyled = styled.ul`
   overflow: scroll;

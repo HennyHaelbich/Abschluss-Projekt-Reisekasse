@@ -1,10 +1,19 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/macro';
-import { displayName, formattedAmount } from '../helperFunctions/helperFunctions'
-import {Button} from "@material-ui/core";
-import useEvent from "../hooks/useEvent";
-import { useHistory } from "react-router-dom";
-import EventContext from "../contexts/EventContext";
+import {
+  displayName,
+  formattedAmount,
+} from '../helperFunctions/helperFunctions';
+import { Button } from '@material-ui/core';
+import useEvent from '../hooks/useEvent';
+import { useHistory } from 'react-router-dom';
+import EventContext from '../contexts/EventContext';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import {
+  CardFirstLineStyle,
+  CardPageStyle,
+} from '../styling/CommonStyledComponents';
 
 export default function Overview() {
   const { event } = useEvent();
@@ -13,34 +22,36 @@ export default function Overview() {
   const members = event?.members;
 
   return (
-    <>
-      {members ? members.map((member) => (
-        <ListStyled key={member.username}>
-          <p>{displayName(member)}</p>
-          <p>{formattedAmount(member.balance)}</p>
-        </ListStyled>
-        )) : null }
-      
-      <Button variant="outlined" onClick={handleClick}>
-        Ausgleichszahlungen berechnen
-      </Button>
-
-    </>
+    <CardPageStyle>
+      {members
+        ? members.map((member) => (
+            <Card>
+              <CardContent>
+                <CardFirstLineStyle>
+                  <p>{displayName(member)}</p>
+                  <p>{formattedAmount(member.balance)}</p>
+                </CardFirstLineStyle>
+              </CardContent>
+            </Card>
+          ))
+        : null}
+      <ButtonDiv>
+        <Button variant="contained" color="primary" onClick={handleClick}>
+          Ausgleichszahlungen
+        </Button>
+      </ButtonDiv>
+    </CardPageStyle>
   );
-  
+
   function handleClick(event) {
     event.preventDefault();
-    console.log("EventMembers", members)
+    console.log('EventMembers', members);
     calculateCompensation(members);
     history.push('/event/compensation/:eventId');
   }
 }
 
-const ListStyled = styled.ul`
-  overflow: scroll;
-  margin: 0;
-  padding: var(--size-m);
-  list-style: none;
+const ButtonDiv = styled.div`
   display: flex;
-  justify-content: space-around; ;
+  justify-content: center;
 `;
