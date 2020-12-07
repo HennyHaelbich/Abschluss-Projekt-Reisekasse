@@ -18,7 +18,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components/macro';
 import EventContext from '../contexts/EventContext';
-import { useHistory, useParams } from 'react-router-dom';
 import useEvent from '../hooks/useEvent';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -43,16 +42,14 @@ export default function ExpenditureCard({ expenditure }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const { removeExpenditure } = useContext(EventContext);
-  const { expenditureId } = useParams();
   const { eventId } = useEvent();
-  const history = useHistory();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} key={expenditure.id}>
       <CardContent>
         <CardFirstLineStyle>
           <p>{expenditure.description}</p>
@@ -105,8 +102,7 @@ export default function ExpenditureCard({ expenditure }) {
   );
 
   function handleDelete() {
-    removeExpenditure(eventId, expenditureId);
-    history.push(`/event/expenditures/${eventId}`);
+    removeExpenditure(eventId, expenditure.id);
   }
 }
 
