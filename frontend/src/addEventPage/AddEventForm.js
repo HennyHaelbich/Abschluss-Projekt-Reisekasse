@@ -7,18 +7,7 @@ import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Header from '../commons/Header';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  root: {
-    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#777777',
-    },
-    '& .MuiInputLabel-outlined.Mui-focused': {
-      color: '#555555',
-    },
-  },
-});
+import { useTextfildStyle } from '../styling/MaterialUiStyling';
 
 export default function AddEventForm() {
   const { createEvent } = useContext(EventContext);
@@ -27,7 +16,7 @@ export default function AddEventForm() {
   const [title, setTitle] = useState('');
   const [error, setError] = useState('');
   const history = useHistory();
-  const classes = useStyles();
+  const classes = useTextfildStyle();
 
   return (
     <>

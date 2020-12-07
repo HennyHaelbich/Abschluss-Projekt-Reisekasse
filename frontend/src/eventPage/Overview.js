@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
 import {
   displayName,
@@ -7,7 +7,6 @@ import {
 import { Button } from '@material-ui/core';
 import useEvent from '../hooks/useEvent';
 import { useHistory } from 'react-router-dom';
-import EventContext from '../contexts/EventContext';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import {
@@ -24,7 +23,7 @@ export default function Overview() {
     <CardPageStyle>
       {members
         ? members.map((member) => (
-            <Card>
+            <Card key={member.username}>
               <CardContent>
                 <CardFirstLineStyle>
                   <p>{displayName(member)}</p>

@@ -9,18 +9,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuItem from '@material-ui/core/MenuItem';
 import { displayName } from '../helperFunctions/helperFunctions';
 import useEvent from '../hooks/useEvent';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  root: {
-    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#777777',
-    },
-    '& .MuiInputLabel-outlined.Mui-focused': {
-      color: '#555555',
-    },
-  },
-});
+import { useTextfildStyle } from '../styling/MaterialUiStyling';
 
 export default function AddExpenditureForm() {
   const history = useHistory();
@@ -30,7 +19,7 @@ export default function AddExpenditureForm() {
   const { updateEvent } = useContext(EventContext);
   const { event, eventId } = useEvent();
   const members = event?.members;
-  const classes = useStyles();
+  const classes = useTextfildStyle();
 
   return members ? (
     <>
