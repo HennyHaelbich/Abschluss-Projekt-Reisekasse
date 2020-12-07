@@ -2,15 +2,12 @@ import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
   :root {
-   --primary: #3F51B5;
-   --primary-dark: #303F6F;
-   --primary-light: #E0E4E8;
+   --primary: #5a189a;
+   --primary-dark: #3c096c;
+   --primary-light: #7b2cbf;
    
-   --text-icons: #FFFFFF;
-   --accent-color: #448AFF;
-   --primary-text: #212121;
-   --secundary-text: #757575;
-   --divider-color: #BDBDBD;
+   --secundary: #ff8500;
+   --secundary-dark: #ff7900;
   
    --size-xs: 4px;
    --size-s: 8px;
@@ -23,7 +20,7 @@ export default createGlobalStyle`
 
   html, body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Titillium Web', sans-serif;
 
   }
   

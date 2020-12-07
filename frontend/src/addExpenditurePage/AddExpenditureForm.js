@@ -1,14 +1,14 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Header from '../commons/Header';
-import EventContext from "../contexts/EventContext";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import MenuItem from "@material-ui/core/MenuItem";
-import { displayName } from "../helperFunctions/helperFunctions";
-import useEvent from "../hooks/useEvent";
+import EventContext from '../contexts/EventContext';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import MenuItem from '@material-ui/core/MenuItem';
+import { displayName } from '../helperFunctions/helperFunctions';
+import useEvent from '../hooks/useEvent';
 
 export default function AddExpenditureForm() {
   const history = useHistory();
@@ -18,66 +18,75 @@ export default function AddExpenditureForm() {
   const { updateEvent } = useContext(EventContext);
   const { event, eventId } = useEvent();
   const members = event?.members;
-  
-  
-  return (
-    members ? <>
-      <Header title='Ausgabe hinzufügen' />
-  
-  
-        <FormStyled>
+
+  return members ? (
+    <>
+      <Header title="Ausgabe hinzufügen" />
+
+      <FormStyled>
         <TextField
-          label = "Beschreibung"
-          value = {description}
-          onChange = {(event) => setDescription(event.target.value)}
-          variant = "outlined"
+          label="Beschreibung"
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
+          variant="outlined"
         />
 
         <TextField
-          label = "Betrag"
-          type = "number"
+          label="Betrag"
+          type="number"
           placeholder={'0.00'}
-          value = {amountString}
-          variant = "outlined"
+          value={amountString}
+          variant="outlined"
           InputProps={{
             endAdornment: <InputAdornment position="end">€</InputAdornment>,
           }}
-          onChange = {(event) => setAmountString(event.target.value.replace(',', '.'))}
+          onChange={(event) =>
+            setAmountString(event.target.value.replace(',', '.'))
+          }
         />
-        
+
         <TextField
           select
-          label = "Zahler"
-          value = {payer}
-          onChange = {(event) => setPayer(event.target.value)}
-          variant = "outlined"
-        > {members.map((member) => (
-          <MenuItem key={member.username} value={member}>
-            {displayName(member)}
-          </MenuItem>
-        ))}
+          label="Zahler"
+          value={payer}
+          onChange={(event) => setPayer(event.target.value)}
+          variant="outlined"
+        >
+          {' '}
+          {members.map((member) => (
+            <MenuItem key={member.username} value={member}>
+              {displayName(member)}
+            </MenuItem>
+          ))}
         </TextField>
-        
+
         <Button
           variant="outlined"
-          disabled={description.length === 0 || amountString.length === 0 || payer.length === 0 }
+          disabled={
+            description.length === 0 ||
+            amountString.length === 0 ||
+            payer.length === 0
+          }
           onClick={saveExpenditure}
         >
           Ausgabe speichern
         </Button>
 
-        <Button variant="outlined" onClick={() => history.push('/events')}>
+        <Button
+          variant="outlined"
+          onClick={() => history.push(`/event/${eventId}/expenditures`)}
+        >
           Abbrechen
         </Button>
       </FormStyled>
-    </> : null
-  );
+    </>
+  ) : null;
 
   function saveExpenditure(event) {
     event.preventDefault();
-    const amount = Number(amountString) * 100
-    updateEvent(description, members, payer, amount, eventId)
-    history.push(`/event/${eventId}`)
+    const amount = Number(amountString) * 100;
+    updateEvent(description, members, payer, amount, eventId);
+    history.push(`/event/${eventId}/expenditures`);
   }
 }
 
