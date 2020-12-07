@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Header from '../commons/Header';
-import { useTextfildStyle } from '../styling/MaterialUiStyling';
+import { useTextFieldStyle } from '../styling/MaterialUiStyling';
 
 export default function AddEventForm() {
   const { createEvent } = useContext(EventContext);
@@ -16,7 +16,7 @@ export default function AddEventForm() {
   const [title, setTitle] = useState('');
   const [error, setError] = useState('');
   const history = useHistory();
-  const classes = useTextfildStyle();
+  const classes = useTextFieldStyle();
 
   return (
     <>

@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import { Button } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-import { useTextfildStyle } from '../styling/MaterialUiStyling';
+import { useTextFieldStyle } from '../styling/MaterialUiStyling';
 
 const setupCredentials = {
   username: '',
@@ -19,7 +19,7 @@ export default function LoginPage() {
   const [credentials, setCredentials] = useState(setupCredentials);
   const [error, setError] = useState('');
   const history = useHistory();
-  const classes = useTextfildStyle();
+  const classes = useTextFieldStyle();
 
   return (
     <>

@@ -5,7 +5,7 @@ import { signUp } from '../service/SignUpService';
 import styled from 'styled-components/macro';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-import { useTextfildStyle } from '../styling/MaterialUiStyling';
+import { useTextFieldStyle } from '../styling/MaterialUiStyling';
 
 const setupSignInData = {
   username: '',
@@ -21,7 +21,7 @@ export default function SignUpForm() {
   const [errorPasswordRepetition, setErrorPasswordRepetition] = useState('');
   const [errorPasswordValidation, setErrorPasswordValidation] = useState('');
   const history = useHistory();
-  const classes = useTextfildStyle();
+  const classes = useTextFieldStyle();
 
   return (
     <>

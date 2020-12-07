@@ -9,7 +9,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuItem from '@material-ui/core/MenuItem';
 import { displayName } from '../helperFunctions/helperFunctions';
 import useEvent from '../hooks/useEvent';
-import { useTextfildStyle } from '../styling/MaterialUiStyling';
+import { useTextFieldStyle } from '../styling/MaterialUiStyling';
 
 export default function AddExpenditureForm() {
   const history = useHistory();
@@ -19,7 +19,7 @@ export default function AddExpenditureForm() {
   const { updateEvent } = useContext(EventContext);
   const { event, eventId } = useEvent();
   const members = event?.members;
-  const classes = useTextfildStyle();
+  const classes = useTextFieldStyle();
 
   return members ? (
     <>
