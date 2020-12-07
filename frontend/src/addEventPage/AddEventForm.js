@@ -7,20 +7,34 @@ import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Header from '../commons/Header';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  root: {
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#777777',
+    },
+    '& .MuiInputLabel-outlined.Mui-focused': {
+      color: '#555555',
+    },
+  },
+});
 
 export default function AddEventForm() {
   const { createEvent } = useContext(EventContext);
-  const { addMember, members  } = useEventMembers();
+  const { addMember, members } = useEventMembers();
   const [newMember, setNewMember] = useState('');
   const [title, setTitle] = useState('');
   const [error, setError] = useState('');
   const history = useHistory();
+  const classes = useStyles();
 
   return (
     <>
       <Header title={'Reise hinzufügen'} />
       <FormStyled>
         <TextField
+          className={classes.root}
           label="Name der Reise"
           name="title"
           value={title}
@@ -29,10 +43,12 @@ export default function AddEventForm() {
         />
 
         <TextField
+          className={classes.root}
           error={!!error}
           label="Teilnehmer"
           value={newMember}
           helperText={error}
+          color="primarydark"
           onClick={() => setError('')}
           onChange={(event) => setNewMember(event.target.value)}
           variant="outlined"
@@ -64,10 +80,9 @@ export default function AddEventForm() {
     if (members.find((member) => member.username === newMember)) {
       setError('Dieser Benutzer ist bereits Teil der Gruppe');
     } else {
-      addMember(newMember)
-        .catch(() => {
-          setError('Dieser Benutzer existiert nicht');
-        });
+      addMember(newMember).catch(() => {
+        setError('Dieser Benutzer existiert nicht');
+      });
     }
     setNewMember('');
   }
