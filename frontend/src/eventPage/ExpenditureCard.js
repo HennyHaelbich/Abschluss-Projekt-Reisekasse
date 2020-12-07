@@ -49,7 +49,7 @@ export default function ExpenditureCard({ expenditure }) {
   };
 
   return (
-    <Card className={classes.root} key={expenditure.id}>
+    <Card className={classes.root}>
       <CardContent>
         <CardFirstLineStyle>
           <p>{expenditure.description}</p>
