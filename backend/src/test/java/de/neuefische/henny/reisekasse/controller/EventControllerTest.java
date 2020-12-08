@@ -145,6 +145,8 @@ class EventControllerTest {
         String expenditureId = "expenditure_id";
         Instant givenTime = Instant.parse("2020-11-22T18:00:00Z");
 
+        userDb.save(TravelFoundUser.builder().username("Henny").build());
+
         eventDb.saveAll(List.of(
                 Event.builder().id("id_2").title("Kanutour")
                         .members(List.of(
@@ -157,7 +159,7 @@ class EventControllerTest {
                 .description("Bahnfahrkarten")
                 .members(List.of(new EventMember("Janice", 0),
                         new EventMember("Henny", 0)))
-                .payer(new UserDto("Henny"))
+                .payerId("Henny")
                 .amount(20)
                 .build();
 

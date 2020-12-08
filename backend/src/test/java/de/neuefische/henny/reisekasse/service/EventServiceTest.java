@@ -30,7 +30,8 @@ class EventServiceTest {
     private final IdUtils mockIdUtils = mock(IdUtils.class);
     private final TimestampUtils mockTimestampUtils = mock(TimestampUtils.class);
     private final MongoTemplate mockMongoTemplate = mock(MongoTemplate.class);
-    private final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockTimestampUtils, mockMongoTemplate);
+    private final UserService mockUserService = mock(UserService.class);
+    private final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockTimestampUtils, mockMongoTemplate, mockUserService);
 
     @Test
     void listEventsShouldGiveBackAllEventsInEventDb() {
@@ -179,7 +180,7 @@ class EventServiceTest {
                 .members(List.of(
                         EventMember.builder().username("Janice").balance(0).build(),
                         EventMember.builder().username("Henny").balance(0).build()))
-                .payer(UserDto.builder().username("Henny").build())
+                .payerId("Henny")
                 .amount(20)
                 .build();
 
@@ -209,6 +210,7 @@ class EventServiceTest {
         when(mockTimestampUtils.generateTimestampEpochSeconds()).thenReturn(expectedTime);
         when(mockEventDb.findById(eventId)).thenReturn(Optional.of(eventBefore));
         when(mockEventDb.save(eventExpected)).thenReturn(eventExpected);
+        when(mockUserService.getUserById("Henny")).thenReturn(Optional.of(UserDto.builder().username("Henny").build()));
 
         // When
         Event result = eventService.addExpenditure(eventId, expenditureToBeAdded);
