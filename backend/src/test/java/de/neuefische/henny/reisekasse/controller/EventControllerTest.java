@@ -203,32 +203,44 @@ class EventControllerTest {
         String expenditureId = "expenditure_id";
         IdsDto ids = IdsDto.builder().eventId(eventId).expenditureId(expenditureId).build();
 
-        Expenditure expenditureToDelete = Expenditure.builder()
-                .id(expenditureId)
+        Expenditure expenditureOne = Expenditure.builder()
+                .id("id_1")
                 .description("Bahnfahrkarten")
                 .expenditurePerMemberList(List.of(
                         ExpenditurePerMember.builder().username("Henny").amount(10).build(),
                         ExpenditurePerMember.builder().username("Janice").amount(10).build()))
-                .payer(new UserDto("Henny"))
                 .amount(20)
+                .payer(UserDto.builder().username("Henny").build())
                 .build();
 
-        Event event = Event.builder()
+        Expenditure expenditureToDelete = Expenditure.builder()
+                .id(expenditureId)
+                .description("Bahnfahrkarten")
+                .expenditurePerMemberList(List.of(
+                        ExpenditurePerMember.builder().username("Henny").amount(25).build(),
+                        ExpenditurePerMember.builder().username("Janice").amount(25).build()))
+                .amount(50)
+                .payer(UserDto.builder().username("Janice").build())
+                .build();
+
+        Event eventBefore = Event.builder()
                 .id(eventId)
-                .title("Kanutour")
-                .members(List.of(new EventMember("Janice", 50),
-                        new EventMember("Henny", 50)))
-                .expenditures(List.of(expenditureToDelete))
+                .title("Radreise")
+                .members(List.of(
+                        EventMember.builder().username("Henny").balance(15).build(),
+                        EventMember.builder().username("Janice").balance(-15).build()))
+                .expenditures(List.of(expenditureOne, expenditureToDelete))
                 .build();
 
-        eventDb.save(event);
+        eventDb.save(eventBefore);
 
         Event eventExpected = Event.builder()
                 .id(eventId)
-                .title("Kanutour")
-                .members(List.of(new EventMember("Janice", 60),
-                        new EventMember("Henny", 40)))
-                .expenditures(List.of())
+                .title("Radreise")
+                .members(List.of(
+                        EventMember.builder().username("Henny").balance(10).build(),
+                        EventMember.builder().username("Janice").balance(-10).build()))
+                .expenditures(List.of(expenditureOne))
                 .build();
 
 
