@@ -87,36 +87,6 @@ class EventServiceTest {
         }
     }
 
-
-    @Test
-    void testSetNewBalanceShouldGiveBackMemberListWithUpdatedBalance() {
-        // Given
-        List<EventMember> givenMemberList = List.of(
-                EventMember.builder().username("Janice").balance(200).build(),
-                EventMember.builder().username("Manu").balance(0).build(),
-                EventMember.builder().username("Henny").balance(-500).build());
-
-        List<ExpenditurePerMember> givenExpenditurePerMemberList = List.of(
-                ExpenditurePerMember.builder().username("Manu").amount(333).build(),
-                ExpenditurePerMember.builder().username("Janice").amount(333).build(),
-                ExpenditurePerMember.builder().username("Henny").amount(334).build());
-
-        UserDto payer = UserDto.builder().username("Manu").build();
-
-        int amount = 1000;
-
-        List<EventMember> expectedMemberList = List.of(
-                EventMember.builder().username("Janice").balance(-133).build(),
-                EventMember.builder().username("Manu").balance(667).build(),
-                EventMember.builder().username("Henny").balance(-834).build());
-
-        // When
-         List<EventMember> result = eventService.updateBalance(givenMemberList, givenExpenditurePerMemberList, payer, amount, true);
-
-        // Then
-        assertThat(result, is(expectedMemberList));
-    }
-
     @Test
     void testCalculateExpenditurePerMemberShouldReturnListWithExpenditurePerPerson() {
         // Given
@@ -274,6 +244,51 @@ class EventServiceTest {
 
         // Then
         assertThat(result, is(eventExpected));
+    }
+
+    @Test
+    void testCalculateBalance() {
+        // Given
+
+        Instant expectedTime = Instant.parse("2020-11-22T18:00:00Z");
+
+        Expenditure expenditureOne = Expenditure.builder()
+                .id("id_1")
+                .description("Bahnfahrkarten")
+                .expenditurePerMemberList(List.of(
+                        ExpenditurePerMember.builder().username("Henny").amount(10).build(),
+                        ExpenditurePerMember.builder().username("Janice").amount(10).build()))
+                .amount(20)
+                .timestamp(expectedTime)
+                .payer(UserDto.builder().username("Henny").build())
+                .build();
+
+        Expenditure expenditureTwo = Expenditure.builder()
+                .id("id_2")
+                .description("Kaffee und Kuchen")
+                .expenditurePerMemberList(List.of(
+                        ExpenditurePerMember.builder().username("Henny").amount(25).build(),
+                        ExpenditurePerMember.builder().username("Janice").amount(25).build()))
+                .amount(50)
+                .timestamp(expectedTime)
+                .payer(UserDto.builder().username("Janice").build())
+                .build();
+
+        List<Expenditure> expenditureList = List.of(expenditureOne, expenditureTwo);
+
+        List<EventMember> eventMemberList = List.of(
+                        EventMember.builder().username("Henny").build(),
+                        EventMember.builder().username("Janice").build());
+
+        List<EventMember> expectedEventMemberList = List.of(
+                EventMember.builder().username("Henny").balance(-15).build(),
+                EventMember.builder().username("Janice").balance(15).build());
+
+        // When
+        List<EventMember> result = eventService.calculateBalance(eventMemberList, expenditureList);
+
+        // Then
+        assertThat(result, is(expectedEventMemberList));
     }
 
     @Test

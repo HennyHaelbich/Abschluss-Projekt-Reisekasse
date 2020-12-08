@@ -86,8 +86,7 @@ public class EventService {
 
         event.getExpenditures().add(newExpenditure);
 
-        List<EventMember> updatedEventMembers =
-                updateBalance(addExpenditureDto.getMembers(), expenditurePerMemberList, payer, addExpenditureDto.getAmount(), true);
+        List<EventMember> updatedEventMembers = calculateBalance(event.getMembers(), event.getExpenditures());
 
         event.setMembers(updatedEventMembers);
 
@@ -145,30 +144,6 @@ public class EventService {
 
         expenditurePerMemberList.sort(Comparator.comparing(ExpenditurePerMember::getUsername));
         return expenditurePerMemberList;
-    }
-
-    public List<EventMember> updateBalance(
-            List<EventMember> eventMembers, List<ExpenditurePerMember> expenditurePerMembers, UserDto payer, int amount, boolean addExpenditure) {
-        for (EventMember eventMember : eventMembers) {
-            for (ExpenditurePerMember expenditurePerMember : expenditurePerMembers) {
-                if (eventMember.getUsername().equals(expenditurePerMember.getUsername())) {
-                    if (addExpenditure) {
-                        eventMember.setBalance(eventMember.getBalance() - expenditurePerMember.getAmount());
-                    } else {
-                        eventMember.setBalance(eventMember.getBalance() + expenditurePerMember.getAmount());
-                    }
-                    if (eventMember.getUsername().equals(payer.getUsername())) {
-                        if (addExpenditure) {
-                            eventMember.setBalance(eventMember.getBalance() + amount);
-                        } else {
-                            eventMember.setBalance(eventMember.getBalance() - amount);
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-        return eventMembers;
     }
 
     public List<EventMember> calculateBalance(List<EventMember> eventMembers, List<Expenditure> expenditureList) {
