@@ -6,19 +6,26 @@ import Button from '@material-ui/core/Button';
 import Header from '../commons/Header';
 import EventContext from '../contexts/EventContext';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuItem from '@material-ui/core/MenuItem';
 import { displayName } from '../helperFunctions/helperFunctions';
 import useEvent from '../hooks/useEvent';
 import { useTextFieldStyle } from '../styling/MaterialUiStyling';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import { loadUserDataFromLocalStorage } from '../service/LocalStorage';
 
 export default function AddExpenditureForm() {
   const history = useHistory();
-  const [description, setDescription] = useState('');
-  const [amountString, setAmountString] = useState('');
-  const [payer, setPayer] = useState('');
-  const { updateEvent } = useContext(EventContext);
   const { event, eventId } = useEvent();
   const members = event?.members;
+
+  const [description, setDescription] = useState('');
+  const [amountString, setAmountString] = useState('');
+
+  const userdata = loadUserDataFromLocalStorage();
+  const [payerId, setPayerId] = useState(userdata.sub);
+
+  const { addExpenditure } = useContext(EventContext);
   const classes = useTextFieldStyle();
 
   return members ? (
@@ -49,28 +56,28 @@ export default function AddExpenditureForm() {
           }
         />
 
-        <TextField
-          className={classes.root}
-          select
-          label="Zahler"
-          value={payer}
-          onChange={(event) => setPayer(event.target.value)}
-          variant="outlined"
-        >
-          {' '}
-          {members.map((member) => (
-            <MenuItem key={member.username} value={member}>
-              {displayName(member)}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl variant="outlined" className={classes.root}>
+          <InputLabel>Zahler</InputLabel>
+          <Select
+            native
+            label="Zahler"
+            value={payerId}
+            onChange={(event) => setPayerId(event.target.value)}
+          >
+            {members.map((member) => (
+              <option key={member.username} value={member.username.toString()}>
+                {displayName(member)}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
 
         <Button
           variant="outlined"
           disabled={
             description.length === 0 ||
             amountString.length === 0 ||
-            payer.length === 0
+            payerId.length === 0
           }
           onClick={saveExpenditure}
         >
@@ -90,7 +97,7 @@ export default function AddExpenditureForm() {
   function saveExpenditure(event) {
     event.preventDefault();
     const amount = Number(amountString) * 100;
-    updateEvent(description, members, payer, amount, eventId);
+    addExpenditure(description, members, payerId, amount, eventId);
     history.push(`/event/${eventId}/expenditures`);
   }
 }
