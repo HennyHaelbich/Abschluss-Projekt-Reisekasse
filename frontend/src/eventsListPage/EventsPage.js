@@ -14,7 +14,9 @@ export default function EventPage() {
     <>
       <Header title={'Reisekasse'} />
       <CardPageStyle>
-        {events ? events.map((event) => <EventsCard event={event} />) : null}
+        {events?.map((event) => (
+          <EventsCard event={event} key={event.id} />
+        ))}
         <br />
         <br />
         <br />
