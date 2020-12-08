@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components/macro';
+import React from 'react';
 import {
   displayName,
   formattedAmount,
@@ -7,17 +6,16 @@ import {
 import { Button } from '@material-ui/core';
 import useEvent from '../hooks/useEvent';
 import { useHistory } from 'react-router-dom';
-import EventContext from '../contexts/EventContext';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import {
   CardFirstLineStyle,
   CardPageStyle,
+  SmallButtonDiv,
 } from '../styling/CommonStyledComponents';
 
 export default function Overview() {
-  const { event } = useEvent();
-  const { calculateCompensation } = useContext(EventContext);
+  const { event, eventId } = useEvent();
   const history = useHistory();
   const members = event?.members;
 
@@ -25,7 +23,7 @@ export default function Overview() {
     <CardPageStyle>
       {members
         ? members.map((member) => (
-            <Card>
+            <Card key={member.username}>
               <CardContent>
                 <CardFirstLineStyle>
                   <p>{displayName(member)}</p>
@@ -35,23 +33,16 @@ export default function Overview() {
             </Card>
           ))
         : null}
-      <ButtonDiv>
+      <SmallButtonDiv>
         <Button variant="contained" color="primary" onClick={handleClick}>
           Ausgleichszahlungen
         </Button>
-      </ButtonDiv>
+      </SmallButtonDiv>
     </CardPageStyle>
   );
 
   function handleClick(event) {
     event.preventDefault();
-    console.log('EventMembers', members);
-    calculateCompensation(members);
-    history.push('/event/compensation/:eventId');
+    history.push(`/event/compensation/${eventId}`);
   }
 }
-
-const ButtonDiv = styled.div`
-  display: flex;
-  justify-content: center;
-`;

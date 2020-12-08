@@ -12,10 +12,15 @@ export default function ExpenditureList() {
   return (
     <CardPageStyle>
       {event?.expenditures.map((expenditure) => (
-        <ExpenditureCard expenditure={expenditure} />
+        <ExpenditureCard expenditure={expenditure} key={expenditure.id} />
       ))}
 
       <AddButton handle={handleAddExpenditure} />
+
+      <br />
+      <br />
+      <br />
+      <br />
     </CardPageStyle>
   );
 

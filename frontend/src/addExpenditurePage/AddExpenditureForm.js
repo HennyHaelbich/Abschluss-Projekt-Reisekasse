@@ -9,6 +9,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuItem from '@material-ui/core/MenuItem';
 import { displayName } from '../helperFunctions/helperFunctions';
 import useEvent from '../hooks/useEvent';
+import { useTextFieldStyle } from '../styling/MaterialUiStyling';
 
 export default function AddExpenditureForm() {
   const history = useHistory();
@@ -18,6 +19,7 @@ export default function AddExpenditureForm() {
   const { updateEvent } = useContext(EventContext);
   const { event, eventId } = useEvent();
   const members = event?.members;
+  const classes = useTextFieldStyle();
 
   return members ? (
     <>
@@ -25,6 +27,7 @@ export default function AddExpenditureForm() {
 
       <FormStyled>
         <TextField
+          className={classes.root}
           label="Beschreibung"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
@@ -32,6 +35,7 @@ export default function AddExpenditureForm() {
         />
 
         <TextField
+          className={classes.root}
           label="Betrag"
           type="number"
           placeholder={'0.00'}
@@ -46,6 +50,7 @@ export default function AddExpenditureForm() {
         />
 
         <TextField
+          className={classes.root}
           select
           label="Zahler"
           value={payer}
