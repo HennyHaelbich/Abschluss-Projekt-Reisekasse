@@ -9,11 +9,13 @@ import Button from '@material-ui/core/Button';
 import Header from '../commons/Header';
 import { useTextFieldStyle } from '../styling/MaterialUiStyling';
 import { SmallButtonDiv } from '../styling/CommonStyledComponents';
+import { loadUserDataFromLocalStorage } from '../service/LocalStorage';
 
 export default function AddEventForm() {
   const { createEvent } = useContext(EventContext);
   const { addMember, members } = useEventMembers();
-  const [newMember, setNewMember] = useState('');
+  const userdata = loadUserDataFromLocalStorage();
+  const [newMember, setNewMember] = useState(userdata.sub);
   const [title, setTitle] = useState('');
   const [error, setError] = useState('');
   const history = useHistory();
