@@ -148,6 +148,7 @@ public class EventService {
         return expenditurePerMemberList;
     }
 
+
     public List<EventMember> calculateBalance(List<EventMember> eventMembers, List<Expenditure> expenditureList) {
         for (EventMember eventMember : eventMembers) {
             eventMember.setBalance(0);

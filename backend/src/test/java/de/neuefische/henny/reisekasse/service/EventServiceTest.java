@@ -146,27 +146,27 @@ class EventServiceTest {
                 .id(expenditureId)
                 .description("Kaffee und Kuchen")
                 .expenditurePerMemberList(List.of(
-                        ExpenditurePerMember.builder().username("Henny").amount(25).build(),
-                        ExpenditurePerMember.builder().username("Janice").amount(25).build()))
+                        ExpenditurePerMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").amount(25).build(),
+                        ExpenditurePerMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").amount(25).build()))
                 .amount(50)
                 .timestamp(Instant.parse("2020-11-22T15:00:00Z"))
-                .payer(UserDto.builder().username("Henny").build())
+                .payer(UserDto.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").build())
                 .build();
 
         Event eventBefore = Event.builder()
                 .id(eventId)
                 .title("Radreise")
                 .members(List.of(
-                        EventMember.builder().username("Henny").balance(25).build(),
-                        EventMember.builder().username("Janice").balance(-25).build()))
+                        EventMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").balance(25).build(),
+                        EventMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").balance(-25).build()))
                 .expenditures(new ArrayList<>() {{ add(expenditureOne); }})
                 .build();
 
         AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
                 .description("Bahnfahrkarten")
                 .members(List.of(
-                        EventMember.builder().username("Henny").balance(25).build(),
-                        EventMember.builder().username("Janice").balance(-25).build()))
+                        EventMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").balance(25).build(),
+                        EventMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").balance(-25).build()))
                 .payerId("Henny")
                 .amount(20)
                 .build();
@@ -175,19 +175,19 @@ class EventServiceTest {
                 .id(expenditureId)
                 .description("Bahnfahrkarten")
                 .expenditurePerMemberList(List.of(
-                        ExpenditurePerMember.builder().username("Henny").amount(10).build(),
-                        ExpenditurePerMember.builder().username("Janice").amount(10).build()))
+                        ExpenditurePerMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").amount(10).build(),
+                        ExpenditurePerMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").amount(10).build()))
                 .amount(20)
                 .timestamp(expectedTime)
-                .payer(UserDto.builder().username("Henny").build())
+                .payer(UserDto.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").build())
                 .build();
 
         Event eventExpected = Event.builder()
                 .id(eventId)
                 .title("Radreise")
                 .members(List.of(
-                        EventMember.builder().username("Henny").balance(35).build(),
-                        EventMember.builder().username("Janice").balance(-35).build()))
+                        EventMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").balance(35).build(),
+                        EventMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").balance(-35).build()))
                 .expenditures(new ArrayList<>() {{ add(newExpenditure); add(expenditureOne); }})
                 .build();
 
@@ -195,7 +195,7 @@ class EventServiceTest {
         when(mockTimestampUtils.generateTimestampEpochSeconds()).thenReturn(expectedTime);
         when(mockEventDb.findById(eventId)).thenReturn(Optional.of(eventBefore));
         when(mockEventDb.save(eventExpected)).thenReturn(eventExpected);
-        when(mockUserService.getUserById("Henny")).thenReturn(Optional.of(UserDto.builder().username("Henny").build()));
+        when(mockUserService.getUserById("Henny")).thenReturn(Optional.of(UserDto.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").build()));
 
         // When
         Event result = eventService.addExpenditure(eventId, expenditureToBeAdded);
