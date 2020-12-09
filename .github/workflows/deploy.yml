@@ -70,7 +70,9 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           PORT: 6400
           JWT_SECRETKEY: ${{ secrets.JWT_SECRETKEY }}
-          MONGO_DB_URI: https://wissenwirnochnicht.de
+          MONGO_DB_URI: mongodb+srv://${{ secrets.MONGO_DB_USERNAME }}:${{ secrets.MONGO_DB_PASSWORD }}@cluster0.3e5xh.mongodb.net/Reisekasse?retryWrites=true&w=majority
+          MONGO_DB_USERNAME: ${{ secrets.MONGO_DB_USERNAME }}
+          MONGO_DB_PASSWORD: ${{ secrets.MONGO_DB_PASSWORD }}
         run: heroku container:push web -a reisekasse
       - name: deploy/release docker container to heroku
         env:
