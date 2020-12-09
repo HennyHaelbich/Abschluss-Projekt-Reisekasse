@@ -48,6 +48,8 @@ export default function ExpenditureCard({ expenditure }) {
     setExpanded(!expanded);
   };
 
+  console.log('ExpenditureCard', expenditure);
+
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -60,6 +62,8 @@ export default function ExpenditureCard({ expenditure }) {
             Bezahlt von <strong>{displayName(expenditure.payer)}</strong>
           </p>
           <p>{formattedDate(expenditure.timestamp)}</p>
+          <p>{expenditure.place}</p>
+          <p>{expenditure.category}</p>
         </CardSecondLineStyle>
       </CardContent>
 
