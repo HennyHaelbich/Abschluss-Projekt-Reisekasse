@@ -16,7 +16,7 @@ public class AddExpenditureDto {
 
     private String description;
     private List<EventMember> members;
-    private UserDto payer;
+    private String payerId;
     private int amount;
 
 }

@@ -24,13 +24,15 @@ public class EventService {
     private final IdUtils idUtils;
     private final TimestampUtils timestampUtils;
     private final MongoTemplate mongoTemplate;
+    private final UserService userService;
 
     @Autowired
-    public EventService(EventDb eventDb, IdUtils idUtils, TimestampUtils timestampUtils, MongoTemplate mongoTemplate) {
+    public EventService(EventDb eventDb, IdUtils idUtils, TimestampUtils timestampUtils, MongoTemplate mongoTemplate, UserService userService) {
         this.eventDb = eventDb;
         this.idUtils = idUtils;
         this.timestampUtils = timestampUtils;
         this.mongoTemplate = mongoTemplate;
+        this.userService = userService;
     }
 
 
@@ -69,12 +71,14 @@ public class EventService {
         List<ExpenditurePerMember> expenditurePerMemberList =
                 calculateExpenditurePerMember(addExpenditureDto.getMembers(), addExpenditureDto.getAmount());
 
+        UserDto payer = userService.getUserById(addExpenditureDto.getPayerId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
         Expenditure newExpenditure = Expenditure.builder()
                 .id(idUtils.generateId())
                 .timestamp(timestampUtils.generateTimestampEpochSeconds())
                 .description(addExpenditureDto.getDescription())
                 .expenditurePerMemberList(expenditurePerMemberList)
-                .payer(addExpenditureDto.getPayer())
+                .payer(payer)
                 .amount(addExpenditureDto.getAmount())
                 .build();
 
@@ -83,7 +87,7 @@ public class EventService {
         event.getExpenditures().add(newExpenditure);
 
         List<EventMember> updatedEventMembers =
-                updateBalance(addExpenditureDto.getMembers(), expenditurePerMemberList, addExpenditureDto.getPayer(), addExpenditureDto.getAmount(), true);
+                updateBalance(addExpenditureDto.getMembers(), expenditurePerMemberList, payer, addExpenditureDto.getAmount(), true);
 
         event.setMembers(updatedEventMembers);
 
