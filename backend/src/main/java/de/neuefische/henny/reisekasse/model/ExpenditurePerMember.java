@@ -16,4 +16,7 @@ public class ExpenditurePerMember {
     private String lastName;
     private int amount;
 
+    public String getName(){
+        return getFirstName()+" "+getLastName();
+    }
 }

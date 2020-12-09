@@ -45,6 +45,7 @@ public class EventService {
                         .lastName(member.getLastName())
                         .balance(0)
                         .build())
+                .sorted(Comparator.comparing(EventMember::getName))
                 .collect(Collectors.toList());
 
         Event newEvent = Event.builder()
@@ -84,7 +85,8 @@ public class EventService {
 
         Event event = getEventById(eventId);
 
-        event.getExpenditures().add(newExpenditure);
+        event.getExpenditures().add(0, newExpenditure);
+
 
         List<EventMember> updatedEventMembers = calculateBalance(event.getMembers(), event.getExpenditures());
 
@@ -142,7 +144,7 @@ public class EventService {
             expenditurePerMemberList.add(expenditurePerMember);
         }
 
-        expenditurePerMemberList.sort(Comparator.comparing(ExpenditurePerMember::getUsername));
+        expenditurePerMemberList.sort(Comparator.comparing(ExpenditurePerMember::getName));
         return expenditurePerMemberList;
     }
 

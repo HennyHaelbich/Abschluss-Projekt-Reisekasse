@@ -6,6 +6,7 @@ import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
 import de.neuefische.henny.reisekasse.utils.TimestampUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -34,7 +35,7 @@ class EventServiceTest {
     private final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockTimestampUtils, mockMongoTemplate, mockUserService);
 
     @Test
-    void listEventsShouldGiveBackAllEventsInEventDb() {
+    void listEventsShouldGiveBackAllEventsIncludingTheUserInEventDb() {
         // Given
         String username = "Janice";
 
@@ -88,16 +89,18 @@ class EventServiceTest {
     }
 
     @Test
-    void testCalculateExpenditurePerMemberShouldReturnListWithExpenditurePerPerson() {
+    @DisplayName("calculateExpenditurePerMember should return list with expenditure per person in alphabetical order of " +
+            "member first and last name")
+    void testCalculateExpenditurePerMemberWithDivisibleAmount() {
         // Given
         List<EventMember> givenMemberList = List.of(
-                EventMember.builder().username("Janice").build(),
-                EventMember.builder().username("Henny").build());
+                EventMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").build(),
+                EventMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").build());
         int amount = 200;
 
         List<ExpenditurePerMember> expectedExpendituresList = List.of(
-                ExpenditurePerMember.builder().username("Henny").amount(100).build(),
-                ExpenditurePerMember.builder().username("Janice").amount(100).build());
+                ExpenditurePerMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").amount(100).build(),
+                ExpenditurePerMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").amount(100).build());
 
         // When
         List<ExpenditurePerMember> result = eventService.calculateExpenditurePerMember(givenMemberList, amount);
@@ -107,20 +110,22 @@ class EventServiceTest {
     }
 
     @Test
-    void testCalculateExpenditurePerMemberShouldReturnListWhereRestIsGivenToSomePerson() {
+    @DisplayName("calculateExpenditurePerMember should return list with expenditure per person in alphabetical order of " +
+            "member first and last name where remaining cents where randomly distributed (not more than one cent per person)")
+    void testCalculateExpenditurePerMemberWithIndivisibleAmount() {
         // Given
         List<EventMember> givenMemberList = List.of(
-                EventMember.builder().username("Janice").build(),
-                EventMember.builder().username("Henny").build());
+                EventMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").build(),
+                EventMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").build());
         int amount = 201;
 
         List<ExpenditurePerMember> expectedPossibilityOne = List.of(
-                ExpenditurePerMember.builder().username("Henny").amount(100).build(),
-                ExpenditurePerMember.builder().username("Janice").amount(101).build());
+                ExpenditurePerMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").amount(100).build(),
+                ExpenditurePerMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").amount(101).build());
 
         List<ExpenditurePerMember> expectedPossibilityTwo = List.of(
-                ExpenditurePerMember.builder().username("Henny").amount(101).build(),
-                ExpenditurePerMember.builder().username("Janice").amount(100).build());
+                ExpenditurePerMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").amount(101).build(),
+                ExpenditurePerMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").amount(100).build());
 
         // When
         List<ExpenditurePerMember> result = eventService.calculateExpenditurePerMember(givenMemberList, amount);
@@ -130,26 +135,38 @@ class EventServiceTest {
     }
 
     @Test
-    void testAddExpenditureShouldReturnEventWithAddedExpenditure() {
+    @DisplayName("AddExpenditure should return event with added expenditure the newly added expenditure stands on the first place")
+    void testAddExpenditure() {
         // Given
         String eventId = "event_id";
         String expenditureId = "expenditure_id";
         Instant expectedTime = Instant.parse("2020-11-22T18:00:00Z");
 
+        Expenditure expenditureOne = Expenditure.builder()
+                .id(expenditureId)
+                .description("Kaffee und Kuchen")
+                .expenditurePerMemberList(List.of(
+                        ExpenditurePerMember.builder().username("Henny").amount(25).build(),
+                        ExpenditurePerMember.builder().username("Janice").amount(25).build()))
+                .amount(50)
+                .timestamp(Instant.parse("2020-11-22T15:00:00Z"))
+                .payer(UserDto.builder().username("Henny").build())
+                .build();
+
         Event eventBefore = Event.builder()
                 .id(eventId)
                 .title("Radreise")
                 .members(List.of(
-                        EventMember.builder().username("Janice").balance(0).build(),
-                        EventMember.builder().username("Henny").balance(0).build()))
-                .expenditures(new ArrayList<>())
+                        EventMember.builder().username("Henny").balance(25).build(),
+                        EventMember.builder().username("Janice").balance(-25).build()))
+                .expenditures(new ArrayList<>() {{ add(expenditureOne); }})
                 .build();
 
         AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
                 .description("Bahnfahrkarten")
                 .members(List.of(
-                        EventMember.builder().username("Janice").balance(0).build(),
-                        EventMember.builder().username("Henny").balance(0).build()))
+                        EventMember.builder().username("Henny").balance(25).build(),
+                        EventMember.builder().username("Janice").balance(-25).build()))
                 .payerId("Henny")
                 .amount(20)
                 .build();
@@ -169,11 +186,9 @@ class EventServiceTest {
                 .id(eventId)
                 .title("Radreise")
                 .members(List.of(
-                        EventMember.builder().username("Janice").balance(-10).build(),
-                        EventMember.builder().username("Henny").balance(10).build()))
-                .expenditures(new ArrayList<>() {{
-                    add(newExpenditure);
-                }})
+                        EventMember.builder().username("Henny").balance(35).build(),
+                        EventMember.builder().username("Janice").balance(-35).build()))
+                .expenditures(new ArrayList<>() {{ add(newExpenditure); add(expenditureOne); }})
                 .build();
 
         when(mockIdUtils.generateId()).thenReturn(expenditureId);
