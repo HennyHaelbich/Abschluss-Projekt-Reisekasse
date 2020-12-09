@@ -17,7 +17,10 @@ export default function Header({ title, backbutton }) {
             </IconButton>
           )}
         </div>
-        <HeadingStyled>{title}</HeadingStyled>
+        <div className="item1">
+          <HeadingStyled>{title}</HeadingStyled>
+        </div>
+        <div></div>
       </HeaderStyled>
     </>
   );
@@ -38,6 +41,9 @@ const HeaderStyled = styled.header`
   width: 100%;
   .MuiIconButton-root {
     color: white;
+  }
+  .item1 {
+    grid-column-start: 0;
   }
 `;
 

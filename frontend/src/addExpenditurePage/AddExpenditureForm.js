@@ -92,14 +92,23 @@ export default function AddExpenditureForm() {
             onChange={(event) => setCategory(event.target.value)}
           >
             <option value="none">Sonstiges</option>
+            //
+            <option value="excursion">Ausflug</option>
+            // MdNaturePeople
             <option value="entry">Eintritt</option>
+            // loTicket
             <option value="travelOnSite">Fahrtkosten</option>
+            // BiBus
             <option value="party">Party/Getränke</option>
+            // FaCocktail
             <option value="restaurant">Restaurant</option>
+            // mdRestaurant
             <option value="shopping">Shopping</option>
+            // GiShoppingBag
             <option value="supermarkt">Supermarkt</option>
+            // FiShoppingCart
             <option value="sleeping">Übernachtung</option>
-            ))}
+            // MdHotel ))}
           </Select>
         </FormControl>
 

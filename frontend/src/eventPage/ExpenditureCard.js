@@ -21,7 +21,9 @@ import EventContext from '../contexts/EventContext';
 import useEvent from '../hooks/useEvent';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-
+import Avatar from '@material-ui/core/Avatar';
+import CardHeader from '@material-ui/core/CardHeader';
+import FastfoodIcon from '@material-ui/icons/Fastfood';
 const useStyles = makeStyles((theme) => ({
   options: {
     padding: '4px',
@@ -52,56 +54,65 @@ export default function ExpenditureCard({ expenditure }) {
 
   return (
     <Card className={classes.root}>
-      <CardContent>
-        <CardFirstLineStyle>
-          <p>{expenditure.description}</p>
-          <p>{formattedAmount(expenditure.amount)}</p>
-        </CardFirstLineStyle>
-        <CardSecondLineStyle>
-          <p>
-            Bezahlt von <strong>{displayName(expenditure.payer)}</strong>
-          </p>
-          <p>{formattedDate(expenditure.timestamp)}</p>
-          <p>{expenditure.place}</p>
-          <p>{expenditure.category}</p>
-        </CardSecondLineStyle>
-      </CardContent>
+      <CardGridStyled>
+        <CategoryStyled>
+          <Avatar aria-label="recipe" className={classes.avatar}>
+            <FastfoodIcon />
+          </Avatar>
+        </CategoryStyled>
+        <div>
+          <CardContent>
+            <CardFirstLineStyle>
+              <p>{expenditure.description}</p>
+              <p>{formattedAmount(expenditure.amount)}</p>
+            </CardFirstLineStyle>
+            <CardSecondLineStyle>
+              <p>
+                Bezahlt von <strong>{displayName(expenditure.payer)}</strong>
+              </p>
+              <p>
+                {formattedDate(expenditure.timestamp)} {expenditure.place}
+              </p>
+            </CardSecondLineStyle>
+          </CardContent>
 
-      <CardActions className={classes.options} disableSpacing>
-        <IconButton onClick={() => handleDelete()} aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
-        <IconButton aria-label="edit">
-          <EditIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <DivStyled>
-            <p>
-              <strong>Anteil pro Person:</strong>
-            </p>
-            {expenditure.expenditurePerMemberList.map(
-              (expenditurePerMember) => (
-                <ListStyled key={expenditurePerMember.username}>
-                  <p>{displayName(expenditurePerMember)}</p>
-                  <p>{formattedAmount(expenditurePerMember.amount)}</p>
-                </ListStyled>
-              )
-            )}
-          </DivStyled>
-        </CardContent>
-      </Collapse>
+          <CardActions className={classes.options} disableSpacing>
+            <IconButton onClick={() => handleDelete()} aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+            <IconButton aria-label="edit">
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <DivStyled>
+                <p>
+                  <strong>Anteil pro Person:</strong>
+                </p>
+                {expenditure.expenditurePerMemberList.map(
+                  (expenditurePerMember) => (
+                    <ListStyled key={expenditurePerMember.username}>
+                      <p>{displayName(expenditurePerMember)}</p>
+                      <p>{formattedAmount(expenditurePerMember.amount)}</p>
+                    </ListStyled>
+                  )
+                )}
+              </DivStyled>
+            </CardContent>
+          </Collapse>
+        </div>
+      </CardGridStyled>
     </Card>
   );
 
@@ -109,6 +120,17 @@ export default function ExpenditureCard({ expenditure }) {
     removeExpenditure(eventId, expenditure.id);
   }
 }
+
+const CategoryStyled = styled.div`
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.12);
+  width: 40px;
+`;
+
+const CardGridStyled = styled.div`
+  display: grid;
+  grid-template-columns: 60px 1fr;
+`;
 
 const ListStyled = styled.ul`
   overflow: scroll;
