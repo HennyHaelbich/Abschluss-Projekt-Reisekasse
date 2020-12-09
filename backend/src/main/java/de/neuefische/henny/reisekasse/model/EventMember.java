@@ -18,5 +18,9 @@ public class EventMember {
     public EventMember(String username, int balance) {
         this.username = username;
         this.balance = balance;
-    };
+    }
+
+    public String getName() {
+        return getFirstName()+" "+getLastName();
+    }
 }

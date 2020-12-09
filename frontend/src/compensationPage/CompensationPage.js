@@ -31,7 +31,12 @@ export default function CompensationPage() {
       <Header title="Ausgleichszahlungen" backbutton />
       <CardPageStyle>
         {compensationsPayments.map((compensationsPayment) => (
-          <Card key={Math.random()}>
+          <Card
+            key={
+              compensationsPayment.payer.username +
+              compensationsPayment.paymentReceiver.username
+            }
+          >
             <CardContent>
               <CardFirstLineStyle>
                 <p>Betrag</p>

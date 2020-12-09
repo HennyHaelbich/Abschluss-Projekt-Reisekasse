@@ -45,6 +45,7 @@ public class EventService {
                         .lastName(member.getLastName())
                         .balance(0)
                         .build())
+                .sorted(Comparator.comparing(EventMember::getName))
                 .collect(Collectors.toList());
 
         Event newEvent = Event.builder()
@@ -84,10 +85,10 @@ public class EventService {
 
         Event event = getEventById(eventId);
 
-        event.getExpenditures().add(newExpenditure);
+        event.getExpenditures().add(0, newExpenditure);
 
-        List<EventMember> updatedEventMembers =
-                updateBalance(addExpenditureDto.getMembers(), expenditurePerMemberList, payer, addExpenditureDto.getAmount(), true);
+
+        List<EventMember> updatedEventMembers = calculateBalance(event.getMembers(), event.getExpenditures());
 
         event.setMembers(updatedEventMembers);
 
@@ -96,28 +97,16 @@ public class EventService {
     }
 
     public Event deleteExpenditure(String eventId, String expenditureId) {
-
         Event event = getEventById(eventId);
 
-        Optional<Expenditure> optionalExpenditureToDelete = event.getExpenditures().stream()
-                .filter(expenditure -> expenditure.getId().equals(expenditureId))
-                .findAny();
-
-        List<Expenditure> ExpendituresWithoutToDeleteExpenditure = event.getExpenditures().stream()
+        List<Expenditure> expendituresWithoutExpenditureToDelete = event.getExpenditures().stream()
                 .filter(expenditure -> !expenditure.getId().equals(expenditureId))
                 .collect(Collectors.toList());
 
-        if (optionalExpenditureToDelete.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "expenditure not found");
-        }
-
-        Expenditure expenditureToDelete = optionalExpenditureToDelete.get();
-
-        List<EventMember> updatedEventMembers = updateBalance(
-                event.getMembers(), expenditureToDelete.getExpenditurePerMemberList(), expenditureToDelete.getPayer(), expenditureToDelete.getAmount(), false);
+        List<EventMember> updatedEventMembers = calculateBalance(event.getMembers(), expendituresWithoutExpenditureToDelete);
 
         event.setMembers(updatedEventMembers);
-        event.setExpenditures(ExpendituresWithoutToDeleteExpenditure);
+        event.setExpenditures(expendituresWithoutExpenditureToDelete);
 
         return eventDb.save(event);
     }
@@ -155,28 +144,31 @@ public class EventService {
             expenditurePerMemberList.add(expenditurePerMember);
         }
 
-        expenditurePerMemberList.sort(Comparator.comparing(ExpenditurePerMember::getUsername));
+        expenditurePerMemberList.sort(Comparator.comparing(ExpenditurePerMember::getName));
         return expenditurePerMemberList;
     }
 
-    public List<EventMember> updateBalance(
-            List<EventMember> eventMembers, List<ExpenditurePerMember> expenditurePerMembers, UserDto payer, int amount, boolean addExpenditure) {
+
+    public List<EventMember> calculateBalance(List<EventMember> eventMembers, List<Expenditure> expenditureList) {
         for (EventMember eventMember : eventMembers) {
-            for (ExpenditurePerMember expenditurePerMember : expenditurePerMembers) {
-                if (eventMember.getUsername().equals(expenditurePerMember.getUsername())) {
-                    if (addExpenditure) {
+            eventMember.setBalance(0);
+
+            for (Expenditure expenditure : expenditureList) {
+                List<ExpenditurePerMember> expenditurePerMemberList = expenditure.getExpenditurePerMemberList();
+                UserDto payer = expenditure.getPayer();
+                int amount = expenditure.getAmount();
+
+                for (ExpenditurePerMember expenditurePerMember : expenditurePerMemberList) {
+
+                    if (eventMember.getUsername().equals(expenditurePerMember.getUsername())) {
                         eventMember.setBalance(eventMember.getBalance() - expenditurePerMember.getAmount());
-                    } else {
-                        eventMember.setBalance(eventMember.getBalance() + expenditurePerMember.getAmount());
-                    }
-                    if (eventMember.getUsername().equals(payer.getUsername())) {
-                        if (addExpenditure) {
+
+                        if (eventMember.getUsername().equals(payer.getUsername())) {
                             eventMember.setBalance(eventMember.getBalance() + amount);
-                        } else {
-                            eventMember.setBalance(eventMember.getBalance() - amount);
                         }
+
+                        break;
                     }
-                    break;
                 }
             }
         }

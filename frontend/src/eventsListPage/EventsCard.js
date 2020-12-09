@@ -6,7 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { CardFirstLineStyle } from '../styling/CommonStyledComponents';
 import { displayName } from '../helperFunctions/helperFunctions';
 
-export default function ShowEventList({ event }) {
+export default function EventCard({ event }) {
   const history = useHistory();
 
   return (
@@ -25,7 +25,9 @@ export default function ShowEventList({ event }) {
           </CardFirstLineStyle>
           <p>
             {event.members.map((member) => (
-              <>{displayName(member)} </>
+              <React.Fragment key={member.username}>
+                {displayName(member)}{' '}
+              </React.Fragment>
             ))}
           </p>
         </CardContent>

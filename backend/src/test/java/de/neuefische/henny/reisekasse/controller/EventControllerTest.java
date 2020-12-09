@@ -80,16 +80,16 @@ class EventControllerTest {
         // Given
         AddEventDto eventToBeAdded = AddEventDto.builder()
                 .title("Norwegen 2020")
-                .members(List.of(new UserDto("Julius"),
-                        new UserDto("Henny")))
+                .members(List.of(new UserDto("Julius@web.de", "Julius", "Schmidt"),
+                        new UserDto("Henny@web.de", "Henny", "Haelbich")))
                 .build();
         when(mockedIdUtils.generateId()).thenReturn("id");
 
         Event expectedEvent = Event.builder()
                 .id("id")
                 .title("Norwegen 2020")
-                .members(List.of(new EventMember("Julius", 0),
-                        new EventMember("Henny", 0)))
+                .members(List.of(new EventMember("Henny@web.de", "Henny", "Haelbich", 0),
+                        new EventMember("Julius@web.de", "Julius", "Schmidt", 0)))
                 .expenditures(new ArrayList<>())
                 .build();
 
@@ -145,21 +145,21 @@ class EventControllerTest {
         String expenditureId = "expenditure_id";
         Instant givenTime = Instant.parse("2020-11-22T18:00:00Z");
 
-        userDb.save(TravelFoundUser.builder().username("Henny").build());
+        userDb.save(TravelFoundUser.builder().username("Henny@web.de").firstName("Henny").lastName("Haelbich").build());
 
         eventDb.saveAll(List.of(
                 Event.builder().id("id_2").title("Kanutour")
                         .members(List.of(
-                                new EventMember("Janice", 0),
-                                new EventMember("Henny", 0)))
+                                new EventMember("Henny@web.de", "Henny", "Haelbich", 0),
+                                new EventMember("Janice@web.de", "Janice", "Schmidt", 0)))
                         .expenditures(List.of()).build()
         ));
 
         AddExpenditureDto expenditureToBeAdded = AddExpenditureDto.builder()
                 .description("Bahnfahrkarten")
-                .members(List.of(new EventMember("Janice", 0),
-                        new EventMember("Henny", 0)))
-                .payerId("Henny")
+                .members(List.of(new EventMember("Henny@web.de", "Henny", "Haelbich", 0),
+                        new EventMember("Janice@web.de", "Janice", "Schmidt", 0)))
+                .payerId("Henny@web.de")
                 .amount(20)
                 .build();
 
@@ -167,9 +167,9 @@ class EventControllerTest {
                 .id(expenditureId)
                 .description("Bahnfahrkarten")
                 .expenditurePerMemberList(List.of(
-                        ExpenditurePerMember.builder().username("Henny").amount(10).build(),
-                        ExpenditurePerMember.builder().username("Janice").amount(10).build()))
-                .payer(new UserDto("Henny"))
+                        ExpenditurePerMember.builder().username("Henny@web.de").firstName("Henny").lastName("Haelbich").amount(10).build(),
+                        ExpenditurePerMember.builder().username("Janice@web.de").firstName("Janice").lastName("Schmidt").amount(10).build()))
+                .payer(new UserDto("Henny@web.de", "Henny", "Haelbich"))
                 .amount(20)
                 .timestamp(givenTime)
                 .build();
@@ -177,8 +177,8 @@ class EventControllerTest {
         Event eventExpected = Event.builder()
                 .id(eventId)
                 .title("Kanutour")
-                .members(List.of(new EventMember("Janice", -10),
-                        new EventMember("Henny", 10)))
+                .members(List.of(new EventMember("Henny@web.de", "Henny", "Haelbich", 10),
+                        new EventMember("Janice@web.de", "Janice", "Schmidt", -10)))
                 .expenditures(new ArrayList<>() {{
                     add(newExpenditure);
                 }})
@@ -203,32 +203,44 @@ class EventControllerTest {
         String expenditureId = "expenditure_id";
         IdsDto ids = IdsDto.builder().eventId(eventId).expenditureId(expenditureId).build();
 
-        Expenditure expenditureToDelete = Expenditure.builder()
-                .id(expenditureId)
+        Expenditure expenditureOne = Expenditure.builder()
+                .id("id_1")
                 .description("Bahnfahrkarten")
                 .expenditurePerMemberList(List.of(
                         ExpenditurePerMember.builder().username("Henny").amount(10).build(),
                         ExpenditurePerMember.builder().username("Janice").amount(10).build()))
-                .payer(new UserDto("Henny"))
                 .amount(20)
+                .payer(UserDto.builder().username("Henny").build())
                 .build();
 
-        Event event = Event.builder()
+        Expenditure expenditureToDelete = Expenditure.builder()
+                .id(expenditureId)
+                .description("Bahnfahrkarten")
+                .expenditurePerMemberList(List.of(
+                        ExpenditurePerMember.builder().username("Henny").amount(25).build(),
+                        ExpenditurePerMember.builder().username("Janice").amount(25).build()))
+                .amount(50)
+                .payer(UserDto.builder().username("Janice").build())
+                .build();
+
+        Event eventBefore = Event.builder()
                 .id(eventId)
-                .title("Kanutour")
-                .members(List.of(new EventMember("Janice", 50),
-                        new EventMember("Henny", 50)))
-                .expenditures(List.of(expenditureToDelete))
+                .title("Radreise")
+                .members(List.of(
+                        EventMember.builder().username("Henny").balance(15).build(),
+                        EventMember.builder().username("Janice").balance(-15).build()))
+                .expenditures(List.of(expenditureOne, expenditureToDelete))
                 .build();
 
-        eventDb.save(event);
+        eventDb.save(eventBefore);
 
         Event eventExpected = Event.builder()
                 .id(eventId)
-                .title("Kanutour")
-                .members(List.of(new EventMember("Janice", 60),
-                        new EventMember("Henny", 40)))
-                .expenditures(List.of())
+                .title("Radreise")
+                .members(List.of(
+                        EventMember.builder().username("Henny").balance(10).build(),
+                        EventMember.builder().username("Janice").balance(-10).build()))
+                .expenditures(List.of(expenditureOne))
                 .build();
 
 
