@@ -68,8 +68,6 @@ jobs:
       - name: push docker container to heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          PORT: 6400
-          JWT_SECRETKEY: ${{ secrets.JWT_SECRETKEY }}
         run: heroku container:push web -a reisekasse
       - name: deploy/release docker container to heroku
         env:
