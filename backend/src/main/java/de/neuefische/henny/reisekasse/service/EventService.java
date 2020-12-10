@@ -81,6 +81,8 @@ public class EventService {
                 .expenditurePerMemberList(expenditurePerMemberList)
                 .payer(payer)
                 .amount(addExpenditureDto.getAmount())
+                .place(addExpenditureDto.getPlace())
+                .category(addExpenditureDto.getCategory())
                 .build();
 
         Event event = getEventById(eventId);

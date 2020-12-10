@@ -21,6 +21,8 @@ export default function AddExpenditureForm() {
 
   const [description, setDescription] = useState('');
   const [amountString, setAmountString] = useState('');
+  const [place, setPlace] = useState('');
+  const [category, setCategory] = useState('none');
 
   const userdata = loadUserDataFromLocalStorage();
   const [payerId, setPayerId] = useState(userdata.sub);
@@ -72,6 +74,35 @@ export default function AddExpenditureForm() {
           </Select>
         </FormControl>
 
+        <TextField
+          className={classes.root}
+          label="Ort"
+          type="text"
+          value={place}
+          variant="outlined"
+          onChange={(event) => setPlace(event.target.value)}
+        />
+
+        <FormControl variant="outlined" className={classes.root}>
+          <InputLabel>Kategorie</InputLabel>
+          <Select
+            native
+            label="Kategorie"
+            value={category}
+            onChange={(event) => setCategory(event.target.value)}
+          >
+            <option value="none">Sonstiges</option>
+            <option value="excursion">Ausflug</option>
+            <option value="entry">Eintritt</option>
+            <option value="transport">Fahrtkosten</option>
+            <option value="party">Party/Getränke</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="shopping">Shopping</option>
+            <option value="supermarkt">Supermarkt</option>
+            <option value="sleeping">Übernachtung</option>
+          </Select>
+        </FormControl>
+
         <Button
           variant="outlined"
           disabled={
@@ -97,7 +128,15 @@ export default function AddExpenditureForm() {
   function saveExpenditure(event) {
     event.preventDefault();
     const amount = Number(amountString) * 100;
-    addExpenditure(description, members, payerId, amount, eventId);
+    addExpenditure(
+      eventId,
+      description,
+      members,
+      payerId,
+      amount,
+      place,
+      category
+    );
     history.push(`/event/${eventId}/expenditures`);
   }
 }
