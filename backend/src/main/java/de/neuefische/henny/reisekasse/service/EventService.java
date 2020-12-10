@@ -191,8 +191,10 @@ public class EventService {
 
         // Find and handle Subgroups of two
         // to optimise the compensate balances algorithm subgroups of higher order must be found and separated
-        for (EventMember paymentReceiver : paymentReceivers) {
-            for (EventMember payer : payers) {
+        for (int j = 0; j < paymentReceivers.size(); j++) {
+            EventMember paymentReceiver = paymentReceivers.get(j);
+            for (int i = 0; i < payers.size(); i++) {
+                EventMember payer = payers.get(i);
                 if (paymentReceiver.getBalance() == Math.abs((payer.getBalance()))) {
                     Transfer transfer = Transfer.builder()
                             .payer(new UserDto(payer.getUsername(), payer.getFirstName(), payer.getLastName()))
