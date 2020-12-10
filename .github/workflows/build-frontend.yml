@@ -1,10 +1,6 @@
 name: Build frontend
 
-on:
-  push:
-    branches:
-      - /refs/heads/*
-      - !main
+on: push
 
 jobs:
   build:
@@ -21,10 +17,10 @@ jobs:
         run: |
           cd frontend
           npm install
-#      - name: run tests
-#        run: |
-#          cd frontend
-#          npm run test
+      - name: run tests
+        run: |
+          cd frontend
+          npm run test
       - name: build frontend
         run: |
           cd frontend

@@ -1,10 +1,6 @@
 name: Run backend build
 
-on:
-  push:
-    branches:
-      - /refs/heads/*
-      - !main
+on: push
 
 jobs:
   build:
