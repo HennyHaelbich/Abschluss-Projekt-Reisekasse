@@ -3,7 +3,7 @@ name: Deploy Reisekasse
 on:
   push:
     branches:
-      - deployment
+      - main
 
 jobs:
   build-frontend:
