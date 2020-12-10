@@ -8,6 +8,7 @@ import {
   CardFirstLineStyle,
   CardSecondLineStyle,
 } from '../styling/CommonStyledComponents';
+import ExpenditureCategoryIcon from './ExpenditureCategoryIcon';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -22,8 +23,7 @@ import useEvent from '../hooks/useEvent';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Avatar from '@material-ui/core/Avatar';
-import CardHeader from '@material-ui/core/CardHeader';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
+
 const useStyles = makeStyles((theme) => ({
   options: {
     padding: '4px',
@@ -50,14 +50,12 @@ export default function ExpenditureCard({ expenditure }) {
     setExpanded(!expanded);
   };
 
-  console.log('ExpenditureCard', expenditure);
-
   return (
     <Card className={classes.root}>
       <CardGridStyled>
         <CategoryStyled>
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            <FastfoodIcon />
+          <Avatar aria-label={expenditure.category} className={classes.avatar}>
+            <ExpenditureCategoryIcon type={expenditure.category} />
           </Avatar>
         </CategoryStyled>
         <div>

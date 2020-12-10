@@ -24,6 +24,9 @@ export const CardPageStyle = styled.div`
   & > * {
     margin: var(--size-m) 0;
   }
+  .MuiCardContent-root:last-child {
+    padding-bottom: 16px;
+  }
 `;
 
 export const SmallButtonDiv = styled.div`
