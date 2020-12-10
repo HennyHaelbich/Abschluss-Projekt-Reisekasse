@@ -34,15 +34,24 @@ export default function Overview() {
           ))
         : null}
       <SmallButtonDiv>
-        <Button variant="contained" color="primary" onClick={handleClick}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => history.push(`/event/analysis/${eventId}`)}
+        >
+          Auswertungen
+        </Button>
+      </SmallButtonDiv>
+
+      <SmallButtonDiv>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => history.push(`/event/compensation/${eventId}`)}
+        >
           Ausgleichszahlungen
         </Button>
       </SmallButtonDiv>
     </CardPageStyle>
   );
-
-  function handleClick(event) {
-    event.preventDefault();
-    history.push(`/event/compensation/${eventId}`);
-  }
 }
