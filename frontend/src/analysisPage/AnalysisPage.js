@@ -1,41 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../commons/Header';
 import useEvent from '../hooks/useEvent';
+import CategoryPieChart from './CategoryPieCart';
+import styled from 'styled-components/macro';
+import CategoryBarChart from './CategoryBarChart';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 export default function AnalysisPage() {
+  const classes = useStyles();
   const { event } = useEvent();
-  console.log(event?.expenditures);
+  const [show, setShow] = useState('category');
 
-  let result = [];
+  let data = [];
   event?.expenditures.reduce(function (res, value) {
     if (!res[value.category]) {
       res[value.category] = { category: value.category, amount: 0 };
-      result.push(res[value.category]);
+      data.push(res[value.category]);
     }
     res[value.category].amount += value.amount;
     return res;
   }, {});
-  console.log('Result', result);
 
   return (
     <>
       <Header title={'Auswertungen'} backbutton />
-
-      <PieChart width={800} height={400} onMouseEnter={this.onPieEnter}>
-        <Pie
-          data={data}
-          cx={300}
-          cy={200}
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={80}
-          fill="#8884d8"
-        >
-          {data.map((entry, index) => (
-            <Cell fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-      </PieChart>
+      <DivStyled>
+        <FlexDiv>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <Select
+              native
+              value={show}
+              onChange={(event) => setShow(event.target.value)}
+            >
+              <option value="category">Kategorie</option>
+              <option value="date">Datum</option>
+              <option value="place">Ort</option>
+            </Select>
+          </FormControl>
+        </FlexDiv>
+        <CategoryPieChart data={data} />
+        <CategoryBarChart data={data} />
+      </DivStyled>
     </>
   );
 }
+
+const DivStyled = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-self: center;
+  grid-gap: var(--size-xl);
+  padding: var(--size-l);
+`;
+
+export const FlexDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`;
