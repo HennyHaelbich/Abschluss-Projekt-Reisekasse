@@ -27,36 +27,33 @@ export default function CompensationPage() {
   }, [event, calculateCompensation, setCompensationPayments]);
 
   return compensationsPayments ? (
-    <div>
-      <Header title="Ausgleichszahlungen" backbutton />
-      <CardPageStyle>
-        {compensationsPayments.map((compensationsPayment) => (
-          <Card
-            key={
-              compensationsPayment.payer.username +
-              compensationsPayment.paymentReceiver.username
-            }
-          >
-            <CardContent>
-              <CardFirstLineStyle>
-                <p>Betrag</p>
-                <p>{formattedAmount(compensationsPayment.amount)}</p>
-              </CardFirstLineStyle>
-              <CardSecondLineStyle>
-                <p>
-                  von <strong>{displayName(compensationsPayment.payer)}</strong>
-                </p>
-                <p>
-                  an{' '}
-                  <strong>
-                    {displayName(compensationsPayment.paymentReceiver)}
-                  </strong>
-                </p>
-              </CardSecondLineStyle>
-            </CardContent>
-          </Card>
-        ))}
-      </CardPageStyle>
-    </div>
+    <CardPageStyle>
+      {compensationsPayments.map((compensationsPayment) => (
+        <Card
+          key={
+            compensationsPayment.payer.username +
+            compensationsPayment.paymentReceiver.username
+          }
+        >
+          <CardContent>
+            <CardFirstLineStyle>
+              <p>Betrag</p>
+              <p>{formattedAmount(compensationsPayment.amount)}</p>
+            </CardFirstLineStyle>
+            <CardSecondLineStyle>
+              <p>
+                von <strong>{displayName(compensationsPayment.payer)}</strong>
+              </p>
+              <p>
+                an{' '}
+                <strong>
+                  {displayName(compensationsPayment.paymentReceiver)}
+                </strong>
+              </p>
+            </CardSecondLineStyle>
+          </CardContent>
+        </Card>
+      ))}
+    </CardPageStyle>
   ) : null;
 }

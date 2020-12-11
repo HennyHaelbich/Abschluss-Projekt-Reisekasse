@@ -20,7 +20,7 @@ const theme = createMuiTheme({
       main: '#5a189a',
     },
     secondary: {
-      main: '#ff8500',
+      main: '#ff7900',
     },
   },
 });
@@ -36,11 +36,6 @@ function App() {
               <Route path={'/login'} component={LoginPage} />
               <ProtectedRoute path={'/new'} component={AddEventForm} />
               <ProtectedRoute path={'/events'} component={EventsPage} />
-              <ProtectedRoute
-                exact
-                path={'/event/compensation/:eventId'}
-                component={CompensationPage}
-              />
               <ProtectedRoute
                 exact
                 path={'/event/expenditures/:eventId'}

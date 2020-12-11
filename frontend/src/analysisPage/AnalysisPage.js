@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import Header from '../commons/Header';
 import useEvent from '../hooks/useEvent';
 import CategoryPieChart from './CategoryPieCart';
 import styled from 'styled-components/macro';
 import CategoryBarChart from './CategoryBarChart';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,26 +34,10 @@ export default function AnalysisPage() {
   console.log(data);
 
   return (
-    <>
-      <Header title={'Auswertungen'} backbutton />
-      <DivStyled>
-        <FlexDiv>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <Select
-              native
-              value={show}
-              onChange={(event) => setShow(event.target.value)}
-            >
-              <option value="category">Kategorie</option>
-              <option value="date">Datum</option>
-              <option value="place">Ort</option>
-            </Select>
-          </FormControl>
-        </FlexDiv>
-        <CategoryPieChart data={data} />
-        <CategoryBarChart data={data} />
-      </DivStyled>
-    </>
+    <DivStyled>
+      <CategoryPieChart data={data} />
+      <CategoryBarChart data={data} />
+    </DivStyled>
   );
 }
 
@@ -66,9 +47,4 @@ const DivStyled = styled.div`
   justify-self: center;
   grid-gap: var(--size-xl);
   padding: var(--size-s);
-`;
-
-export const FlexDiv = styled.div`
-  display: flex;
-  justify-content: center;
 `;

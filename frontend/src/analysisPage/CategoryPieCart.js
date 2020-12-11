@@ -1,22 +1,24 @@
 import React from 'react';
-import { PieChart, Pie } from 'recharts';
+import { PieChart, Pie, ResponsiveContainer } from 'recharts';
 
 export default function CategoryPieChart({ data }) {
   let renderLabel = function (entry) {
-    return entry.category;
+    return entry.name;
   };
 
   return (
-    <PieChart width={300} height={250} data={data}>
-      <Pie
-        data={data}
-        outerRadius={80}
-        fill="#bdbdbd"
-        dataKey="amount"
-        nameKey="category"
-        label={renderLabel}
-        isAnimationActive={false}
-      />
-    </PieChart>
+    <ResponsiveContainer width="100%" aspect={4.0 / 3.0}>
+      <PieChart data={data}>
+        <Pie
+          data={data}
+          outerRadius={80}
+          fill="#bdbdbd"
+          dataKey="amount"
+          nameKey="category"
+          label={renderLabel}
+          isAnimationActive={false}
+        />
+      </PieChart>
+    </ResponsiveContainer>
   );
 }

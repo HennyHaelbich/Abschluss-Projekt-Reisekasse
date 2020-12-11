@@ -6,6 +6,7 @@ import ExpenditureList from './ExpenditureList';
 import useEvent from '../hooks/useEvent';
 import Header from '../commons/Header';
 import styled from 'styled-components/macro';
+import CompensationPage from '../compensationPage/CompensationPage';
 
 export default function TabPanel(props) {
   const { event } = useEvent();
@@ -16,11 +17,13 @@ export default function TabPanel(props) {
   const tabNameToIndex = {
     0: 'overview',
     1: 'expenditures',
+    2: 'compensation',
   };
 
   const indexToTabName = {
     overview: 0,
     expenditures: 1,
+    compensation: 2,
   };
 
   const [selectedTab, setSelectedTab] = useState(indexToTabName[page]);
@@ -37,11 +40,13 @@ export default function TabPanel(props) {
         <Tabs value={selectedTab} onChange={handleChange} centered={true}>
           <Tab label="Übersicht" />
           <Tab label="Ausgaben" />
+          <Tab label="Ausgleich" />
         </Tabs>
       </TabsFixed>
       <TabsSpacer>
         {selectedTab === 0 && <Overview />}
         {selectedTab === 1 && <ExpenditureList />}
+        {selectedTab === 2 && <CompensationPage />}
       </TabsSpacer>
     </div>
   );

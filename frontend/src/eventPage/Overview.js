@@ -13,6 +13,7 @@ import {
   CardPageStyle,
   SmallButtonDiv,
 } from '../styling/CommonStyledComponents';
+import AnalysisPage from '../analysisPage/AnalysisPage';
 
 export default function Overview() {
   const { event, eventId } = useEvent();
@@ -20,38 +21,22 @@ export default function Overview() {
   const members = event?.members;
 
   return (
-    <CardPageStyle>
-      {members
-        ? members.map((member) => (
-            <Card key={member.username}>
-              <CardContent>
-                <CardFirstLineStyle>
-                  <p>{displayName(member)}</p>
-                  <p>{formattedAmount(member.balance)}</p>
-                </CardFirstLineStyle>
-              </CardContent>
-            </Card>
-          ))
-        : null}
-      <SmallButtonDiv>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => history.push(`/event/analysis/${eventId}`)}
-        >
-          Auswertungen
-        </Button>
-      </SmallButtonDiv>
-
-      <SmallButtonDiv>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => history.push(`/event/compensation/${eventId}`)}
-        >
-          Ausgleichszahlungen
-        </Button>
-      </SmallButtonDiv>
-    </CardPageStyle>
+    <>
+      <CardPageStyle>
+        {members
+          ? members.map((member) => (
+              <Card key={member.username}>
+                <CardContent>
+                  <CardFirstLineStyle>
+                    <p>{displayName(member)}</p>
+                    <p>{formattedAmount(member.balance)}</p>
+                  </CardFirstLineStyle>
+                </CardContent>
+              </Card>
+            ))
+          : null}
+      </CardPageStyle>
+      <AnalysisPage />
+    </>
   );
 }
