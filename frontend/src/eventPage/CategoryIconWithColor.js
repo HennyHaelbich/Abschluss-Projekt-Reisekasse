@@ -14,55 +14,55 @@ export default function ExpenditureCategoryIcon({ type }) {
   switch (type) {
     case 'excursion':
       return (
-        <Avatar aria-label={type}>
+        <Avatar aria-label={type} style={{ backgroundColor: '#A4BB67' }}>
           <NaturePeopleIcon />
         </Avatar>
       );
     case 'entry':
       return (
-        <Avatar aria-label={type}>
+        <Avatar aria-label={type} style={{ backgroundColor: '#5ea4c0' }}>
           <ConfirmationNumberIcon />
         </Avatar>
       );
     case 'transport':
       return (
-        <Avatar aria-label={type}>
+        <Avatar aria-label={type} style={{ backgroundColor: '#DEC395' }}>
           <CommuteIcon />
         </Avatar>
       );
     case 'party':
       return (
-        <Avatar aria-label={type}>
+        <Avatar aria-label={type} style={{ backgroundColor: '#8d5ab1' }}>
           <LocalBarIcon />
         </Avatar>
       );
     case 'restaurant':
       return (
-        <Avatar aria-label={type}>
+        <Avatar aria-label={type} style={{ backgroundColor: '#c75553' }}>
           <RestaurantIcon />
         </Avatar>
       );
     case 'shopping':
       return (
-        <Avatar aria-label={type}>
+        <Avatar aria-label={type} style={{ backgroundColor: '#d19e6e' }}>
           <ShoppingBasketIcon />
         </Avatar>
       );
     case 'supermarkt':
       return (
-        <Avatar aria-label={type}>
+        <Avatar aria-label={type} style={{ backgroundColor: '#a4bb67' }}>
           <ShoppingCartIcon />
         </Avatar>
       );
     case 'sleeping':
       return (
-        <Avatar aria-label={type}>
+        <Avatar aria-label={type} style={{ backgroundColor: '#4a8fb0' }}>
           <LocalHotelIcon />
         </Avatar>
       );
     default:
       return (
-        <Avatar aria-label={type}>
+        <Avatar aria-label={type} style={{ backgroundColor: '#5e6368' }}>
           <EuroIcon />
         </Avatar>
       );

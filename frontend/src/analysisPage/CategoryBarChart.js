@@ -1,14 +1,24 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from 'recharts';
+import CommuteIcon from '@material-ui/icons/Commute';
+//import ExpenditureCategoryIcon from '../eventPage/ExpenditureCategoryIcon';
 
 export default function CategoryBarChart({ data }) {
-  console.log('ChartPage', data);
-
   return (
-    <BarChart width={300} height={200} data={data}>
-      <XAxis dataKey="category" />
-      <YAxis />
-      <Bar dataKey="amount" barSize={30} fill="rgba(0, 0, 0, 0.12)" />
-    </BarChart>
+    <ResponsiveContainer width="100%" aspect={4.0 / 3.0}>
+      <BarChart data={data}>
+        <XAxis
+          dataKey="category"
+          interval={0}
+          angle={-45}
+          textAnchor="end"
+          height={70}
+          tick={{ fontSize: '0.9em' }}
+        />
+        />
+        <YAxis width={35} tick={{ fontSize: '0.9em' }} />
+        <Bar dataKey="amount" barSize={30} fill="#bdbdbd" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 }

@@ -22,7 +22,7 @@ import EventContext from '../contexts/EventContext';
 import useEvent from '../hooks/useEvent';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import Avatar from '@material-ui/core/Avatar';
+import CategoryIconWithColor from './CategoryIconWithColor';
 
 const useStyles = makeStyles((theme) => ({
   options: {
@@ -54,9 +54,7 @@ export default function ExpenditureCard({ expenditure }) {
     <Card className={classes.root}>
       <CardGridStyled>
         <CategoryStyled>
-          <Avatar aria-label={expenditure.category} className={classes.avatar}>
-            <ExpenditureCategoryIcon type={expenditure.category} />
-          </Avatar>
+          <CategoryIconWithColor type={expenditure.category} />
         </CategoryStyled>
         <div>
           <CardContent>

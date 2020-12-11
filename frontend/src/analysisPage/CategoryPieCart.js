@@ -7,14 +7,15 @@ export default function CategoryPieChart({ data }) {
   };
 
   return (
-    <PieChart width={300} height={200} data={data}>
+    <PieChart width={300} height={250} data={data}>
       <Pie
         data={data}
-        outerRadius={100}
-        fill="rgba(0, 0, 0, 0.12)"
+        outerRadius={80}
+        fill="#bdbdbd"
         dataKey="amount"
         nameKey="category"
         label={renderLabel}
+        isAnimationActive={false}
       />
     </PieChart>
   );

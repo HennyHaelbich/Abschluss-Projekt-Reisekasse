@@ -5,7 +5,6 @@ import CategoryPieChart from './CategoryPieCart';
 import styled from 'styled-components/macro';
 import CategoryBarChart from './CategoryBarChart';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
@@ -26,13 +25,16 @@ export default function AnalysisPage() {
 
   let data = [];
   event?.expenditures.reduce(function (res, value) {
-    if (!res[value.category]) {
-      res[value.category] = { category: value.category, amount: 0 };
-      data.push(res[value.category]);
+    if (!res[value[show]]) {
+      res[value[show]] = { name: value[show], amount: 0 };
+      data.push(res[value[show]]);
     }
-    res[value.category].amount += value.amount;
+    res[value[show]].amount += value.amount / 100;
     return res;
   }, {});
+
+  console.log(event?.expenditures);
+  console.log(data);
 
   return (
     <>
@@ -63,7 +65,7 @@ const DivStyled = styled.div`
   grid-template-columns: 1fr;
   justify-self: center;
   grid-gap: var(--size-xl);
-  padding: var(--size-l);
+  padding: var(--size-s);
 `;
 
 export const FlexDiv = styled.div`
