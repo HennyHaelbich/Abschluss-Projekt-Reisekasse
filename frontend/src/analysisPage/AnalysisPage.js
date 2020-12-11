@@ -4,6 +4,7 @@ import CategoryPieChart from './CategoryPieCart';
 import styled from 'styled-components/macro';
 import CategoryBarChart from './CategoryBarChart';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import CategoryPieChartWithColors from './CategoryPieChartWithColors';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -34,17 +35,10 @@ export default function AnalysisPage() {
   console.log(data);
 
   return (
-    <DivStyled>
+    <>
       <CategoryPieChart data={data} />
       <CategoryBarChart data={data} />
-    </DivStyled>
+      <CategoryPieChartWithColors data={data} />
+    </>
   );
 }
-
-const DivStyled = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-self: center;
-  grid-gap: var(--size-xl);
-  padding: var(--size-s);
-`;

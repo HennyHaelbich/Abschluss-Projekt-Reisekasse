@@ -15,16 +15,10 @@ export default function ExpenditureList() {
         <ExpenditureCard expenditure={expenditure} key={expenditure.id} />
       ))}
 
-      <AddButton handle={handleAddExpenditure} />
-
       <br />
       <br />
       <br />
       <br />
     </CardPageStyle>
   );
-
-  function handleAddExpenditure() {
-    history.push(`/event/expenditures/${event.id}`);
-  }
 }

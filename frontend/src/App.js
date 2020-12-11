@@ -9,7 +9,6 @@ import LoginContextProvider from './contexts/LoginContextProvider';
 import ProtectedRoute from './routing/ProtectedRoute';
 import AddExpenditureForm from './addExpenditurePage/AddExpenditureForm';
 import SignUpForm from './signUpPage/SignUpForm';
-import CompensationPage from './compensationPage/CompensationPage';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import TabPanel from './eventPage/TabPanel';
 import AnalysisPage from './analysisPage/AnalysisPage';

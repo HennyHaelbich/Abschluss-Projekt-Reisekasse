@@ -97,7 +97,6 @@ export default function AddExpenditureForm() {
             <option value="transport">Fahrtkosten</option>
             <option value="party">Party/Getränke</option>
             <option value="restaurant">Restaurant</option>
-            <option value="shopping">Shopping</option>
             <option value="supermarkt">Supermarkt</option>
             <option value="sleeping">Übernachtung</option>
           </Select>

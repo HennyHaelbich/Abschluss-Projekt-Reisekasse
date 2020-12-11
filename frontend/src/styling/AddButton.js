@@ -15,6 +15,6 @@ export default function AddButton({ handle }) {
 
 const DivStyled = styled.div`
   position: fixed;
-  bottom: 15px;
+  bottom: 25px;
   right: 25px;
 `;

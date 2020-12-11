@@ -3,7 +3,7 @@ import { Cell, PieChart, Pie, ResponsiveContainer } from 'recharts';
 import Card from '@material-ui/core/Card';
 import { CardContent } from '@material-ui/core';
 
-export default function CategoryPieChart({ data }) {
+export default function CategoryPieChartWithColors({ data }) {
   let renderLabel = function (entry) {
     return categories[entry.name].label;
   };
@@ -45,16 +45,20 @@ export default function CategoryPieChart({ data }) {
   return (
     <Card>
       <CardContent>
-        <ResponsiveContainer width="100%" aspect={4.0 / 2.8}>
+        <ResponsiveContainer width="100%" aspect={4.0 / 2.0}>
           <PieChart data={data}>
             <Pie
               data={data}
               outerRadius={80}
               dataKey="amount"
               nameKey="category"
-              label={renderLabel}
+              // label={renderLabel}
               isAnimationActive={false}
-            />
+            >
+              {data.map((entry, index) => (
+                <Cell key={index} fill={categories[entry.name].color} />
+              ))}
+            </Pie>
           </PieChart>
         </ResponsiveContainer>
       </CardContent>

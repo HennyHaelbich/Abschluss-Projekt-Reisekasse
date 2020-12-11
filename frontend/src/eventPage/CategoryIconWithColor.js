@@ -26,7 +26,7 @@ export default function ExpenditureCategoryIcon({ type }) {
       );
     case 'transport':
       return (
-        <Avatar aria-label={type} style={{ backgroundColor: '#DEC395' }}>
+        <Avatar aria-label={type} style={{ backgroundColor: '#d19e6e' }}>
           <CommuteIcon />
         </Avatar>
       );
@@ -40,12 +40,6 @@ export default function ExpenditureCategoryIcon({ type }) {
       return (
         <Avatar aria-label={type} style={{ backgroundColor: '#c75553' }}>
           <RestaurantIcon />
-        </Avatar>
-      );
-    case 'shopping':
-      return (
-        <Avatar aria-label={type} style={{ backgroundColor: '#d19e6e' }}>
-          <ShoppingBasketIcon />
         </Avatar>
       );
     case 'supermarkt':

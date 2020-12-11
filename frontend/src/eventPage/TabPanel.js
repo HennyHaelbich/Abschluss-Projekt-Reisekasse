@@ -7,6 +7,7 @@ import useEvent from '../hooks/useEvent';
 import Header from '../commons/Header';
 import styled from 'styled-components/macro';
 import CompensationPage from '../compensationPage/CompensationPage';
+import AddButton from '../styling/AddButton';
 
 export default function TabPanel(props) {
   const { event } = useEvent();
@@ -33,6 +34,10 @@ export default function TabPanel(props) {
     setSelectedTab(newValue);
   };
 
+  const handleAddExpenditure = () => {
+    history.push(`/event/expenditures/${event.id}`);
+  };
+
   return (
     <div>
       <Header title={event?.title} backbutton />
@@ -48,6 +53,7 @@ export default function TabPanel(props) {
         {selectedTab === 1 && <ExpenditureList />}
         {selectedTab === 2 && <CompensationPage />}
       </TabsSpacer>
+      <AddButton handle={handleAddExpenditure} />
     </div>
   );
 }

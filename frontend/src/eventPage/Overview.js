@@ -3,9 +3,7 @@ import {
   displayName,
   formattedAmount,
 } from '../helperFunctions/helperFunctions';
-import { Button } from '@material-ui/core';
 import useEvent from '../hooks/useEvent';
-import { useHistory } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import {
@@ -16,27 +14,24 @@ import {
 import AnalysisPage from '../analysisPage/AnalysisPage';
 
 export default function Overview() {
-  const { event, eventId } = useEvent();
-  const history = useHistory();
+  const { event } = useEvent();
   const members = event?.members;
 
   return (
-    <>
-      <CardPageStyle>
-        {members
-          ? members.map((member) => (
-              <Card key={member.username}>
-                <CardContent>
-                  <CardFirstLineStyle>
-                    <p>{displayName(member)}</p>
-                    <p>{formattedAmount(member.balance)}</p>
-                  </CardFirstLineStyle>
-                </CardContent>
-              </Card>
-            ))
-          : null}
-      </CardPageStyle>
+    <CardPageStyle>
+      <Card>
+        <CardContent>
+          {members
+            ? members.map((member) => (
+                <CardFirstLineStyle key={member.username}>
+                  <p>{displayName(member)}</p>
+                  <p>{formattedAmount(member.balance)}</p>
+                </CardFirstLineStyle>
+              ))
+            : null}
+        </CardContent>
+      </Card>
       <AnalysisPage />
-    </>
+    </CardPageStyle>
   );
 }
