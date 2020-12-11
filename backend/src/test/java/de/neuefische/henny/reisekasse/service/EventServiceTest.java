@@ -348,7 +348,8 @@ class EventServiceTest {
     }
 
     @Test
-    void testCompensateBalanceShouldFindeOneToOneMatchesAndReturnListOfTransfers() {
+    @DisplayName("compensateBalance should finde one to one matches and return list of transfers")
+    void testCompensateBalanceWithOneToOneMatch() {
         // Given
         List<EventMember> givenEventMemberList = List.of(
                 EventMember.builder().username("Henny").balance(-20).build(),
@@ -372,6 +373,63 @@ class EventServiceTest {
                         .payer(new UserDto("Steffen"))
                         .paymentReceiver(new UserDto("Manu"))
                         .amount(25)
+                        .build());
+
+        // When
+        List<Transfer> result = eventService.compensateBalances(givenEventMemberList);
+
+        // Then
+        assertThat(result, is(expectedTransfers));
+    }
+
+    @Test
+    @DisplayName("compensateBalance should finde one to one matches and return list of transfers")
+    void testCompensateBalanceWithTwoOneToOneMatches() {
+        // Given
+        List<EventMember> givenEventMemberList = List.of(
+                EventMember.builder().username("Henny").balance(10).build(),
+                EventMember.builder().username("Janice").balance(20).build(),
+                EventMember.builder().username("Steffen").balance(20).build(),
+                EventMember.builder().username("Manu").balance(-20).build(),
+                EventMember.builder().username("Rene").balance(-30).build());
+
+        List<Transfer> expectedTransfers = List.of(
+                Transfer.builder()
+                        .payer(new UserDto("Manu"))
+                        .paymentReceiver(new UserDto("Janice"))
+                        .amount(20)
+                        .build(),
+                Transfer.builder()
+                        .payer(new UserDto("Rene"))
+                        .paymentReceiver(new UserDto("Henny"))
+                        .amount(10)
+                        .build(),
+                Transfer.builder()
+                        .payer(new UserDto("Rene"))
+                        .paymentReceiver(new UserDto("Steffen"))
+                        .amount(20)
+                        .build());
+
+        // When
+        List<Transfer> result = eventService.compensateBalances(givenEventMemberList);
+
+        // Then
+        assertThat(result, is(expectedTransfers));
+    }
+
+    @Test
+    @DisplayName("compensateBalance for two personen should return transfer")
+    void testCompensateBalanceWithTwoPersons() {
+        // Given
+        List<EventMember> givenEventMemberList = List.of(
+                EventMember.builder().username("Henny").balance(-15).build(),
+                EventMember.builder().username("Janice").balance(15).build());
+
+        List<Transfer> expectedTransfers = List.of(
+                Transfer.builder()
+                        .payer(new UserDto("Henny"))
+                        .paymentReceiver(new UserDto("Janice"))
+                        .amount(15)
                         .build());
 
         // When
