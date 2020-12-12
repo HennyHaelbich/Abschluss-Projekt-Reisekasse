@@ -16,7 +16,7 @@ import AnalysisPage from './analysisPage/AnalysisPage';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#5a189a',
+      main: '#5f2790',
     },
     secondary: {
       main: '#ff7900',

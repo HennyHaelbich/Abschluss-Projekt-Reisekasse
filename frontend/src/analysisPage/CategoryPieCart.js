@@ -2,11 +2,38 @@ import React from 'react';
 import { Cell, PieChart, Pie, ResponsiveContainer } from 'recharts';
 import Card from '@material-ui/core/Card';
 import { CardContent } from '@material-ui/core';
+import CategoryIcon from './CategoryIcon';
 
 export default function CategoryPieChart({ data }) {
-  let renderLabel = function (entry) {
-    return categories[entry.name].label;
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    index,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 1.15;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <svg
+        x={x - 10}
+        y={y - 10}
+        color={categories[data[index].name].color}
+        textAnchor={'middle'}
+        dominantBaseline="central"
+        width={20}
+        height={20}
+        viewBox="0 0 1024 1024"
+      >
+        <CategoryIcon type={data[index].name} />
+      </svg>
+    );
   };
+
   const categories = {
     excursion: {
       color: '#A4BB67',
@@ -52,7 +79,8 @@ export default function CategoryPieChart({ data }) {
               outerRadius={80}
               dataKey="amount"
               nameKey="category"
-              label={renderLabel}
+              label={renderCustomizedLabel}
+              labelLine={false}
               isAnimationActive={false}
             />
           </PieChart>

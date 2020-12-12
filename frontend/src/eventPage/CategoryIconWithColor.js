@@ -14,43 +14,64 @@ export default function ExpenditureCategoryIcon({ type }) {
   switch (type) {
     case 'excursion':
       return (
-        <Avatar aria-label={type} style={{ backgroundColor: '#A4BB67' }}>
+        <Avatar
+          aria-label={type}
+          style={{ backgroundColor: 'var(--color-charts-excursion)' }}
+        >
           <NaturePeopleIcon />
         </Avatar>
       );
     case 'entry':
       return (
-        <Avatar aria-label={type} style={{ backgroundColor: '#5ea4c0' }}>
+        <Avatar
+          aria-label={type}
+          style={{ backgroundColor: 'var(--color-charts-entry)' }}
+        >
           <ConfirmationNumberIcon />
         </Avatar>
       );
     case 'transport':
       return (
-        <Avatar aria-label={type} style={{ backgroundColor: '#d19e6e' }}>
+        <Avatar
+          aria-label={type}
+          style={{ backgroundColor: 'var(--color-charts-transport)' }}
+        >
           <CommuteIcon />
         </Avatar>
       );
     case 'party':
       return (
-        <Avatar aria-label={type} style={{ backgroundColor: '#8d5ab1' }}>
+        <Avatar
+          aria-label={type}
+          style={{ backgroundColor: 'var(--color-charts-party)' }}
+        >
           <LocalBarIcon />
         </Avatar>
       );
     case 'restaurant':
       return (
-        <Avatar aria-label={type} style={{ backgroundColor: '#c75553' }}>
+        <Avatar
+          aria-label={type}
+          style={{ backgroundColor: 'var(--color-charts-restaurant)' }}
+        >
           <RestaurantIcon />
         </Avatar>
       );
     case 'supermarkt':
       return (
-        <Avatar aria-label={type} style={{ backgroundColor: '#a4bb67' }}>
+        <Avatar
+          aria-label={type}
+          style={{ backgroundColor: 'var(--color-charts-supermarkt)' }}
+        >
           <ShoppingCartIcon />
         </Avatar>
       );
     case 'sleeping':
       return (
-        <Avatar aria-label={type} style={{ backgroundColor: '#4a8fb0' }}>
+        <Avatar
+          aria-label={type}
+          style={{ backgroundColor: 'var(--color-charts-sleeping)' }}
+        >
           <LocalHotelIcon />
         </Avatar>
       );

@@ -1,44 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useEvent from '../hooks/useEvent';
-import CategoryPieChart from './CategoryPieCart';
-import styled from 'styled-components/macro';
-import CategoryBarChart from './CategoryBarChart';
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import CategoryPieChartWithColors from './CategoryPieChartWithColors';
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+import CategoryBarChartWithColors from './CategoryBarCharsWithColors';
 
 export default function AnalysisPage() {
-  const classes = useStyles();
   const { event } = useEvent();
-  const [show, setShow] = useState('category');
+  const [sumTotal, setSumTotal] = useState(0);
+  const [sumPerPerson, setSumPerPerson] = useState(0);
 
   let data = [];
   event?.expenditures.reduce(function (res, value) {
-    if (!res[value[show]]) {
-      res[value[show]] = { name: value[show], amount: 0 };
-      data.push(res[value[show]]);
+    if (!res[value.category]) {
+      res[value.category] = { name: value.category, amount: 0 };
+      data.push(res[value.category]);
     }
-    res[value[show]].amount += value.amount / 100;
+    res[value.category].amount += value.amount / 100;
     return res;
   }, {});
 
-  console.log(event?.expenditures);
-  console.log(data);
+  useEffect(() => {
+    const total = event?.expenditures.reduce(
+      (result, { amount }) => (result += amount),
+      0
+    );
+    setSumTotal(total);
 
-  return (
+    const perPerson = total / event?.members.length;
+    setSumPerPerson(perPerson);
+  }, [event, sumTotal]);
+
+  return event ? (
     <>
-      <CategoryPieChart data={data} />
-      <CategoryBarChart data={data} />
-      <CategoryPieChartWithColors data={data} />
+      <CategoryPieChartWithColors
+        data={data}
+        sumTotal={sumTotal}
+        sumPerPerson={sumPerPerson}
+      />
+      <CategoryBarChartWithColors data={data} />
     </>
-  );
+  ) : null;
 }

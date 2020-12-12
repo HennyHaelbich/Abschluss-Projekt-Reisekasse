@@ -1,10 +1,18 @@
 import React from 'react';
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from 'recharts';
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Cell,
+} from 'recharts';
 import Card from '@material-ui/core/Card';
 import { CardContent } from '@material-ui/core';
 import CategoryIcon from './CategoryIcon';
+import { categories2 as categories } from '../styling/categories';
 
-export default function CategoryBarChart({ data }) {
+export default function CategoryBarChartWithColors({ data }) {
   const renderCustomAxisTick = ({ x, y, payload }) => {
     return (
       <svg
@@ -20,41 +28,6 @@ export default function CategoryBarChart({ data }) {
     );
   };
 
-  const categories = {
-    excursion: {
-      color: '#A4BB67',
-      label: 'Ausflug',
-    },
-    entry: {
-      color: '#5ea4c0',
-      label: 'Eintritt',
-    },
-    transport: {
-      color: '#d19e6e',
-      label: 'Fahrtkosten',
-    },
-    party: {
-      color: '#8d5ab1',
-      label: 'Party/Getränke',
-    },
-    restaurant: {
-      color: '#c75553',
-      label: 'Restaurant',
-    },
-    supermarkt: {
-      color: '#a4bb67',
-      label: 'Supermarkt',
-    },
-    sleeping: {
-      color: '#4a8fb0',
-      label: 'Übernachtung',
-    },
-    none: {
-      color: '#5e6368',
-      label: 'Sonstiges',
-    },
-  };
-
   return (
     <Card>
       <CardContent>
@@ -63,14 +36,16 @@ export default function CategoryBarChart({ data }) {
             <XAxis
               dataKey="name"
               interval={0}
-              angle={-45}
-              textAnchor="end"
               height={24}
               tick={renderCustomAxisTick}
             />
             />
             <YAxis width={35} tick={{ fontSize: '0.9em' }} />
-            <Bar dataKey="amount" barSize={30} fill="#bdbdbd" />
+            <Bar dataKey="amount" barSize={30} fill="#bdbdbd">
+              {data.map((entry, index) => (
+                <Cell key={index} fill={categories[entry.name].color} />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
