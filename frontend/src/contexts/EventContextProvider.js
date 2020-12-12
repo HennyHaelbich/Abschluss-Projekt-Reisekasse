@@ -35,13 +35,12 @@ export default function EventContextProvider({ children }) {
     members,
     payerId,
     amount,
-    place,
     category
   ) =>
     axios
       .post(
         '/api/events/' + eventId,
-        { description, members, payerId, amount, place, category },
+        { description, members, payerId, amount, category },
         header(token)
       )
       .then((response) => response.data)

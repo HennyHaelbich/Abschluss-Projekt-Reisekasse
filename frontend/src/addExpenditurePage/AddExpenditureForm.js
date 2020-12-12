@@ -21,7 +21,6 @@ export default function AddExpenditureForm() {
 
   const [description, setDescription] = useState('');
   const [amountString, setAmountString] = useState('');
-  const [place, setPlace] = useState('');
   const [category, setCategory] = useState('none');
 
   const userdata = loadUserDataFromLocalStorage();
@@ -74,15 +73,6 @@ export default function AddExpenditureForm() {
           </Select>
         </FormControl>
 
-        <TextField
-          className={classes.root}
-          label="Ort"
-          type="text"
-          value={place}
-          variant="outlined"
-          onChange={(event) => setPlace(event.target.value)}
-        />
-
         <FormControl variant="outlined" className={classes.root}>
           <InputLabel>Kategorie</InputLabel>
           <Select
@@ -127,15 +117,7 @@ export default function AddExpenditureForm() {
   function saveExpenditure(event) {
     event.preventDefault();
     const amount = Number(amountString) * 100;
-    addExpenditure(
-      eventId,
-      description,
-      members,
-      payerId,
-      amount,
-      place,
-      category
-    );
+    addExpenditure(eventId, description, members, payerId, amount, category);
     history.push(`/event/${eventId}/expenditures`);
   }
 }

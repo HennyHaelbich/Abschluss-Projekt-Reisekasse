@@ -24,7 +24,6 @@ public class Expenditure {
     private List<ExpenditurePerMember> expenditurePerMemberList;
     private UserDto payer;
     private int amount;
-    private String place;
     private String category;
 
 }

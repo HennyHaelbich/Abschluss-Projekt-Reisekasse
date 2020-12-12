@@ -4,10 +4,7 @@ import Card from '@material-ui/core/Card';
 import { CardContent } from '@material-ui/core';
 import CategoryIcon from './CategoryIcon';
 import { categories2 as categories } from '../styling/categories';
-import {
-  CardFirstLineStyle,
-  CardSecondLineStyle,
-} from '../styling/CommonStyledComponents';
+import { CardFirstLineStyle } from '../styling/CommonStyledComponents';
 import { formattedAmount } from '../helperFunctions/helperFunctions';
 
 export default function CategoryPieChartWithColors({

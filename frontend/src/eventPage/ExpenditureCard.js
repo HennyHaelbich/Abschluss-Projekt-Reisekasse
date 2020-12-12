@@ -8,7 +8,6 @@ import {
   CardFirstLineStyle,
   CardSecondLineStyle,
 } from '../styling/CommonStyledComponents';
-import ExpenditureCategoryIcon from './ExpenditureCategoryIcon';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -49,6 +48,8 @@ export default function ExpenditureCard({ expenditure }) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  console.log(expenditure);
 
   return (
     <Card className={classes.root}>
