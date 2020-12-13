@@ -6,7 +6,6 @@ import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
-import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -60,7 +59,6 @@ public class EventService {
 
         Query query = new Query();
         query.addCriteria(Criteria.where("members.username").is(username));
-
         return mongoTemplate.find(query, Event.class);
     }
 
