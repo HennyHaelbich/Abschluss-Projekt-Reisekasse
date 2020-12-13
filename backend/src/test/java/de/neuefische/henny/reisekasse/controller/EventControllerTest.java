@@ -143,7 +143,6 @@ class EventControllerTest {
         // Given
         String eventId = "id_2";
         String expenditureId = "expenditure_id";
-        Instant givenTime = Instant.parse("2020-11-22T18:00:00Z");
 
         userDb.save(TravelFoundUser.builder().username("Henny@web.de").firstName("Henny").lastName("Haelbich").build());
 
@@ -161,6 +160,7 @@ class EventControllerTest {
                         new EventMember("Janice@web.de", "Janice", "Schmidt", 0)))
                 .payerId("Henny@web.de")
                 .amount(20)
+                .date("2020-11-22")
                 .build();
 
         Expenditure newExpenditure = Expenditure.builder()
@@ -171,7 +171,7 @@ class EventControllerTest {
                         ExpenditurePerMember.builder().username("Janice@web.de").firstName("Janice").lastName("Schmidt").amount(10).build()))
                 .payer(new UserDto("Henny@web.de", "Henny", "Haelbich"))
                 .amount(20)
-                .timestamp(givenTime)
+                .date("2020-11-22")
                 .build();
 
         Event eventExpected = Event.builder()
@@ -185,7 +185,6 @@ class EventControllerTest {
                 .build();
 
         when(mockedIdUtils.generateId()).thenReturn(expenditureId);
-        when(mockedtimestampUtils.generateTimestampEpochSeconds()).thenReturn(givenTime);
 
         // When
         HttpEntity<AddExpenditureDto> entity = getValidAuthorizationEntity(expenditureToBeAdded);
