@@ -1,13 +1,13 @@
 import React from 'react';
 import useEvent from '../hooks/useEvent';
 import ExpenditureCard from './ExpenditureCard';
-import { CardPageStyle } from '../styling/CommonStyledComponents';
+import { ExpCardPageStyle } from '../styling/CommonStyledComponents';
 
 export default function ExpenditureList() {
   const { event } = useEvent();
 
   return (
-    <CardPageStyle>
+    <ExpCardPageStyle>
       {event?.expenditures.map((expenditure) => (
         <ExpenditureCard expenditure={expenditure} key={expenditure.id} />
       ))}
@@ -16,6 +16,6 @@ export default function ExpenditureList() {
       <br />
       <br />
       <br />
-    </CardPageStyle>
+    </ExpCardPageStyle>
   );
 }

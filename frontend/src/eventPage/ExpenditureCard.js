@@ -50,6 +50,7 @@ export default function ExpenditureCard({ expenditure }) {
   };
 
   console.log(expenditure);
+  console.log(expenditure.date);
 
   return (
     <Card className={classes.root}>
@@ -68,7 +69,7 @@ export default function ExpenditureCard({ expenditure }) {
                 Bezahlt von <strong>{displayName(expenditure.payer)}</strong>
               </p>
               <p>
-                {formattedDate(expenditure.timestamp)} {expenditure.place}
+                {formattedDate(expenditure.date)} {expenditure.place}
               </p>
             </CardSecondLineStyle>
           </CardContent>

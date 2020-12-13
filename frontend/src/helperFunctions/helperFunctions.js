@@ -6,9 +6,9 @@ export const formattedAmount = (component) => {
   return `${(component / 100).toFixed(2)} €`;
 };
 
-export const formattedDate = (timestamp) => {
-  return `${timestamp.substring(8, 10)}.${timestamp.substring(
-    5,
-    7
-  )}.${timestamp.substring(0, 4)}`;
+export const formattedDate = (date) => {
+  return `${date.substring(8, 10)}.${date.substring(5, 7)}.${date.substring(
+    0,
+    4
+  )}`;
 };

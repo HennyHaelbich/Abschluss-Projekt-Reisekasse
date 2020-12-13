@@ -3,9 +3,10 @@ import { Cell, PieChart, Pie, ResponsiveContainer } from 'recharts';
 import Card from '@material-ui/core/Card';
 import { CardContent } from '@material-ui/core';
 import CategoryIcon from './CategoryIcon';
-import { categories2 as categories } from '../styling/categories';
+import { categories2 as categories } from '../styling/Categories';
 import { CardFirstLineStyle } from '../styling/CommonStyledComponents';
 import { formattedAmount } from '../helperFunctions/helperFunctions';
+import { SecondSectionDiv } from '../eventPage/Overview';
 
 export default function CategoryPieChartWithColors({
   data,
@@ -44,23 +45,6 @@ export default function CategoryPieChartWithColors({
   return (
     <Card>
       <CardContent>
-        <ResponsiveContainer width="100%" aspect={4.0 / 2.5}>
-          <PieChart data={data}>
-            <Pie
-              data={data}
-              outerRadius={80}
-              dataKey="amount"
-              nameKey="category"
-              label={renderCustomizedLabel}
-              labelLine={false}
-              isAnimationActive={false}
-            >
-              {data.map((entry, index) => (
-                <Cell key={index} fill={categories[entry.name].color} />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
         <CardFirstLineStyle>
           <p>Gesamtausgaben:</p>
           <p>{formattedAmount(sumTotal)}</p>
@@ -69,6 +53,25 @@ export default function CategoryPieChartWithColors({
           <p>Ausgaben pro Person:</p>
           <p>{formattedAmount(sumPerPerson)}</p>
         </CardFirstLineStyle>
+        <SecondSectionDiv>
+          <ResponsiveContainer width="100%" aspect={4.0 / 2.5}>
+            <PieChart data={data}>
+              <Pie
+                data={data}
+                outerRadius={80}
+                dataKey="amount"
+                nameKey="category"
+                label={renderCustomizedLabel}
+                labelLine={false}
+                isAnimationActive={false}
+              >
+                {data.map((entry, index) => (
+                  <Cell key={index} fill={categories[entry.name].color} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </SecondSectionDiv>
       </CardContent>
     </Card>
   );

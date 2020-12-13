@@ -13,6 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import { loadUserDataFromLocalStorage } from '../service/LocalStorage';
+import { SmallButtonDiv } from '../styling/CommonStyledComponents';
 
 export default function AddExpenditureForm() {
   const history = useHistory();
@@ -32,11 +33,13 @@ export default function AddExpenditureForm() {
   const { addExpenditure } = useContext(EventContext);
   const classes = useTextFieldStyle();
 
-  console.log(date);
+  const handleBackClick = () => {
+    history.push(`/event/${eventId}`);
+  };
 
   return members ? (
     <>
-      <Header title="Ausgabe hinzufügen" />
+      <Header title="Ausgabe hinzufügen" handleBackClick={handleBackClick} />
 
       <FormStyled>
         <TextField
@@ -107,24 +110,19 @@ export default function AddExpenditureForm() {
           variant="outlined"
         />
 
-        <Button
-          variant="outlined"
-          disabled={
-            description.length === 0 ||
-            amountString.length === 0 ||
-            payerId.length === 0
-          }
-          onClick={saveExpenditure}
-        >
-          Ausgabe speichern
-        </Button>
-
-        <Button
-          variant="outlined"
-          onClick={() => history.push(`/event/${eventId}/expenditures`)}
-        >
-          Abbrechen
-        </Button>
+        <SmallButtonDiv>
+          <Button
+            variant="contained"
+            disabled={
+              description.length === 0 ||
+              amountString.length === 0 ||
+              payerId.length === 0
+            }
+            onClick={saveExpenditure}
+          >
+            Ausgabe speichern
+          </Button>
+        </SmallButtonDiv>
       </FormStyled>
     </>
   ) : null;

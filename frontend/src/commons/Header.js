@@ -1,18 +1,15 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { useHistory } from 'react-router-dom';
 import { IconButton } from '@material-ui/core';
 
-export default function Header({ title, backbutton }) {
-  const history = useHistory();
-
+export default function Header({ title, handleBackClick }) {
   return (
     <>
       <HeaderStyled>
         <div>
-          {backbutton && (
-            <IconButton onClick={() => history.push(`/events`)}>
+          {handleBackClick && (
+            <IconButton onClick={() => handleBackClick()}>
               <ArrowBackIcon />
             </IconButton>
           )}
@@ -20,7 +17,6 @@ export default function Header({ title, backbutton }) {
         <div className="item1">
           <HeadingStyled>{title}</HeadingStyled>
         </div>
-        <div></div>
       </HeaderStyled>
     </>
   );
@@ -51,7 +47,7 @@ const HeadingStyled = styled.h1`
   margin: 0;
   color: white;
   font-weight: normal;
-  font-family: 'Amaranth';
+  font-family: 'Amaranth', 'sans-serif';
   font-size: x-large;
   text-align: center;
 `;

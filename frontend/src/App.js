@@ -11,7 +11,7 @@ import AddExpenditureForm from './addExpenditurePage/AddExpenditureForm';
 import SignUpForm from './signUpPage/SignUpForm';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import TabPanel from './eventPage/TabPanel';
-import AnalysisPage from './analysisPage/AnalysisPage';
+import CompensationPage from './compensationPage/CompensationPage';
 
 const theme = createMuiTheme({
   palette: {
@@ -42,8 +42,8 @@ function App() {
               />
               <ProtectedRoute
                 exact
-                path={'/event/analysis/:eventId'}
-                component={AnalysisPage}
+                path={'/event/compensation/:eventId'}
+                component={CompensationPage}
               />
               <Redirect
                 exact
@@ -71,7 +71,5 @@ export default App;
 const PageLayout = styled.div`
   display: grid;
   grid-template-rows: 48px 1fr;
-  height: calc(100vh - 48px);
   margin-top: 48px;
-  background-color: whitesmoke;
 `;
