@@ -22,15 +22,13 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventDb eventDb;
     private final IdUtils idUtils;
-    private final TimestampUtils timestampUtils;
     private final MongoTemplate mongoTemplate;
     private final UserService userService;
 
     @Autowired
-    public EventService(EventDb eventDb, IdUtils idUtils, TimestampUtils timestampUtils, MongoTemplate mongoTemplate, UserService userService) {
+    public EventService(EventDb eventDb, IdUtils idUtils, MongoTemplate mongoTemplate, UserService userService) {
         this.eventDb = eventDb;
         this.idUtils = idUtils;
-        this.timestampUtils = timestampUtils;
         this.mongoTemplate = mongoTemplate;
         this.userService = userService;
     }
@@ -76,7 +74,7 @@ public class EventService {
 
         Expenditure newExpenditure = Expenditure.builder()
                 .id(idUtils.generateId())
-                .timestamp(timestampUtils.generateTimestampEpochSeconds())
+                .date(addExpenditureDto.getDate())
                 .description(addExpenditureDto.getDescription())
                 .expenditurePerMemberList(expenditurePerMemberList)
                 .payer(payer)

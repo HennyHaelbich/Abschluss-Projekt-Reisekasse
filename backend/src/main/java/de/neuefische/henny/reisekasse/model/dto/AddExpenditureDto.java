@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 public class AddExpenditureDto {
 
+    private String date;
     private String description;
     private List<EventMember> members;
     private String payerId;
