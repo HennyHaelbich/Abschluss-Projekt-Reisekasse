@@ -22,12 +22,17 @@ export default function AddExpenditureForm() {
   const [description, setDescription] = useState('');
   const [amountString, setAmountString] = useState('');
   const [category, setCategory] = useState('none');
+  const [date, setDate] = React.useState(
+    new Date().toISOString().substring(0, 10)
+  );
 
   const userdata = loadUserDataFromLocalStorage();
   const [payerId, setPayerId] = useState(userdata.sub);
 
   const { addExpenditure } = useContext(EventContext);
   const classes = useTextFieldStyle();
+
+  console.log(date);
 
   return members ? (
     <>
@@ -58,22 +63,6 @@ export default function AddExpenditureForm() {
         />
 
         <FormControl variant="outlined" className={classes.root}>
-          <InputLabel>Zahler</InputLabel>
-          <Select
-            native
-            label="Zahler"
-            value={payerId}
-            onChange={(event) => setPayerId(event.target.value)}
-          >
-            {members.map((member) => (
-              <option key={member.username} value={member.username.toString()}>
-                {displayName(member)}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl variant="outlined" className={classes.root}>
           <InputLabel>Kategorie</InputLabel>
           <Select
             native
@@ -91,6 +80,32 @@ export default function AddExpenditureForm() {
             <option value="sleeping">Übernachtung</option>
           </Select>
         </FormControl>
+
+        <FormControl variant="outlined" className={classes.root}>
+          <InputLabel>Zahler</InputLabel>
+          <Select
+            native
+            label="Zahler"
+            value={payerId}
+            onChange={(event) => setPayerId(event.target.value)}
+          >
+            {members.map((member) => (
+              <option key={member.username} value={member.username.toString()}>
+                {displayName(member)}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+
+        <TextField
+          className={classes.root}
+          type="date"
+          label="Datum"
+          value={date}
+          InputLabelProps={{ shrink: true }}
+          onChange={(event) => setDate(event.target.value)}
+          variant="outlined"
+        />
 
         <Button
           variant="outlined"
