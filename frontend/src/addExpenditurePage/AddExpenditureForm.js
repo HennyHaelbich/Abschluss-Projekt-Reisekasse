@@ -132,7 +132,15 @@ export default function AddExpenditureForm() {
   function saveExpenditure(event) {
     event.preventDefault();
     const amount = Number(amountString) * 100;
-    addExpenditure(eventId, description, members, payerId, amount, category);
+    addExpenditure(
+      eventId,
+      description,
+      members,
+      payerId,
+      amount,
+      category,
+      date
+    );
     history.push(`/event/${eventId}/expenditures`);
   }
 }
