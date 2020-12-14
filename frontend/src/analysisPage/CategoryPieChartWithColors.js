@@ -54,7 +54,7 @@ export default function CategoryPieChartWithColors({
           <p>{formattedAmount(sumPerPerson)}</p>
         </CardFirstLineStyle>
         <SecondSectionDiv>
-          <ResponsiveContainer width="100%" aspect={4.0 / 2.5}>
+          <ResponsiveContainer width="100%" aspect={4.0 / 2.8}>
             <PieChart data={data}>
               <Pie
                 data={data}
