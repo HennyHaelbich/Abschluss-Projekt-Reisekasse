@@ -6,7 +6,6 @@ import de.neuefische.henny.reisekasse.model.dto.AddEventDto;
 import de.neuefische.henny.reisekasse.model.dto.AddExpenditureDto;
 import de.neuefische.henny.reisekasse.model.dto.UserDto;
 import de.neuefische.henny.reisekasse.utils.IdUtils;
-import de.neuefische.henny.reisekasse.utils.TimestampUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,15 +21,13 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventDb eventDb;
     private final IdUtils idUtils;
-    private final TimestampUtils timestampUtils;
     private final MongoTemplate mongoTemplate;
     private final UserService userService;
 
     @Autowired
-    public EventService(EventDb eventDb, IdUtils idUtils, TimestampUtils timestampUtils, MongoTemplate mongoTemplate, UserService userService) {
+    public EventService(EventDb eventDb, IdUtils idUtils, MongoTemplate mongoTemplate, UserService userService) {
         this.eventDb = eventDb;
         this.idUtils = idUtils;
-        this.timestampUtils = timestampUtils;
         this.mongoTemplate = mongoTemplate;
         this.userService = userService;
     }
@@ -62,7 +59,6 @@ public class EventService {
 
         Query query = new Query();
         query.addCriteria(Criteria.where("members.username").is(username));
-
         return mongoTemplate.find(query, Event.class);
     }
 
@@ -76,12 +72,11 @@ public class EventService {
 
         Expenditure newExpenditure = Expenditure.builder()
                 .id(idUtils.generateId())
-                .timestamp(timestampUtils.generateTimestampEpochSeconds())
+                .date(addExpenditureDto.getDate())
                 .description(addExpenditureDto.getDescription())
                 .expenditurePerMemberList(expenditurePerMemberList)
                 .payer(payer)
                 .amount(addExpenditureDto.getAmount())
-                .place(addExpenditureDto.getPlace())
                 .category(addExpenditureDto.getCategory())
                 .build();
 

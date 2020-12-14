@@ -13,6 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import { loadUserDataFromLocalStorage } from '../service/LocalStorage';
+import { SmallButtonDiv } from '../styling/CommonStyledComponents';
 
 export default function AddExpenditureForm() {
   const history = useHistory();
@@ -21,8 +22,10 @@ export default function AddExpenditureForm() {
 
   const [description, setDescription] = useState('');
   const [amountString, setAmountString] = useState('');
-  const [place, setPlace] = useState('');
   const [category, setCategory] = useState('none');
+  const [date, setDate] = React.useState(
+    new Date().toISOString().substring(0, 10)
+  );
 
   const userdata = loadUserDataFromLocalStorage();
   const [payerId, setPayerId] = useState(userdata.sub);
@@ -30,9 +33,13 @@ export default function AddExpenditureForm() {
   const { addExpenditure } = useContext(EventContext);
   const classes = useTextFieldStyle();
 
+  const handleBackClick = () => {
+    history.push(`/event/${eventId}`);
+  };
+
   return members ? (
     <>
-      <Header title="Ausgabe hinzufügen" />
+      <Header title="Ausgabe hinzufügen" handleBackClick={handleBackClick} />
 
       <FormStyled>
         <TextField
@@ -59,6 +66,25 @@ export default function AddExpenditureForm() {
         />
 
         <FormControl variant="outlined" className={classes.root}>
+          <InputLabel>Kategorie</InputLabel>
+          <Select
+            native
+            label="Kategorie"
+            value={category}
+            onChange={(event) => setCategory(event.target.value)}
+          >
+            <option value="none">Sonstiges</option>
+            <option value="excursion">Ausflug</option>
+            <option value="entry">Eintritt</option>
+            <option value="transport">Fahrtkosten</option>
+            <option value="party">Party/Getränke</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="supermarkt">Supermarkt</option>
+            <option value="sleeping">Übernachtung</option>
+          </Select>
+        </FormControl>
+
+        <FormControl variant="outlined" className={classes.root}>
           <InputLabel>Zahler</InputLabel>
           <Select
             native
@@ -76,51 +102,27 @@ export default function AddExpenditureForm() {
 
         <TextField
           className={classes.root}
-          label="Ort"
-          type="text"
-          value={place}
+          type="date"
+          label="Datum"
+          value={date}
+          InputLabelProps={{ shrink: true }}
+          onChange={(event) => setDate(event.target.value)}
           variant="outlined"
-          onChange={(event) => setPlace(event.target.value)}
         />
 
-        <FormControl variant="outlined" className={classes.root}>
-          <InputLabel>Kategorie</InputLabel>
-          <Select
-            native
-            label="Kategorie"
-            value={category}
-            onChange={(event) => setCategory(event.target.value)}
+        <SmallButtonDiv>
+          <Button
+            variant="contained"
+            disabled={
+              description.length === 0 ||
+              amountString.length === 0 ||
+              payerId.length === 0
+            }
+            onClick={saveExpenditure}
           >
-            <option value="none">Sonstiges</option>
-            <option value="excursion">Ausflug</option>
-            <option value="entry">Eintritt</option>
-            <option value="transport">Fahrtkosten</option>
-            <option value="party">Party/Getränke</option>
-            <option value="restaurant">Restaurant</option>
-            <option value="shopping">Shopping</option>
-            <option value="supermarkt">Supermarkt</option>
-            <option value="sleeping">Übernachtung</option>
-          </Select>
-        </FormControl>
-
-        <Button
-          variant="outlined"
-          disabled={
-            description.length === 0 ||
-            amountString.length === 0 ||
-            payerId.length === 0
-          }
-          onClick={saveExpenditure}
-        >
-          Ausgabe speichern
-        </Button>
-
-        <Button
-          variant="outlined"
-          onClick={() => history.push(`/event/${eventId}/expenditures`)}
-        >
-          Abbrechen
-        </Button>
+            Ausgabe speichern
+          </Button>
+        </SmallButtonDiv>
       </FormStyled>
     </>
   ) : null;
@@ -134,8 +136,8 @@ export default function AddExpenditureForm() {
       members,
       payerId,
       amount,
-      place,
-      category
+      category,
+      date
     );
     history.push(`/event/${eventId}/expenditures`);
   }

@@ -22,10 +22,28 @@ export const CardSecondLineStyle = styled.div`
 export const CardPageStyle = styled.div`
   padding: var(--size-m);
   & > * {
-    margin: var(--size-m) 0;
+    margin-bottom: var(--size-m);
+  }
+
+  .MuiCardContent-root:last-child {
+    padding-bottom: 16px;
+  }
+  .MuiCardContent-root {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+`;
+
+export const ExpCardPageStyle = styled.div`
+  padding: var(--size-m);
+  & > * {
+    margin-bottom: var(--size-m);
   }
   .MuiCardContent-root:last-child {
     padding-bottom: 16px;
+  }
+  .MuiCardContent-root {
+    padding-right: 24px;
   }
 `;
 

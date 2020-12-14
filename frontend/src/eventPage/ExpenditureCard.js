@@ -8,7 +8,6 @@ import {
   CardFirstLineStyle,
   CardSecondLineStyle,
 } from '../styling/CommonStyledComponents';
-import ExpenditureCategoryIcon from './ExpenditureCategoryIcon';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -22,7 +21,7 @@ import EventContext from '../contexts/EventContext';
 import useEvent from '../hooks/useEvent';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import Avatar from '@material-ui/core/Avatar';
+import CategoryIconWithColor from './CategoryIconWithColor';
 
 const useStyles = makeStyles((theme) => ({
   options: {
@@ -50,13 +49,14 @@ export default function ExpenditureCard({ expenditure }) {
     setExpanded(!expanded);
   };
 
+  console.log(expenditure);
+  console.log(expenditure.date);
+
   return (
     <Card className={classes.root}>
       <CardGridStyled>
         <CategoryStyled>
-          <Avatar aria-label={expenditure.category} className={classes.avatar}>
-            <ExpenditureCategoryIcon type={expenditure.category} />
-          </Avatar>
+          <CategoryIconWithColor type={expenditure.category} />
         </CategoryStyled>
         <div>
           <CardContent>
@@ -69,7 +69,7 @@ export default function ExpenditureCard({ expenditure }) {
                 Bezahlt von <strong>{displayName(expenditure.payer)}</strong>
               </p>
               <p>
-                {formattedDate(expenditure.timestamp)} {expenditure.place}
+                {formattedDate(expenditure.date)} {expenditure.place}
               </p>
             </CardSecondLineStyle>
           </CardContent>

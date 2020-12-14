@@ -14,11 +14,11 @@ import java.util.List;
 @Builder
 public class AddExpenditureDto {
 
+    private String date;
     private String description;
     private List<EventMember> members;
     private String payerId;
     private int amount;
-    private String place;
     private String category;
 
 }

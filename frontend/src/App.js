@@ -9,17 +9,17 @@ import LoginContextProvider from './contexts/LoginContextProvider';
 import ProtectedRoute from './routing/ProtectedRoute';
 import AddExpenditureForm from './addExpenditurePage/AddExpenditureForm';
 import SignUpForm from './signUpPage/SignUpForm';
-import CompensationPage from './compensationPage/CompensationPage';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import TabPanel from './eventPage/TabPanel';
+import CompensationPage from './compensationPage/CompensationPage';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#5a189a',
+      main: '#5f2790',
     },
     secondary: {
-      main: '#ff8500',
+      main: '#ff7900',
     },
   },
 });
@@ -37,13 +37,13 @@ function App() {
               <ProtectedRoute path={'/events'} component={EventsPage} />
               <ProtectedRoute
                 exact
-                path={'/event/compensation/:eventId'}
-                component={CompensationPage}
+                path={'/event/expenditures/:eventId'}
+                component={AddExpenditureForm}
               />
               <ProtectedRoute
                 exact
-                path={'/event/expenditures/:eventId'}
-                component={AddExpenditureForm}
+                path={'/event/compensation/:eventId'}
+                component={CompensationPage}
               />
               <Redirect
                 exact
@@ -71,7 +71,5 @@ export default App;
 const PageLayout = styled.div`
   display: grid;
   grid-template-rows: 48px 1fr;
-  height: calc(100vh - 48px);
   margin-top: 48px;
-  background-color: whitesmoke;
 `;

@@ -29,10 +29,9 @@ import static org.mockito.Mockito.when;
 class EventServiceTest {
     private final EventDb mockEventDb = mock(EventDb.class);
     private final IdUtils mockIdUtils = mock(IdUtils.class);
-    private final TimestampUtils mockTimestampUtils = mock(TimestampUtils.class);
     private final MongoTemplate mockMongoTemplate = mock(MongoTemplate.class);
     private final UserService mockUserService = mock(UserService.class);
-    private final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockTimestampUtils, mockMongoTemplate, mockUserService);
+    private final EventService eventService = new EventService(mockEventDb, mockIdUtils, mockMongoTemplate, mockUserService);
 
     @Test
     void listEventsShouldGiveBackAllEventsIncludingTheUserInEventDb() {
@@ -140,7 +139,6 @@ class EventServiceTest {
         // Given
         String eventId = "event_id";
         String expenditureId = "expenditure_id";
-        Instant expectedTime = Instant.parse("2020-11-22T18:00:00Z");
 
         Expenditure expenditureOne = Expenditure.builder()
                 .id(expenditureId)
@@ -149,7 +147,7 @@ class EventServiceTest {
                         ExpenditurePerMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").amount(25).build(),
                         ExpenditurePerMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").amount(25).build()))
                 .amount(50)
-                .timestamp(Instant.parse("2020-11-22T15:00:00Z"))
+                .date("2020-11-22")
                 .payer(UserDto.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").build())
                 .build();
 
@@ -169,6 +167,7 @@ class EventServiceTest {
                         EventMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").balance(-25).build()))
                 .payerId("Henny")
                 .amount(20)
+                .date("2020-11-23")
                 .build();
 
         Expenditure newExpenditure = Expenditure.builder()
@@ -178,7 +177,7 @@ class EventServiceTest {
                         ExpenditurePerMember.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").amount(10).build(),
                         ExpenditurePerMember.builder().username("Janice@web.de").firstName("Janice").lastName("Mayer").amount(10).build()))
                 .amount(20)
-                .timestamp(expectedTime)
+                .date("2020-11-23")
                 .payer(UserDto.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").build())
                 .build();
 
@@ -192,7 +191,6 @@ class EventServiceTest {
                 .build();
 
         when(mockIdUtils.generateId()).thenReturn(expenditureId);
-        when(mockTimestampUtils.generateTimestampEpochSeconds()).thenReturn(expectedTime);
         when(mockEventDb.findById(eventId)).thenReturn(Optional.of(eventBefore));
         when(mockEventDb.save(eventExpected)).thenReturn(eventExpected);
         when(mockUserService.getUserById("Henny")).thenReturn(Optional.of(UserDto.builder().username("henny@web.de").firstName("Henny").lastName("Haelbich").build()));
@@ -209,7 +207,6 @@ class EventServiceTest {
         // Given
         String eventId = "event_id";
         String idToDelete = "id_2";
-        Instant expectedTime = Instant.parse("2020-11-22T18:00:00Z");
 
         Expenditure expenditureOne = Expenditure.builder()
                 .id("id_1")
@@ -218,7 +215,7 @@ class EventServiceTest {
                         ExpenditurePerMember.builder().username("Henny").amount(10).build(),
                         ExpenditurePerMember.builder().username("Janice").amount(10).build()))
                 .amount(20)
-                .timestamp(expectedTime)
+                .date("2020-11-22")
                 .payer(UserDto.builder().username("Henny").build())
                 .build();
 
@@ -229,7 +226,7 @@ class EventServiceTest {
                         ExpenditurePerMember.builder().username("Henny").amount(25).build(),
                         ExpenditurePerMember.builder().username("Janice").amount(25).build()))
                 .amount(50)
-                .timestamp(expectedTime)
+                .date("2020-11-22")
                 .payer(UserDto.builder().username("Janice").build())
                 .build();
 
@@ -265,8 +262,6 @@ class EventServiceTest {
     void testCalculateBalance() {
         // Given
 
-        Instant expectedTime = Instant.parse("2020-11-22T18:00:00Z");
-
         Expenditure expenditureOne = Expenditure.builder()
                 .id("id_1")
                 .description("Bahnfahrkarten")
@@ -274,7 +269,7 @@ class EventServiceTest {
                         ExpenditurePerMember.builder().username("Henny").amount(10).build(),
                         ExpenditurePerMember.builder().username("Janice").amount(10).build()))
                 .amount(20)
-                .timestamp(expectedTime)
+                .date("2020-11-22")
                 .payer(UserDto.builder().username("Henny").build())
                 .build();
 
@@ -285,7 +280,7 @@ class EventServiceTest {
                         ExpenditurePerMember.builder().username("Henny").amount(25).build(),
                         ExpenditurePerMember.builder().username("Janice").amount(25).build()))
                 .amount(50)
-                .timestamp(expectedTime)
+                .date("2020-11-22")
                 .payer(UserDto.builder().username("Janice").build())
                 .build();
 

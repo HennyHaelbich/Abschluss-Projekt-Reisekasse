@@ -1,11 +1,10 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   displayName,
   formattedAmount,
 } from '../helperFunctions/helperFunctions';
-import { Button } from '@material-ui/core';
 import useEvent from '../hooks/useEvent';
-import { useHistory } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import {
@@ -13,36 +12,49 @@ import {
   CardPageStyle,
   SmallButtonDiv,
 } from '../styling/CommonStyledComponents';
+import AnalysisPage from '../analysisPage/AnalysisPage';
+import { Button } from '@material-ui/core';
+import styled from 'styled-components/macro';
 
 export default function Overview() {
-  const { event, eventId } = useEvent();
-  const history = useHistory();
+  const { event } = useEvent();
   const members = event?.members;
+  const history = useHistory();
 
   return (
     <CardPageStyle>
-      {members
-        ? members.map((member) => (
-            <Card key={member.username}>
-              <CardContent>
-                <CardFirstLineStyle>
+      <Card>
+        <CardContent>
+          {members
+            ? members.map((member) => (
+                <CardFirstLineStyle key={member.username}>
                   <p>{displayName(member)}</p>
                   <p>{formattedAmount(member.balance)}</p>
                 </CardFirstLineStyle>
-              </CardContent>
-            </Card>
-          ))
-        : null}
-      <SmallButtonDiv>
-        <Button variant="contained" color="primary" onClick={handleClick}>
-          Ausgleichszahlungen
-        </Button>
-      </SmallButtonDiv>
+              ))
+            : null}
+          <SecondSectionDiv>
+            <SmallButtonDiv>
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={() => history.push(`/event/compensation/${event.id}`)}
+              >
+                Abrechnung
+              </Button>
+            </SmallButtonDiv>
+          </SecondSectionDiv>
+        </CardContent>
+      </Card>
+      <AnalysisPage />
+      <br />
+      <br />
+      <br />
+      <br />
     </CardPageStyle>
   );
-
-  function handleClick(event) {
-    event.preventDefault();
-    history.push(`/event/compensation/${eventId}`);
-  }
 }
+
+export const SecondSectionDiv = styled.div`
+  padding-top: var(--size-m);
+`;

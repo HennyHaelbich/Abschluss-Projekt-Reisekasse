@@ -21,9 +21,13 @@ export default function AddEventForm() {
   const history = useHistory();
   const classes = useTextFieldStyle();
 
+  const handleBackClick = () => {
+    history.push('/events');
+  };
+
   return (
     <>
-      <Header title={'Reise hinzufügen'} />
+      <Header title={'Reise hinzufügen'} handleBackClick={handleBackClick} />
       <FormStyled>
         <TextField
           className={classes.root}
@@ -48,7 +52,7 @@ export default function AddEventForm() {
         <SmallButtonDiv>
           <Button
             variant="outlined"
-            color="secondary"
+            color="primary"
             onClick={findUser}
             disabled={newMember.length === 0}
           >

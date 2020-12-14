@@ -8,6 +8,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { Button } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { useTextFieldStyle } from '../styling/MaterialUiStyling';
+import {
+  CardSecondLineStyle,
+  SmallButtonDiv,
+} from '../styling/CommonStyledComponents';
 
 const setupCredentials = {
   username: '',
@@ -48,22 +52,36 @@ export default function LoginPage() {
           variant="outlined"
         />
 
-        <Button
-          variant="outlined"
-          onClick={handleSubmit}
-          disabled={!credentials.username || !credentials.password}
-        >
-          Login
-        </Button>
+        <SmallButtonDiv>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            disabled={!credentials.username || !credentials.password}
+          >
+            Login
+          </Button>
+        </SmallButtonDiv>
 
-        <br />
-        <br />
-        <br />
-        <p>noch nicht dabei?</p>
+        <ImageSection>
+          <img
+            src={'/undraw_travel_together.svg'}
+            alt="people in front of globe"
+            height="200"
+          />
+        </ImageSection>
 
-        <Button variant="outlined" onClick={() => history.push('/signup')}>
-          Registrierung
-        </Button>
+        <CardSecondLineStyle>noch nicht dabei?</CardSecondLineStyle>
+
+        <SmallButtonDiv>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => history.push('/signup')}
+          >
+            Registrierung
+          </Button>
+        </SmallButtonDiv>
 
         <Snackbar open={error} autoHideDuration={3000} onClose={handleClose}>
           <Alert severity="error">
@@ -98,6 +116,12 @@ const FormStyled = styled.form`
   display: grid;
   gap: var(--size-m);
   grid-auto-rows: min-content;
-  padding: var(--size-l);
+  padding: var(--size-xxl);
   text-align: center;
+`;
+
+const ImageSection = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: var(--size-xxl);
 `;
