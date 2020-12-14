@@ -8,7 +8,7 @@ import LocalHotelIcon from '@material-ui/icons/LocalHotel';
 import EuroIcon from '@material-ui/icons/Euro';
 import React from 'react';
 
-export default function CategoryIcon({ type }) {
+export default function CategoryIcons({ type }) {
   switch (type) {
     case 'excursion':
       return <NaturePeopleIcon />;

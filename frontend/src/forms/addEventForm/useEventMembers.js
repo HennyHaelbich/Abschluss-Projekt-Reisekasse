@@ -1,6 +1,6 @@
-import axios from "axios";
-import {useContext, useState} from "react";
-import LoginContext from "../contexts/LoginContext";
+import axios from 'axios';
+import { useContext, useState } from 'react';
+import LoginContext from '../../contexts/LoginContext';
 
 export default function useEventMembers() {
   const { token } = useContext(LoginContext);
@@ -11,12 +11,12 @@ export default function useEventMembers() {
       Authorization: `Bearer ${token}`,
     },
   });
-  
+
   const addMember = (member) =>
     axios
       .get('/api/users/' + member, header(token))
       .then((response) => response.data)
       .then((newMember) => setMembers([...members, newMember]));
-  
-  return { addMember, members }
+
+  return { addMember, members };
 }

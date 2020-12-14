@@ -7,18 +7,18 @@ import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import { Button } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-import { useTextFieldStyle } from '../styling/MaterialUiStyling';
+import { useTextFieldStyle } from '../commons/styling/MaterialUiStyling';
 import {
   CardSecondLineStyle,
   SmallButtonDiv,
-} from '../styling/CommonStyledComponents';
+} from '../commons/styling/CommonStyledComponents';
 
 const setupCredentials = {
   username: '',
   password: '',
 };
 
-export default function LoginPage() {
+export default function LoginForm() {
   const { loginWithUserCredentials } = useContext(LoginContext);
   const [credentials, setCredentials] = useState(setupCredentials);
   const [error, setError] = useState('');

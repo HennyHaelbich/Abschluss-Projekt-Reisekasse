@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../commons/Header';
-import { CardPageStyle } from '../styling/CommonStyledComponents';
+import { CardPageStyle } from '../commons/styling/CommonStyledComponents';
 import EventsCard from './EventsCard';
-import AddButton from '../styling/AddButton';
+import AddButton from '../commons/styling/AddButton';
 import EventContext from '../contexts/EventContext';
 
 export default function EventPage() {

@@ -1,2 +1,2 @@
 # Reisekasse
-in dieser App können Gemeinschaftsausgaben z.B. von einer Gruppenreise verwaltet werden. Über die Angabe des Zahlers und der Personen, die an für die die Ausgaben getätigt wurden erfolgt am Ende eine Abrechnung der Kosten.
+In der 'Reisekasse' könnte Ihr bequem Eure Gruppenausgaben im Urlaub verwalten. Die App behält für Euch im Blick, wer wann wie viel bezahlt hat. Neben dem Kontostand jedes einzelnen Teilnehmers habt ihr mit der 'Reisekasse' sofort im Blick, wie viel Ihr ausgegeben habt und wo Euer Geld geblieben ist. Und am Ende der Reise lässt sich ganz einfach auf Knopfdruck berechnen, wer wem wie viel überweisen muss.

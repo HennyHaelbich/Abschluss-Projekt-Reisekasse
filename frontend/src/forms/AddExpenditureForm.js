@@ -6,14 +6,14 @@ import Button from '@material-ui/core/Button';
 import Header from '../commons/Header';
 import EventContext from '../contexts/EventContext';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { displayName } from '../helperFunctions/helperFunctions';
+import { displayName } from '../commons/helperFunctions';
 import useEvent from '../hooks/useEvent';
-import { useTextFieldStyle } from '../styling/MaterialUiStyling';
+import { useTextFieldStyle } from '../commons/styling/MaterialUiStyling';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import { loadUserDataFromLocalStorage } from '../service/LocalStorage';
-import { SmallButtonDiv } from '../styling/CommonStyledComponents';
+import { loadUserDataFromLocalStorage } from '../commons/LocalStorage';
+import { SmallButtonDiv } from '../commons/styling/CommonStyledComponents';
 
 export default function AddExpenditureForm() {
   const history = useHistory();

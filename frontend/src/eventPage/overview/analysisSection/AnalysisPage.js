@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import useEvent from '../hooks/useEvent';
-import CategoryPieChartWithColors from './CategoryPieChartWithColors';
+import useEvent from '../../../hooks/useEvent';
+import CategoryPieChart from './CategoryPieChart';
 
 export default function AnalysisPage() {
   const { event } = useEvent();
@@ -29,7 +29,7 @@ export default function AnalysisPage() {
   }, {});
 
   return sumTotal ? (
-    <CategoryPieChartWithColors
+    <CategoryPieChart
       data={data}
       sumTotal={sumTotal}
       sumPerPerson={sumPerPerson}

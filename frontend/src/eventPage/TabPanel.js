@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Overview from './Overview';
-import ExpenditureList from './ExpenditureList';
+import Overview from './overview/Overview';
+import ExpenditureList from './expenditures/ExpenditureList';
 import useEvent from '../hooks/useEvent';
 import Header from '../commons/Header';
 import styled from 'styled-components/macro';
-import AddButton from '../styling/AddButton';
+import AddButton from '../commons/styling/AddButton';
 
 export default function TabPanel(props) {
   const { event } = useEvent();

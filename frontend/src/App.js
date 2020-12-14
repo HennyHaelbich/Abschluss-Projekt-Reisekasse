@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import AddEventForm from './addEventPage/AddEventForm';
+import AddEventForm from './forms/addEventForm/AddEventForm';
 import EventContextProvider from './contexts/EventContextProvider';
-import EventsPage from './eventsListPage/EventsPage';
-import LoginPage from './loginPage/LoginPage';
+import EventsPage from './eventList/EventsPage';
+import LoginForm from './forms/LoginForm';
 import LoginContextProvider from './contexts/LoginContextProvider';
-import ProtectedRoute from './routing/ProtectedRoute';
-import AddExpenditureForm from './addExpenditurePage/AddExpenditureForm';
-import SignUpForm from './signUpPage/SignUpForm';
+import ProtectedRoute from './commons/ProtectedRoute';
+import AddExpenditureForm from './forms/AddExpenditureForm';
+import SignUpForm from './forms/signUpForm/SignUpForm';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import TabPanel from './eventPage/TabPanel';
-import CompensationPage from './compensationPage/CompensationPage';
+import CompensationPage from './eventPage/overview/compensationPage/CompensationPage';
 
 const theme = createMuiTheme({
   palette: {
@@ -32,7 +32,7 @@ function App() {
           <PageLayout>
             <Switch>
               <Route path={'/signup'} component={SignUpForm} />
-              <Route path={'/login'} component={LoginPage} />
+              <Route path={'/login'} component={LoginForm} />
               <ProtectedRoute path={'/new'} component={AddEventForm} />
               <ProtectedRoute path={'/events'} component={EventsPage} />
               <ProtectedRoute
