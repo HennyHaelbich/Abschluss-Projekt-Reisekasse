@@ -1,17 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  displayName,
-  formattedAmount,
-} from '../helperFunctions/helperFunctions';
+import { displayName, formattedAmount } from '../../../commons/helperFunctions';
 import Card from '@material-ui/core/Card';
-import EventContext from '../contexts/EventContext';
-import Header from '../commons/Header';
+import EventContext from '../../../contexts/EventContext';
+import Header from '../../../commons/Header';
 import {
   CardSecondLineStyle,
   CardPageStyle,
-} from '../styling/CommonStyledComponents';
+} from '../../../commons/styling/CommonStyledComponents';
 import CardContent from '@material-ui/core/CardContent';
-import useEvent from '../hooks/useEvent';
+import useEvent from '../../../hooks/useEvent';
 import styled from 'styled-components/macro';
 import { useHistory } from 'react-router-dom';
 

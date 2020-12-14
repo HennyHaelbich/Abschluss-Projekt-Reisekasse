@@ -3,11 +3,11 @@ import {
   displayName,
   formattedAmount,
   formattedDate,
-} from '../helperFunctions/helperFunctions';
+} from '../../commons/helperFunctions';
 import {
   CardFirstLineStyle,
   CardSecondLineStyle,
-} from '../styling/CommonStyledComponents';
+} from '../../commons/styling/CommonStyledComponents';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,8 +17,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components/macro';
-import EventContext from '../contexts/EventContext';
-import useEvent from '../hooks/useEvent';
+import EventContext from '../../contexts/EventContext';
+import useEvent from '../../hooks/useEvent';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import CategoryIconWithColor from './CategoryIconWithColor';

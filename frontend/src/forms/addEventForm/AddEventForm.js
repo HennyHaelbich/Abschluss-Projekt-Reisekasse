@@ -1,15 +1,15 @@
 import React, { useContext, useState } from 'react';
 import MembersList from './MembersList';
 import styled from 'styled-components/macro';
-import EventContext from '../contexts/EventContext';
+import EventContext from '../../contexts/EventContext';
 import useEventMembers from './useEventMembers';
 import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Header from '../commons/Header';
-import { useTextFieldStyle } from '../styling/MaterialUiStyling';
-import { SmallButtonDiv } from '../styling/CommonStyledComponents';
-import { loadUserDataFromLocalStorage } from '../service/LocalStorage';
+import Header from '../../commons/Header';
+import { useTextFieldStyle } from '../../commons/styling/MaterialUiStyling';
+import { SmallButtonDiv } from '../../commons/styling/CommonStyledComponents';
+import { loadUserDataFromLocalStorage } from '../../commons/LocalStorage';
 
 export default function AddEventForm() {
   const { createEvent } = useContext(EventContext);

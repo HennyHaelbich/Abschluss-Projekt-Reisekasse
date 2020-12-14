@@ -1,7 +1,7 @@
 import React from 'react';
-import useEvent from '../hooks/useEvent';
+import useEvent from '../../hooks/useEvent';
 import ExpenditureCard from './ExpenditureCard';
-import { ExpCardPageStyle } from '../styling/CommonStyledComponents';
+import { ExpCardPageStyle } from '../../commons/styling/CommonStyledComponents';
 
 export default function ExpenditureList() {
   const { event } = useEvent();

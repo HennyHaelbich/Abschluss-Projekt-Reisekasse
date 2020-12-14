@@ -2,17 +2,13 @@ import React from 'react';
 import { Cell, PieChart, Pie, ResponsiveContainer } from 'recharts';
 import Card from '@material-ui/core/Card';
 import { CardContent } from '@material-ui/core';
-import CategoryIcon from './CategoryIcon';
-import { categories2 as categories } from '../styling/Categories';
-import { CardFirstLineStyle } from '../styling/CommonStyledComponents';
-import { formattedAmount } from '../helperFunctions/helperFunctions';
-import { SecondSectionDiv } from '../eventPage/Overview';
+import CategoryIcons from './CategoryIcons';
+import { categories2 as categories } from './Categories';
+import { CardFirstLineStyle } from '../../../commons/styling/CommonStyledComponents';
+import { formattedAmount } from '../../../commons/helperFunctions';
+import { SecondSectionDiv } from '../Overview';
 
-export default function CategoryPieChartWithColors({
-  data,
-  sumTotal,
-  sumPerPerson,
-}) {
+export default function CategoryPieChart({ data, sumTotal, sumPerPerson }) {
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
     cx,
@@ -37,7 +33,7 @@ export default function CategoryPieChartWithColors({
         height={20}
         viewBox="0 0 1024 1024"
       >
-        <CategoryIcon type={data[index].name} />
+        <CategoryIcons type={data[index].name} />
       </svg>
     );
   };

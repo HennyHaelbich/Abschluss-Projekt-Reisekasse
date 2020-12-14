@@ -2,8 +2,8 @@ import React from 'react';
 import {
   CardFirstLineStyle,
   CardSecondLineStyle,
-} from '../styling/CommonStyledComponents';
-import { displayName } from '../helperFunctions/helperFunctions';
+} from '../../commons/styling/CommonStyledComponents';
+import { displayName } from '../../commons/helperFunctions';
 import styled from 'styled-components/macro';
 
 export default function MembersList({ members }) {

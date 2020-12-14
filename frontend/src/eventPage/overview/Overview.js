@@ -1,18 +1,15 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  displayName,
-  formattedAmount,
-} from '../helperFunctions/helperFunctions';
-import useEvent from '../hooks/useEvent';
+import { displayName, formattedAmount } from '../../commons/helperFunctions';
+import useEvent from '../../hooks/useEvent';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import {
   CardFirstLineStyle,
   CardPageStyle,
   SmallButtonDiv,
-} from '../styling/CommonStyledComponents';
-import AnalysisPage from '../analysisPage/AnalysisPage';
+} from '../../commons/styling/CommonStyledComponents';
+import AnalysisPage from './analysisSection/AnalysisPage';
 import { Button } from '@material-ui/core';
 import styled from 'styled-components/macro';
 

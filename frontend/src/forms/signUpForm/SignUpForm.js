@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Header from '../commons/Header';
-import { signUp } from '../service/SignUpService';
+import Header from '../../commons/Header';
+import { signUp } from './SignUpService';
 import styled from 'styled-components/macro';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-import { useTextFieldStyle } from '../styling/MaterialUiStyling';
+import { useTextFieldStyle } from '../../commons/styling/MaterialUiStyling';
 
 const setupSignInData = {
   username: '',
